@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>エリアマネージャー業務</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans JP','Hiragino Sans',sans-serif;background:#e8ecf1}
+.page{width:100%;height:100%;display:flex;flex-direction:column}
+.top{height:30px;background:#fff;border-bottom:1px solid #dde2e8;display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0}
+.top-b{font-size:10px;font-weight:800;color:#dc2626}.top-t{font-size:10px;color:#64748b;flex:1}.top-c{font-size:10px;color:#94a3b8;font-weight:700}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#dc2626,#b91c1c);z-index:101;transition:width .4s}
+.main{flex:1;display:flex;overflow:hidden;min-height:0}
+.left{width:72%;display:flex;align-items:center;justify-content:center;padding:14px 10px 14px 18px;position:relative;background:#e8ecf1}
+.right{width:28%;min-width:240px;background:#fff;border-left:2.5px solid #dc2626;display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(244,63,94,.06)}
+.right-head{padding:12px 14px 8px;background:linear-gradient(180deg,rgba(244,63,94,.035),transparent)}
+.right-step{font-size:13px;font-weight:800;letter-spacing:.4px;margin-bottom:4px;color:#dc2626}
+.right-title{font-size:22px;font-weight:900;color:#1e293b;line-height:1.25}
+.right-divider{height:1px;background:linear-gradient(90deg,#dc2626 0%,#e2e8f0 60%);margin:0 24px}
+.right-body{flex:1;overflow:hidden;padding:10px 14px 8px}
+.right-text{font-size:14px;color:#334155;line-height:1.6;margin-bottom:6px}
+.right-tip{display:block;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.5;margin-top:4px;font-weight:600}
+.rt-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}
+.rt-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}
+.rt-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}
+.rt-g{background:rgba(244,63,94,.04);border:1px solid rgba(244,63,94,.1);color:#065f46}
+/* Screens */
+.screens{position:relative;width:100%;height:100%}
+.scr{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.scr.active{opacity:1;pointer-events:auto}
+.scr-full{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;background:linear-gradient(160deg,#f8fafc,#eff6ff,#f0fdf4)}
+.scr-split{display:flex;align-items:center;justify-content:center;padding:14px 10px 14px 18px;overflow:hidden}
+/* Browser mock */
+.win{width:100%;max-width:920px;height:100%;border-radius:10px;overflow:hidden;border:1.5px solid #c2c9d4;box-shadow:0 4px 24px rgba(0,0,0,.07);background:#f1f5f9;display:flex;flex-direction:column;position:relative}
+.win-bar{height:28px;flex-shrink:0;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;padding:0 10px;gap:5px}
+.wd{width:9px;height:9px;border-radius:50%}
+.wu{flex:1;margin:0 8px;padding:2px 10px;border-radius:5px;background:#fff;border:1px solid #e2e8f0;font-size:9px;color:#94a3b8;overflow:hidden}
+.wc{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:20px 24px}
+/* App CSS */
+:root{--c-text:#1e293b;--c-sub:#64748b;--c-green:#f43f5e}
+.hb{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:24px;font-size:11px;font-weight:800;margin-bottom:12px;background:rgba(244,63,94,.06);color:#f43f5e;border:1px solid rgba(244,63,94,.12)}
+.card{width:100%;max-width:520px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.card-title{color:#1e293b;font-size:19px;font-weight:700;text-align:center;margin-bottom:3px}
+.card-sub{color:#94a3b8;font-size:12px;text-align:center;margin-bottom:14px}
+.gc{width:100%;max-width:520px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.gi{text-align:center;font-size:36px;margin-bottom:8px}
+.gt{text-align:center;font-size:17px;font-weight:700;color:#f43f5e;margin-bottom:3px}
+.gs{text-align:center;font-size:10px;color:#94a3b8;margin-bottom:14px}
+.gsteps{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.gstep{display:flex;align-items:center;gap:9px;padding:9px 11px;background:#f8fafc;border-radius:9px;border:1px solid #e2e8f0}
+.gnum{min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;background:#f43f5e}
+.gtext{color:#334155;font-size:11px;line-height:1.4}.gtext b{color:#1e293b}
+.gnote{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:9px 11px;margin-bottom:14px;font-size:9px;color:#64748b;line-height:1.5}
+.pbtn{width:100%;padding:13px;border:none;border-radius:12px;color:white;font-size:13px;font-weight:700;background:linear-gradient(135deg,#f43f5e,#e11d48);text-align:center}
+.sw{position:relative;margin-bottom:10px}.sic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94a3b8}
+.sin{width:100%;padding:10px 12px 10px 32px;background:#f8fafc;border:1px solid #d1d5db;border-radius:10px;color:#1e293b;font-size:12px;font-family:inherit;outline:none}.sin::placeholder{color:#9ca3af}
+.blb{color:#64748b;font-size:9px;font-weight:600;margin:7px 0 3px;display:flex;align-items:center;gap:5px}
+.blb::before{content:'';display:inline-block;width:3px;height:10px;border-radius:2px;background:#f43f5e}
+.bsg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:3px}
+.sb{border-radius:10px;padding:11px 6px;color:#334155;font-size:11px;font-weight:600;text-align:center;background:rgba(244,63,94,.04);border:1.5px solid rgba(244,63,94,.18);transition:all .3s}
+.sb.sel{border-color:#f43f5e;background:rgba(244,63,94,.1);color:#f43f5e;font-weight:700}
+.il{color:#64748b;font-size:11px;font-weight:600;margin-bottom:5px;display:block}
+.ti{width:100%;padding:11px 12px;background:#f8fafc;border:1px solid #d1d5db;border-radius:10px;color:#1e293b;font-size:14px;min-height:40px;display:flex;align-items:center}
+.cc{padding:24px 18px;text-align:center;background:#fff;border:1px solid #e2e8f0;border-radius:18px;max-width:520px;width:100%;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.cr{display:flex;justify-content:space-between;align-items:center;padding:8px 0}.cr+.cr{border-top:1px solid #f1f5f9}
+.crl{color:#94a3b8;font-size:11px;font-weight:600}.crv{color:#1e293b;font-size:13px;font-weight:700}.crv.hl{color:#f43f5e;font-size:17px}
+.cbs{display:flex;gap:6px;margin-top:8px}
+.cb-no{flex:1;padding:11px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#94a3b8;font-size:12px;font-weight:700;text-align:center}
+.cb-ok{flex:1;padding:11px;border-radius:10px;border:none;color:white;font-size:12px;font-weight:700;text-align:center;background:linear-gradient(135deg,#f43f5e,#e11d48)}
+.dc{border:1px solid rgba(244,63,94,.2);padding:24px 18px;text-align:center;max-width:520px;width:100%;background:#fff;border-radius:18px}
+.dti{color:#f43f5e;font-size:19px;font-weight:700;margin:8px 0 3px}.dsu{color:#94a3b8;font-size:10px;margin-bottom:14px}
+.rb{background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:14px;text-align:left;border:1px solid #e2e8f0}
+.rr{display:flex;justify-content:space-between;padding:7px 0}.rr+.rr{border-top:1px solid #e2e8f0}
+.rrk{color:#94a3b8;font-size:11px;font-weight:600}.rrv{color:#1e293b;font-size:13px;font-weight:700}
+.nb{display:flex;gap:6px;margin-top:10px;max-width:520px;width:100%}
+.nbk{flex:1;display:flex;align-items:center;justify-content:center;padding:11px;background:#f8fafc;border:1px solid #d1d5db;border-radius:12px;color:#64748b;font-size:11px;font-weight:600}
+.nbh{display:flex;align-items:center;justify-content:center;gap:4px;padding:11px 14px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.12);border-radius:12px;color:#2563eb;font-size:10px;font-weight:700}
+.dmi{display:flex;align-items:center;gap:10px;padding:13px;border-radius:12px;cursor:default;transition:all .15s}
+.dmi-i{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.dmi-n{font-size:13px;font-weight:700;color:#1e293b}.dmi-s{font-size:9px;color:#94a3b8;margin-top:1px}.dmi-a{color:#cbd5e1;font-size:13px;margin-left:auto}
+.si{text-align:center;padding:8px;border-radius:9px;font-size:11px;font-weight:600;color:#64748b;background:#f8fafc;border:1px solid #e2e8f0}
+.si.ok{color:#f43f5e;background:rgba(244,63,94,.04);border-color:rgba(244,63,94,.12)}
+.wc2{background:#fff;border:2px solid rgba(220,38,38,.15);border-radius:18px;padding:28px 18px;text-align:center;max-width:520px;width:100%}
+.wc3{background:#fff;border:2px solid rgba(180,83,9,.15);border-radius:18px;padding:28px 18px;text-align:center;max-width:520px;width:100%}
+.sc2{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;max-width:520px;width:100%}
+.sci{padding:10px 14px;border-radius:9px;font-size:12px;font-weight:700;margin-bottom:4px}
+.ring{position:relative;display:inline-block;width:100%}
+.ring::after{content:'';position:absolute;inset:-3px;border:2px solid #f59e0b;border-radius:12px;animation:rp 1.5s infinite}
+@keyframes rp{0%,100%{opacity:1}50%{opacity:.3}}
+/* Full-page elements */
+h1{font-size:clamp(26px,4.8vw,38px);font-weight:900;color:#1e293b;text-align:center;margin-bottom:6px}
+h2{font-size:clamp(22px,3.6vw,29px);font-weight:800;color:#1e293b;text-align:center;margin-bottom:4px}
+.sub2{font-size:17px;color:#64748b;text-align:center;max-width:520px;line-height:1.7;margin-bottom:12px}
+.badge3{display:inline-flex;align-items:center;gap:6px;padding:6px 17px;border-radius:22px;font-size:13px;font-weight:700;margin-bottom:12px}
+.b3-g{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.15);color:#f43f5e}
+.b3-b{background:rgba(37,99,235,.05);border:1px solid rgba(37,99,235,.12);color:#2563eb}
+.b3-r{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.12);color:#dc2626}
+.b3-x{background:rgba(100,116,139,.05);border:1px solid rgba(100,116,139,.12);color:#64748b}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;max-width:560px;width:100%;margin-bottom:10px}
+.fl{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 4px;text-align:center}
+.fl-n{font-size:17px;font-weight:900;margin-bottom:2px}.fl-l{font-size:12px;color:#64748b}
+.cmp{display:flex;gap:10px;max-width:560px;width:100%;margin-bottom:8px}
+.cmp-c{flex:1;border-radius:10px;padding:14px}
+.cmp-ok{background:rgba(244,63,94,.03);border:1.5px solid rgba(244,63,94,.12)}.cmp-ng{background:rgba(220,38,38,.03);border:1.5px solid rgba(220,38,38,.12)}
+.cmp-t{font-size:14px;font-weight:800;margin-bottom:6px;text-align:center}.cmp-i{font-size:12px;color:#475569;margin-bottom:4px;line-height:1.5;text-align:center}
+.strow{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;margin-bottom:4px;max-width:500px;width:100%}
+.strow-d{width:8px;height:8px;border-radius:50%;flex-shrink:0}.strow-n{font-size:12px;font-weight:700;color:#1e293b;flex:1}.strow-s{font-size:10px;color:#94a3b8}.strow-i{font-size:11px;font-weight:700;flex-shrink:0}
+.ft{padding:12px 17px;border-radius:10px;font-size:16px;line-height:1.7;margin-top:5px;max-width:560px;width:100%}
+.ft b{font-weight:800}
+.ft-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}
+.ft-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}
+.ft-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}
+.ft-g{background:rgba(244,63,94,.04);border:1px solid rgba(244,63,94,.1);color:#065f46}
+.sitem{padding:13px 19px;border-radius:10px;font-size:17px;font-weight:700;margin-bottom:5px;max-width:500px;width:100%}
+.fu{opacity:0;transform:translateY(10px);transition:all .4s ease}
+.scr.active .fu{opacity:1;transform:translateY(0)}
+.scr.active .fu:nth-child(2){transition-delay:.06s}
+.scr.active .fu:nth-child(3){transition-delay:.12s}
+.scr.active .fu:nth-child(4){transition-delay:.18s}
+.scr.active .fu:nth-child(5){transition-delay:.24s}
+.scr.active .fu:nth-child(6){transition-delay:.3s}
+.scr.active .fu:nth-child(7){transition-delay:.36s}
+.scr.active .fu:nth-child(8){transition-delay:.42s}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.tc{display:inline-block;width:1px;height:14px;background:#1e293b;margin-left:1px;animation:blink .7s infinite;vertical-align:text-bottom}
+
+.right-nav{flex-shrink:0;padding:20px 24px 22px;border-top:1px solid #eef1f5;background:#fafbfc}
+.right-nav-dots{display:flex;gap:5px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.dot{width:7px;height:7px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all .25s}
+.dot.a{background:#f43f5e;transform:scale(1.5)}.dot.d{background:#2563eb}
+.right-nav-btns{display:flex;gap:12px}
+.nav-btn{flex:1;padding:20px 0;border:none;border-radius:14px;font-size:28px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;letter-spacing:.3px}
+.nav-btn-prev{background:#f1f5f9;color:#64748b;border:3px solid #94a3b8;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.nav-btn-prev:hover{background:#e2e8f0;color:#1e293b}
+.nav-btn-next{background:linear-gradient(135deg,#f43f5e,#e11d48);color:#fff;border:none;box-shadow:0 2px 10px rgba(244,63,94,.25)}
+.nav-btn-next:hover{box-shadow:0 4px 16px rgba(244,63,94,.35)}
+
+.scr.prev{opacity:0;transform:translateX(-40px)}
+
+.right-nav-extra{display:flex;gap:10px;margin-top:14px}
+.nav-extra-btn{flex:1;padding:16px 0;border:3px solid #94a3b8;border-radius:12px;font-size:24px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-weight:700;cursor:pointer;font-family:inherit;background:#fff;color:#64748b;text-align:center;transition:all .15s}
+.nav-extra-btn:hover{background:#f1f5f9;color:#1e293b}
+.nav-extra-home{border-color:rgba(37,99,235,.15);color:#2563eb;background:rgba(37,99,235,.03)}
+.nav-extra-home:hover{background:rgba(37,99,235,.08)}
+
+.st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:580px;width:100%;margin-bottom:6px}
+.st-card{padding:10px;border-radius:9px;text-align:center}
+.st-card-icon{font-size:18px;margin-bottom:2px}
+.st-card-label{font-size:12px;font-weight:800;margin-bottom:2px}
+.st-card-desc{font-size:9px;line-height:1.5}
+.st-ok{background:rgba(16,185,129,.06);border:1.5px solid rgba(16,185,129,.2);color:#f43f5e}
+.st-delay{background:rgba(234,179,8,.06);border:1.5px solid rgba(234,179,8,.2);color:#b45309}
+.st-late{background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);color:#dc2626}
+.st-appr{background:rgba(167,139,250,.06);border:1.5px solid rgba(167,139,250,.2);color:#7c3aed}
+.st-hol{background:rgba(56,189,248,.06);border:1.5px solid rgba(56,189,248,.2);color:#0284c7}
+.st-wait{background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b}
+
+
+.st-circle{width:24px;height:24px;border-radius:50%;margin:0 auto 4px;display:block;position:relative}
+.st-circle::after{content:'';position:absolute;top:3px;left:5px;width:10px;height:8px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,255,255,.7) 0%,rgba(255,255,255,0) 100%)}
+
+.sd{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle;margin-right:2px;position:relative}
+.sd::after{content:'';position:absolute;top:1px;left:2px;width:5px;height:4px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 100%)}
+
+.finger{font-size:20px;vertical-align:middle;margin-left:4px;display:inline-block;position:relative;animation:tap4 1.8s infinite;transform-origin:center bottom;z-index:10}
+.finger::after{content:'';position:absolute;bottom:-4px;left:50%;width:20px;height:20px;border-radius:50%;border:2.5px solid rgba(244,63,94,.5);transform:translate(-50%,0) scale(0);animation:ripple4 1.8s infinite;pointer-events:none}
+@keyframes tap4{0%,100%{transform:scale(1) translateY(0)}35%{transform:scale(.8) translateY(4px)}45%{transform:scale(.8) translateY(4px)}55%{transform:scale(1) translateY(0)}}
+@keyframes ripple4{0%,34%{transform:translate(-50%,0) scale(0);opacity:0}45%{transform:translate(-50%,0) scale(.5);opacity:.9}70%{transform:translate(-50%,0) scale(3);opacity:0}100%{transform:translate(-50%,0) scale(0);opacity:0}}
+.ring,.pbtn,.sb,.cb-ok,.dmi{overflow:visible !important}
+
+.ta-mock{width:100%;min-height:80px;padding:10px 14px;border-radius:10px;background:#f8fafc;border:1.5px solid #d1d5db;font-size:11px;color:#334155;line-height:1.8;white-space:pre-line}
+.urg-btns{display:flex;gap:8px;margin:8px 0}
+.urg-btn{flex:1;padding:12px;border-radius:10px;text-align:center;font-size:13px;font-weight:700;cursor:default}
+.urg-normal{background:rgba(59,130,246,.06);border:1.5px solid rgba(59,130,246,.2);color:#2563eb}
+.urg-urgent{background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);color:#dc2626}
+.urg-sel{border-width:2.5px;box-shadow:0 0 0 2px rgba(59,130,246,.1)}
+.urg-urgent.urg-sel{box-shadow:0 0 0 2px rgba(239,68,68,.1)}
+.bm{width:100%;max-width:96%;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);border:1px solid #e2e8f0;overflow:hidden;text-align:left}
+.bm-h{padding:6px 10px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:#64748b}
+.bm-b{padding:10px}
+.bm-btn{display:block;padding:6px 10px;border-radius:6px;margin-bottom:3px;font-size:10px;font-weight:700;cursor:default}
+.bm-badge{display:inline-block;padding:1px 6px;border-radius:4px;font-size:8px;font-weight:700;margin-left:4px}
+.bm-row{display:flex;align-items:center;gap:6px;padding:4px 8px;border-radius:6px;margin-bottom:2px;font-size:10px;font-weight:600}
+.bm-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.bm-label{flex:1;color:#334155}
+.bm-val{font-weight:700}
+.bm-section{padding:6px 8px}
+.bm-sh{font-size:8px;font-weight:800;color:#64748b;letter-spacing:1px;margin-bottom:4px}
+.bm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.bm-cell{padding:3px 6px;border-radius:4px;font-size:12px;font-weight:600;text-align:center;border:1px solid}
+.bm-input{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;border:1.5px solid #e2e8f0;background:#f8fafc;margin-bottom:4px;font-size:10px;font-weight:600;color:#64748b}
+.bm-input .pw-dots{letter-spacing:3px;font-size:14px;color:#334155}
+.bm-tabs{display:flex;gap:3px;padding:4px 8px}
+.bm-tab{flex:1;padding:4px;border-radius:6px;font-size:12px;font-weight:700;text-align:center;cursor:default}
+.bm-tab-active{background:#6366f110;color:#6366f1;border:1px solid #6366f122}
+.bm-tab-inactive{background:#f1f5f9;color:#94a3b8;border:1px solid #e2e8f0}
+.bm-banner{padding:6px 10px;border-radius:8px;margin:4px 8px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+@keyframes point{0%,100%{transform:translate(0,0)}50%{transform:translate(4px,-3px)}}
+
+</style>
+</head>
+<body>
+<div class="page">
+<div class="bar" id="bar" style="width:0%"></div>
+<div class="top"><span class="top-b">🏆 エリアマネージャー業務</span><span class="top-t" id="cnt">1/1</span></div>
+<div class="main">
+<div class="left"><div class="screens">
+
+<div class="scr scr-full active" data-i="0"><div class="badge3 b3-g fu">🏆 業務マニュアル</div><h1 class="fu">エリアマネージャー業務</h1><div class="sub2 fu">エリア全体の管理・承認を行う<br>エリアマネージャー専用メニューです。</div><div class="ft ft-b fu" style="text-align:center;max-width:420px"><b>エリアマネージャー・管理者パスワードで解除</b></div></div>
+
+<div class="scr scr-full" data-i="1"><div class="badge3 b3-x fu">📋 基本ルール</div><h1 class="fu" style="font-size:22px">エリアマネージャーの5つの業務</h1><div class="sitem fu" style="background:rgba(59,130,246,.04);border:1.5px solid rgba(0,0,0,.06)"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">📅</span><div><div style="font-size:14px;font-weight:800;color:#1e293b">シフト変更配信</div><div style="font-size:10px;color:#64748b">店舗／スタッフ個人の2パターン</div></div></div></div><div class="sitem fu" style="background:rgba(139,92,246,.04);border:1.5px solid rgba(0,0,0,.06)"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">📣</span><div><div style="font-size:14px;font-weight:800;color:#1e293b">お知らせ配信</div><div style="font-size:10px;color:#64748b">お知らせ／注意／緊急の3レベル</div></div></div></div><div class="sitem fu" style="background:rgba(16,185,129,.04);border:1.5px solid rgba(0,0,0,.06)"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">📋</span><div><div style="font-size:14px;font-weight:800;color:#1e293b">メニュー管理</div><div style="font-size:10px;color:#64748b">外部リンク／テキストページの追加・編集</div></div></div></div><div class="sitem fu" style="background:rgba(220,38,38,.04);border:1.5px solid rgba(0,0,0,.06)"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">🔧</span><div><div style="font-size:14px;font-weight:800;color:#1e293b">修理事故確認</div><div style="font-size:10px;color:#64748b">メンバー当事者／ブロック長当事者の2パターン</div></div></div></div><div class="sitem fu" style="background:rgba(139,92,246,.04);border:1.5px solid rgba(0,0,0,.06)"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">✅</span><div><div style="font-size:14px;font-weight:800;color:#1e293b">出勤・カメラ承認</div><div style="font-size:10px;color:#64748b">ホーム画面から店舗クリックで承認</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="2"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🏆 エリアマネージャー業務</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="text-align:center;padding:10px 0"><div style="font-size:20px;margin-bottom:6px">🔐</div><div style="font-size:11px;font-weight:700;color:#334155;margin-bottom:8px">エリアマネージャー・管理者パスワードを入力</div><div class="bm-input"><span>🔑</span><span class="pw-dots">● ● ● ●</span></div><div style="display:flex;gap:6px;justify-content:center;margin-top:8px"><div class="bm-btn" style="background:#f1f5f9;color:#64748b;padding:6px 16px">キャンセル</div><div class="bm-btn" style="background:#dc2626;color:#fff;padding:6px 16px">認証</div></div></div></div></div></div></div>
+
+<div class="scr scr-split" data-i="3"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🏆 エリアマネージャー業務</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div class="bm-btn" style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.12);color:#2563eb">📅 シフト変更配信</div><div class="bm-btn" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12);color:#7c3aed">📣 お知らせ配信</div><div class="bm-btn" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12);color:#059669">📋 メニュー管理</div><div class="bm-btn" style="background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.12);color:#dc2626">🔧 修理事故確認</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="4"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📅 シフト変更配信 ─ 店舗</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="text-align:center;margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:#94a3b8;margin-bottom:4px">📅 シフト変更配信</div><div style="display:flex;gap:6px;justify-content:center;margin-bottom:10px"><div style="flex:1;padding:10px;border-radius:10px;border:2px solid #2563eb;background:rgba(37,99,235,.06);text-align:center;font-size:11px;font-weight:700;color:#2563eb">🏪 店舗シフト変更</div><div style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #e2e8f0;text-align:center;font-size:11px;font-weight:600;color:#64748b">👤 スタッフ個人</div></div></div><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">日付</span><span style="font-size:12px;font-weight:700;color:#1e293b">2026-03-18</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">店舗</span><span style="font-size:12px;font-weight:700;color:#1e293b">渋谷センター街</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">変更前</span><span style="font-size:12px;font-weight:700;color:#1e293b">小林</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">変更後</span><span style="font-size:12px;font-weight:700;color:#1e293b">加藤</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">理由</span><span style="font-size:12px;font-weight:700;color:#1e293b">欠勤</span></div></div><div style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;font-size:13px;font-weight:700;text-align:center;margin-top:10px">📢 配信する</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="5"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📅 シフト変更配信 ─ スタッフ個人</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="text-align:center;margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:#94a3b8;margin-bottom:4px">📅 シフト変更配信</div><div style="display:flex;gap:6px;justify-content:center;margin-bottom:10px"><div style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #e2e8f0;text-align:center;font-size:11px;font-weight:600;color:#64748b">🏪 店舗シフト変更</div><div style="flex:1;padding:10px;border-radius:10px;border:2px solid #7c3aed;background:rgba(124,58,237,.06);text-align:center;font-size:11px;font-weight:700;color:#7c3aed">👤 スタッフ個人</div></div></div><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">日付</span><span style="font-size:12px;font-weight:700;color:#1e293b">2026-03-20</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">スタッフ名</span><span style="font-size:12px;font-weight:700;color:#1e293b">高橋</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">区分</span><div style="display:flex;gap:6px;flex:1"><div style="flex:1;padding:8px;border-radius:8px;border:2px solid #ef4444;background:rgba(239,68,68,.08);text-align:center;font-size:11px;font-weight:700;color:#ef4444">🔴 欠勤</div><div style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #e2e8f0;text-align:center;font-size:11px;font-weight:600;color:#64748b">🟢 出勤</div></div></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">備考</span><span style="font-size:12px;font-weight:700;color:#1e293b">体調不良</span></div></div><div style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;font-size:13px;font-weight:700;text-align:center;margin-top:10px">📢 配信する</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="6"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📅 シフト変更配信 ─ 保存完了</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="text-align:center;padding:12px 0;margin-bottom:10px;background:rgba(16,185,129,.06);border:1.5px solid rgba(16,185,129,.2);border-radius:10px"><div style="font-size:28px;margin-bottom:4px">✅</div><div style="font-size:13px;font-weight:700;color:#059669">シフト変更を保存しました</div></div><div style="font-size:11px;font-weight:700;color:#1e293b;margin-bottom:6px">📅 3月のシフト変更</div><div style="border-radius:10px;border:1.5px solid rgba(37,99,235,.2);background:rgba(37,99,235,.03);padding:10px;margin-bottom:6px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div style="background:#3b82f6;color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:3px">変更</div><div style="font-size:11px;font-weight:700;color:#1e293b">2026-03-18 渋谷センター街</div></div><div style="font-size:10px;color:#64748b">小林 → 加藤 <span style="color:#94a3b8">欠勤</span></div></div><div style="padding:10px;border-radius:8px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.12);font-size:9px;color:#1e40af;font-weight:600">💡 配信後はメンバーのホーム画面上部にバナー表示されます。</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="7"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📣 お知らせ配信 ─ お知らせ</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="font-size:10px;font-weight:800;color:#64748b;letter-spacing:1px;margin-bottom:4px">配信レベル</div><div style="display:flex;gap:4px;margin-bottom:8px"><div style="flex:1;padding:4px;border-radius:6px;text-align:center;border:2px solid #6366f1;background:#6366f108"><div style="font-size:12px">📣</div><div style="font-size:8px;font-weight:700;color:#6366f1">お知らせ</div></div><div style="flex:1;padding:4px;border-radius:6px;text-align:center;border:2px solid #e2e8f0"><div style="font-size:12px">📢</div><div style="font-size:8px;font-weight:700;color:#94a3b8">注意</div></div><div style="flex:1;padding:4px;border-radius:6px;text-align:center;border:2px solid #e2e8f0"><div style="font-size:12px">🚨</div><div style="font-size:8px;font-weight:700;color:#94a3b8">緊急</div></div></div><div style="padding:8px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:10px;color:#334155;min-height:50px">3/12アプリの更新をします。</div><div style="display:flex;gap:6px;margin-top:6px"><div class="bm-btn" style="background:#f1f5f9;color:#64748b;flex:1;text-align:center;padding:6px">🗑 削除</div><div class="bm-btn" style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;flex:1;text-align:center;padding:6px">💾 保存</div></div><div style="margin-top:8px;font-size:9px;font-weight:700;color:#64748b">ホーム画面での表示：</div><div style="background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15);padding:6px 10px;border-radius:8px;margin-top:4px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="color:#6366f1">📣 通常バナー表示</span></div></div></div></div></div>
+
+<div class="scr scr-split" data-i="8"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📣 お知らせ配信 ─ 注意</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="font-size:10px;font-weight:800;color:#64748b;letter-spacing:1px;margin-bottom:4px">配信レベル</div><div style="display:flex;gap:4px;margin-bottom:8px"><div style="flex:1;padding:4px;border-radius:6px;text-align:center;border:2px solid #e2e8f0"><div style="font-size:12px">📣</div><div style="font-size:8px;font-weight:700;color:#94a3b8">お知らせ</div></div><div style="flex:1;padding:4px;border-radius:6px;text-align:center;border:2px solid #f59e0b;background:#f59e0b08"><div style="font-size:12px">📢</div><div style="font-size:8px;font-weight:700;color:#f59e0b">注意</div></div><div style="flex:1;padding:4px;border-radius:6px;text-align:center;border:2px solid #e2e8f0"><div style="font-size:12px">🚨</div><div style="font-size:8px;font-weight:700;color:#94a3b8">緊急</div></div></div><div style="padding:8px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:10px;color:#334155;min-height:50px">3/14・3/15はルミネ新宿の開店時間が10時30分に変更です。</div><div style="display:flex;gap:6px;margin-top:6px"><div class="bm-btn" style="background:#f1f5f9;color:#64748b;flex:1;text-align:center;padding:6px">🗑 削除</div><div class="bm-btn" style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;flex:1;text-align:center;padding:6px">💾 保存</div></div><div style="margin-top:8px;font-size:9px;font-weight:700;color:#64748b">ホーム画面での表示：</div><div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);padding:6px 10px;border-radius:8px;margin-top:4px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="color:#b45309">📢 マーキー（流れる文字）表示</span></div></div></div></div></div>
+
+<div class="scr scr-split" data-i="9"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📣 お知らせ配信 ─ 緊急</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="font-size:10px;font-weight:800;color:#64748b;letter-spacing:1px;margin-bottom:4px">配信レベル</div><div style="display:flex;gap:4px;margin-bottom:8px"><div style="flex:1;padding:4px;border-radius:6px;text-align:center;border:2px solid #e2e8f0"><div style="font-size:12px">📣</div><div style="font-size:8px;font-weight:700;color:#94a3b8">お知らせ</div></div><div style="flex:1;padding:4px;border-radius:6px;text-align:center;border:2px solid #e2e8f0"><div style="font-size:12px">📢</div><div style="font-size:8px;font-weight:700;color:#94a3b8">注意</div></div><div style="flex:1;padding:4px;border-radius:6px;text-align:center;border:2px solid #dc2626;background:#dc262608"><div style="font-size:12px">🚨</div><div style="font-size:8px;font-weight:700;color:#dc2626">緊急</div></div></div><div style="padding:8px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:10px;color:#334155;min-height:50px">目黒店現在停電中、17時頃復旧見込みです。</div><div style="display:flex;gap:6px;margin-top:6px"><div class="bm-btn" style="background:#f1f5f9;color:#64748b;flex:1;text-align:center;padding:6px">🗑 削除</div><div class="bm-btn" style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;flex:1;text-align:center;padding:6px">💾 保存</div></div><div style="margin-top:8px;font-size:9px;font-weight:700;color:#64748b">ホーム画面での表示：</div><div style="background:rgba(220,38,38,.08);border:1.5px solid rgba(220,38,38,.2);animation:rp 1.5s infinite;padding:6px 10px;border-radius:8px;margin-top:4px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="color:#dc2626">🚨 赤い点滅バナー表示</span></div></div></div></div></div>
+
+<div class="scr scr-split" data-i="10"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📣 お知らせ配信 ─ 完了</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card" style="text-align:center;padding:20px"><div style="text-align:center;padding:20px"><div style="font-size:42px;margin-bottom:6px">✅</div><div style="font-size:16px;font-weight:800;color:#dc2626;margin-bottom:4px">配信完了！</div><div style="font-size:11px;color:#94a3b8;margin-bottom:14px">お疲れ様でした</div><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;text-align:left"><div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">レベル</span><span style="font-size:10px;font-weight:700;color:#6366f1">📣 お知らせ</span></div><div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">対象</span><span style="font-size:10px;font-weight:700;color:#1e293b">エリア内全メンバー</span></div><div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">内容</span><span style="font-size:10px;font-weight:700;color:#1e293b">3/12アプリの更新をします</span></div></div><div style="margin-top:12px;padding:12px;border-radius:10px;background:#dc2626;color:#fff;font-size:13px;font-weight:700;text-align:center">🏠 ホームへ戻る</div></div></div></div></div></div>
+
+<div class="scr scr-split" data-i="11"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📋 メニュー管理</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div class="card-title" style="font-size:15px">📋 メニュー管理</div><div class="card-sub" style="font-size:10px">業務メニューに項目を追加できます</div><div style="display:flex;gap:8px;margin-bottom:14px"><div style="flex:1;padding:14px;border-radius:12px;text-align:center;border:1.5px solid rgba(37,99,235,.2);background:rgba(37,99,235,.04)"><div style="font-size:20px;margin-bottom:4px">🔗</div><div style="font-size:10px;font-weight:700;color:#2563eb">外部リンク追加</div><div style="font-size:8px;color:#94a3b8;margin-top:2px">URLを開く</div></div><div style="flex:1;padding:14px;border-radius:12px;text-align:center;border:1.5px solid rgba(99,102,241,.2);background:rgba(99,102,241,.04)"><div style="font-size:20px;margin-bottom:4px">📝</div><div style="font-size:10px;font-weight:700;color:#6366f1">テキストページ追加</div><div style="font-size:8px;color:#94a3b8;margin-top:2px">アプリ内に表示</div></div></div><div style="text-align:center;padding:18px;color:#94a3b8;font-size:10px">追加メニューはまだありません</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="12"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📋 メニュー管理 ─ 外部リンク追加</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="font-size:11px;font-weight:700;color:#334155;margin-bottom:8px">🔗 外部リンクを追加</div><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">アイコン</span><span style="font-size:12px;font-weight:700;color:#1e293b">📦</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">メニュー名</span><span style="font-size:12px;font-weight:700;color:#1e293b">在庫管理システム</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">説明</span><span style="font-size:12px;font-weight:700;color:#1e293b">在庫の入出庫を管理</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">URL</span><span style="font-size:10px;font-weight:600;color:#2563eb;word-break:break-all">https://example.com/inventory</span></div></div><div style="display:flex;gap:6px;margin-top:10px"><div class="bm-btn" style="background:#f1f5f9;color:#64748b;flex:1;text-align:center;padding:8px">キャンセル</div><div class="bm-btn" style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;flex:1;text-align:center;padding:8px">💾 保存</div></div></div></div></div></div>
+
+<div class="scr scr-split" data-i="13"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📋 メニュー管理 ─ テキストページ追加</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="font-size:11px;font-weight:700;color:#334155;margin-bottom:8px">📝 テキストページを追加</div><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">アイコン</span><span style="font-size:12px;font-weight:700;color:#1e293b">📖</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">メニュー名</span><span style="font-size:12px;font-weight:700;color:#1e293b">接客マニュアル補足</span></div><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0"><span style="font-size:11px;color:#64748b;min-width:60px">説明</span><span style="font-size:12px;font-weight:700;color:#1e293b">接客時の補足事項</span></div></div><div style="margin-top:8px"><div style="font-size:10px;font-weight:600;color:#64748b;margin-bottom:3px">本文</div><div class="ta-mock">お客様対応の基本方針：
+1. 笑顔で挨拶
+2. 端末の状態を確認
+3. 修理の概要と金額を説明
+4. 修理完了後の動作確認
+5. お見送り</div></div><div style="display:flex;gap:6px;margin-top:10px"><div class="bm-btn" style="background:#f1f5f9;color:#64748b;flex:1;text-align:center;padding:8px">キャンセル</div><div class="bm-btn" style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;flex:1;text-align:center;padding:8px">💾 保存</div></div></div></div></div></div>
+
+<div class="scr scr-split" data-i="14"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故確認 ─ エリアマネージャー</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div class="card-title" style="font-size:15px">🔧 修理事故確認</div><div class="card-sub" style="font-size:10px">修理事故の報告を確認する立場を選択してください</div><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:center;gap:10px;padding:14px;border-radius:12px;border:1.5px solid rgba(59,130,246,.3);background:rgba(59,130,246,.04)"><div style="width:36px;height:36px;border-radius:10px;background:rgba(59,130,246,.12);display:flex;align-items:center;justify-content:center;font-size:16px">👤</div><div><div style="font-size:13px;font-weight:700;color:#1e293b">メンバーが当事者</div><div style="font-size:9px;color:#94a3b8">ブロック長承認済み → エリアマネージャーが最終承認</div></div></div><div style="display:flex;align-items:center;gap:10px;padding:14px;border-radius:12px;border:1.5px solid rgba(217,119,6,.3);background:rgba(217,119,6,.04)"><div style="width:36px;height:36px;border-radius:10px;background:rgba(217,119,6,.12);display:flex;align-items:center;justify-content:center;font-size:16px">👑</div><div><div style="font-size:13px;font-weight:700;color:#1e293b">ブロック長が当事者</div><div style="font-size:9px;color:#94a3b8">ブロック長自身の事故 → エリアマネージャーが直接承認</div></div></div></div><div style="margin-top:10px;padding:8px;border-radius:8px;background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.12);font-size:9px;color:#991b1b;font-weight:600;line-height:1.6">⚠ いずれのパターンでも「報告あり／なし」の確認があります。報告なしの場合は報告後に再確認する画面が表示されます。</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="15"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故 ─ メンバー当事者</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card" style="padding:14px 16px"><div class="card-title" style="font-size:13px">👤 メンバーが当事者</div><div class="card-sub" style="font-size:9px">ブロック長名入力 → 報告確認</div><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">当事者</span><span style="font-size:10px;font-weight:700;color:#1e293b">田中 太郎</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">端末</span><span style="font-size:10px;font-weight:700;color:#1e293b">iPhone 15 Pro</span></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:10px;color:#64748b">事故内容</span><span style="font-size:10px;font-weight:700;color:#1e293b">画面破損</span></div></div><div style="font-size:10px;font-weight:700;color:#334155;margin-bottom:4px">👑 ブロック長名</div><div style="padding:8px 12px;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0;font-size:12px;font-weight:700;color:#1e293b;margin-bottom:10px">鈴木 一郎</div><div style="font-size:10px;font-weight:700;color:#334155;margin-bottom:4px">👤 メンバーから報告がありましたか？</div><div style="display:flex;gap:6px;margin-bottom:8px"><div style="flex:1;padding:10px;border-radius:10px;border:2px solid #10b981;background:rgba(16,185,129,.08);text-align:center;font-size:12px;font-weight:700;color:#059669">✅ はい</div><div style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #e2e8f0;text-align:center;font-size:12px;font-weight:600;color:#64748b">❌ いいえ</div></div><div style="padding:8px;border-radius:8px;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;font-size:11px;font-weight:700;text-align:center">次へ進む</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="16"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故 ─ メンバー当事者（ブロック長報告確認）</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card" style="padding:14px 16px"><div class="card-title" style="font-size:13px">👤 メンバーが当事者</div><div class="card-sub" style="font-size:9px">ブロック長からの確認報告</div><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">当事者</span><span style="font-size:10px;font-weight:700;color:#1e293b">田中 太郎</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">端末</span><span style="font-size:10px;font-weight:700;color:#1e293b">iPhone 15 Pro</span></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:10px;color:#64748b">事故内容</span><span style="font-size:10px;font-weight:700;color:#1e293b">画面破損</span></div></div><div style="font-size:10px;font-weight:700;color:#334155;margin-bottom:4px">👑 ブロック長から報告がありましたか？</div><div style="display:flex;gap:6px;margin-bottom:8px"><div style="flex:1;padding:10px;border-radius:10px;border:2px solid #10b981;background:rgba(16,185,129,.08);text-align:center;font-size:12px;font-weight:700;color:#059669">✅ はい</div><div style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #e2e8f0;text-align:center;font-size:12px;font-weight:600;color:#64748b">❌ いいえ</div></div><div style="padding:6px;border-radius:8px;background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.12);font-size:9px;color:#1e40af;font-weight:600">💡 「はい」→ 確認画面へ ／ 「いいえ」→ 報告後に再確認</div><div style="padding:8px;border-radius:8px;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;font-size:11px;font-weight:700;text-align:center;margin-top:8px">次へ進む</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="17"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故 ─ ブロック長当事者（報告確認）</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card" style="padding:14px 16px"><div class="card-title" style="font-size:13px">👑 ブロック長が当事者</div><div class="card-sub" style="font-size:9px">ブロック長からの修理事故報告</div><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">当事者</span><span style="font-size:10px;font-weight:700;color:#1e293b">鈴木 一郎</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">端末</span><span style="font-size:10px;font-weight:700;color:#1e293b">iPhone 15 Pro</span></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:10px;color:#64748b">事故内容</span><span style="font-size:10px;font-weight:700;color:#1e293b">画面破損</span></div></div><div style="font-size:10px;font-weight:700;color:#334155;margin-bottom:4px">📄 ブロック長から報告がありましたか？</div><div style="display:flex;gap:6px;margin-bottom:8px"><div style="flex:1;padding:10px;border-radius:10px;border:2px solid #10b981;background:rgba(16,185,129,.08);text-align:center;font-size:12px;font-weight:700;color:#059669">✅ はい</div><div style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #e2e8f0;text-align:center;font-size:12px;font-weight:600;color:#64748b">❌ いいえ</div></div><div style="padding:6px;border-radius:8px;background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.12);font-size:9px;color:#1e40af;font-weight:600">💡 「はい」→ 確認画面へ ／ 「いいえ」→ 報告後に再確認</div><div style="padding:8px;border-radius:8px;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;font-size:11px;font-weight:700;text-align:center;margin-top:8px">次へ進む</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="18"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故 ─ 報告後に確認してください</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card" style="padding:14px 16px"><div class="card-title" style="font-size:13px">⚠️ 報告なしの場合</div><div class="card-sub" style="font-size:9px">いずれかの報告が「いいえ」の場合</div><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">当事者</span><span style="font-size:10px;font-weight:700;color:#1e293b">鈴木 一郎</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">端末</span><span style="font-size:10px;font-weight:700;color:#1e293b">iPhone 15 Pro</span></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:10px;color:#64748b">事故内容</span><span style="font-size:10px;font-weight:700;color:#1e293b">画面破損</span></div></div><div style="text-align:center;padding:16px;border-radius:10px;background:rgba(245,158,11,.06);border:1.5px solid rgba(245,158,11,.2);margin-bottom:8px"><div style="font-size:32px;margin-bottom:6px">⚠️</div><div style="font-size:13px;font-weight:700;color:#b45309;margin-bottom:4px">報告後に確認してください</div><div style="font-size:9px;color:#64748b;line-height:1.6">メンバーおよびブロック長からの報告が揃ってから<br>エリアマネージャーとしての確認を行ってください。</div></div><div style="padding:8px;border-radius:8px;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;font-size:11px;font-weight:700;text-align:center">最初に戻る</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="19"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故確認 ─ 完了</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card" style="text-align:center;padding:20px"><div style="text-align:center;padding:20px"><div style="font-size:42px;margin-bottom:6px">✅</div><div style="font-size:16px;font-weight:800;color:#dc2626;margin-bottom:4px">確認完了！</div><div style="font-size:11px;color:#94a3b8;margin-bottom:14px">修理事故の確認報告を受け付けました</div><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;text-align:left"><div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">当事者</span><span style="font-size:10px;font-weight:700;color:#1e293b">田中 太郎</span></div><div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">端末</span><span style="font-size:10px;font-weight:700;color:#1e293b">iPhone 15 Pro</span></div><div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">事故内容</span><span style="font-size:10px;font-weight:700;color:#1e293b">画面破損</span></div><div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">メンバー報告</span><span style="font-size:10px;font-weight:700;color:#059669">✅ あり</span></div><div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #e2e8f0"><span style="font-size:10px;color:#64748b">ブロック長報告</span><span style="font-size:10px;font-weight:700;color:#059669">✅ あり</span></div></div><div style="margin-top:12px;padding:12px;border-radius:10px;background:#dc2626;color:#fff;font-size:13px;font-weight:700;text-align:center">🏠 ホームへ戻る</div></div></div></div></div></div>
+
+<div class="scr scr-split" data-i="20"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🏪 ホーム画面 ─ 出勤・カメラ承認</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🏆 エリアマネージャー業務</div><div class="card"><div style="padding:10px;border-radius:10px;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.15);margin-bottom:10px;display:flex;align-items:center;gap:6px"><span style="font-size:14px">🔐</span><span style="color:#5b21b6;font-size:11px;font-weight:700">店舗をクリック → パスワード → ✅承認 / 💤休業</span></div><div style="font-size:10px;color:#94a3b8;font-weight:600;margin-bottom:6px">出勤状況パネル</div><div style="display:flex;gap:4px;margin-bottom:8px"><div style="flex:1;padding:8px;border-radius:8px;background:rgba(16,185,129,.06);border:1.5px solid rgba(16,185,129,.25);text-align:center"><div style="font-size:10px;font-weight:700;color:#059669">✅渋谷センター街</div><div style="font-size:9px;color:#94a3b8">10:01</div></div><div style="flex:1;padding:8px;border-radius:8px;background:rgba(234,179,8,.06);border:1.5px solid rgba(234,179,8,.25);text-align:center"><div style="font-size:10px;font-weight:700;color:#b45309">⚠池袋東口</div><div style="font-size:9px;color:#94a3b8">10:18</div></div><div style="flex:1;padding:8px;border-radius:8px;background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.25);text-align:center"><div style="font-size:10px;font-weight:700;color:#dc2626">🔴新宿西口</div><div style="font-size:9px;color:#dc2626">未報告</div></div></div><div style="padding:8px;border-radius:8px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.12);font-size:9px;color:#1e40af;font-weight:600;margin-bottom:8px">💡 カメラパネルも同様にクリックで承認可能</div><div style="font-size:10px;color:#94a3b8;font-weight:600;margin-bottom:4px">承認後の表示</div><div style="display:flex;gap:4px"><div style="flex:1;padding:8px;border-radius:8px;background:rgba(139,92,246,.08);border:1.5px solid rgba(139,92,246,.3);text-align:center"><div style="font-size:10px;font-weight:700;color:#7c3aed">✅渋谷センター街</div><div style="font-size:9px;color:#7c3aed">承認済</div></div><div style="flex:1;padding:8px;border-radius:8px;background:rgba(56,189,248,.08);border:1.5px solid rgba(56,189,248,.3);text-align:center"><div style="font-size:10px;font-weight:700;color:#0284c7">💤池袋東口</div><div style="font-size:9px;color:#0284c7">休業</div></div></div></div></div></div></div>
+
+<div class="scr scr-full" data-i="21"><div class="badge3 b3-g fu">✅ まとめ</div><h1 class="fu" style="font-size:22px">エリアマネージャー業務は以上です</h1><div style="display:flex;flex-direction:column;gap:6px;margin-top:10px"><div class="ft ft-g fu" style="max-width:400px">✅ シフト変更配信（店舗／スタッフ個人の2パターン）</div><div class="ft ft-g fu" style="max-width:400px">✅ お知らせ配信（お知らせ／注意／緊急の3レベル）</div><div class="ft ft-g fu" style="max-width:400px">✅ メニュー管理（外部リンク／テキストページ）</div><div class="ft ft-g fu" style="max-width:400px">✅ 修理事故確認（メンバー／ブロック長当事者）</div><div class="ft ft-g fu" style="max-width:400px">✅ ホーム画面から出勤・カメラの承認</div></div></div>
+
+</div></div>
+<div class="right">
+<div class="right-head"><div class="right-step" id="rs"></div><div class="right-title" id="rt"></div></div>
+<div class="right-divider"></div>
+<div class="right-body" id="rb"></div>
+
+<div class="right-nav">
+<div class="right-nav-dots" id="dots"></div>
+<div class="right-nav-btns">
+<button class="nav-btn nav-btn-prev" id="prevBtn">← 前へ</button>
+<button class="nav-btn nav-btn-next" id="nextBtn">次へ →</button>
+</div>
+<div class="right-nav-extra">
+<button class="nav-extra-btn" id="backManual">📖 マニュアル一覧</button>
+<button class="nav-extra-btn nav-extra-home" id="backHome">🏠 ホームに戻る</button>
+</div>
+</div></div></div></div>
+
+<script>
+var T=function(s){return '<span class="right-text">'+s+'</span>';};
+var B=function(s){return '<span class="right-tip rt-b">'+s+'</span>';};
+var A=function(s){return '<span class="right-tip rt-a">'+s+'</span>';};
+var R=function(s){return '<span class="right-tip rt-r">'+s+'</span>';};
+var G=function(s){return '<span class="right-tip rt-g">'+s+'</span>';};
+var DATA=[{step:'',title:'エリアマネージャー業務マニュアル',body:T('エリア全体の管理・承認を行うエリアマネージャー専用メニューです。')+B('💡 エリアマネージャー・管理者パスワードで認証後に利用できます。')},
+{step:'📋 基本ルール',title:'5つの業務メニュー',body:T('エリアマネージャー業務には5つの業務があります。')+B('📅 シフト変更配信 ─ 店舗/スタッフ個人の2パターン')+B('📣 お知らせ配信 ─ お知らせ/注意/緊急の3レベル')+B('📋 メニュー管理 ─ 外部リンク/テキストページ')+B('🔧 修理事故確認 ─ メンバー/ブロック長当事者')+B('✅ 出勤・カメラ承認 ─ ホーム画面から店舗クリック')},
+{step:'STEP 1',title:'パスワード認証',body:T('メニューから「エリアマネージャー業務」を選択。')+T('エリアマネージャー・管理者パスワードを入力します。')+A('⚠ パスワードは他のメンバーには共有しないでください。')},
+{step:'STEP 2',title:'業務メニュー選択',body:T('認証後、4つの業務メニューが表示されます。出勤・カメラ承認はホーム画面から操作します。')+T('確認したい業務をタップして進みます。')+B('💡 各業務ではエリア内の全ブロック・店舗が対象です。')},
+{step:'STEP 3',title:'シフト変更配信（店舗）',body:T('店舗単位のシフト変更をアプリ上で配信します。')+T('日付・店舗・変更前後スタッフ・理由を入力。')+B('💡 ブロック長と同じ配信機能です。')+B('💡 配信後はメンバーのホーム画面上部にバナー表示されます。')},
+{step:'STEP 3b',title:'シフト変更配信（スタッフ個人）',body:T('👤 スタッフ個人の欠勤・出勤を配信するモードです。')+T('スタッフ名・区分（欠勤 or 出勤）・備考を入力。')+B('🔴 欠勤 ─ 指定日に休み')+B('🟢 出勤 ─ 別店舗にヘルプ出勤')+A('⚠ 出勤の場合は出勤先店舗の選択が必要です。')},
+{step:'STEP 3 完了',title:'シフト変更配信 完了',body:T('保存後、シフト変更一覧に戻ります。')+B('💡 配信後はメンバーのホーム画面上部にバナー表示されます。')},
+{step:'STEP 4',title:'お知らせ配信（お知らせ）',body:T('エリア内のメンバー全員に表示されるお知らせを配信。')+B('📣 お知らせ ─ 通常バナー表示')+B('💡 ホーム画面上部に静的バナーとして表示されます。')},
+{step:'STEP 4b',title:'お知らせ配信（注意）',body:T('「注意」レベルでは、ホーム画面にマーキー（流れる文字）で表示されます。')+A('⚠ 注意レベルは通常より目立つ表示です。')+B('💡 メンバーが見逃しにくい表示方法です。')},
+{step:'STEP 4c',title:'お知らせ配信（緊急）',body:T('「緊急」レベルでは、ホーム画面に赤い点滅バナーで表示されます。')+R('🚨 緊急レベルは最も目立つ表示です。台風・災害など緊急時に使用。')+A('⚠ 緊急レベルの乱用は避けてください。')},
+{step:'STEP 4 完了',title:'お知らせ配信 完了',body:T('配信内容が保存され、完了画面が表示されます。')+B('💡 削除ボタンでお知らせを非表示にできます。')},
+{step:'STEP 5',title:'メニュー管理 一覧',body:T('ホーム画面のメニューにカスタム項目を追加・管理できます。')+B('🔗 外部リンク ─ URLを開く')+B('📝 テキストページ ─ アプリ内にページ表示')+B('💡 編集・削除も管理画面から行えます。')},
+{step:'STEP 5b',title:'外部リンク追加',body:T('外部リンクを追加する場合、アイコン・メニュー名・説明・URLを入力します。')+B('💡 メンバーのホーム画面メニューに表示されます。')+A('⚠ URLが正しいか確認してから保存してください。')},
+{step:'STEP 5c',title:'テキストページ追加',body:T('テキストページを追加する場合、アイコン・メニュー名・説明・本文を入力します。')+B('💡 アプリ内でページとして表示されます（外部サイトに飛びません）。')+B('💡 店舗向けの業務連絡や補足マニュアルに活用できます。')},
+{step:'STEP 6',title:'修理事故確認 ─ 役割選択',body:T('修理事故報告の確認画面です。まず当事者の立場を選択します。')+B('👤 メンバーが当事者 ─ ブロック長承認済み → エリアマネージャーが最終承認')+B('👑 ブロック長が当事者 ─ エリアマネージャーが直接承認')+A('⚠ いずれも「報告あり/なし」の確認があります。')},
+{step:'STEP 6b',title:'メンバー当事者（報告あり）',body:T('ブロック長名を入力後、メンバーから報告があったか確認します。')+B('👑 ブロック長名 ─ 当該メンバーのブロック長のフルネーム')+B('👤 メンバーから報告あり？ ─ はい/いいえを選択')+B('💡 「はい」→ 次のステップへ ／ 「いいえ」→ 報告後に再確認')},
+{step:'STEP 6c',title:'メンバー当事者（ブロック長報告確認）',body:T('次にブロック長からの確認報告があったか確認します。')+B('👑 ブロック長から報告あり？ ─ はい/いいえを選択')+B('💡 両方「はい」→ 確認画面へ ／ 「いいえ」→ 報告後に再確認')},
+{step:'STEP 6d',title:'ブロック長当事者（報告あり）',body:T('ブロック長自身が当事者の場合、ブロック長からの報告を確認します。')+B('📄 ブロック長から報告あり？ ─ はい/いいえを選択')+B('💡 「はい」→ 確認画面へ ／ 「いいえ」→ 報告後に再確認')+A('⚠ ブロック長当事者の場合はメンバー報告ステップはスキップされます。')},
+{step:'STEP 6e',title:'報告なしの場合',body:T('いずれかの報告が「いいえ」の場合、報告後に再確認する画面が表示されます。')+A('⚠ メンバーおよびブロック長からの報告が揃ってから確認を行ってください。')+B('💡 「最初に戻る」ボタンで当事者選択画面に戻ります。')},
+{step:'STEP 6 完了',title:'修理事故確認 完了',body:T('確認内容が送信され、完了画面が表示されます。')+B('💡 当事者情報と報告状況が表示されます。')},
+{step:'STEP 7',title:'ホーム画面での承認',body:T('ホーム画面の出勤パネル・カメラパネルから店舗ごとに承認できます。')+B('🔐 店舗をクリック → パスワード入力 → 店舗情報を確認 → ✅承認 or 💤休業')+T('【出勤の承認基準】')+B('🕐 報告時刻が営業開始時刻に間に合っているか')+B('👤 報告した担当者が正しいか')+B('⚠ 遅延・未報告の場合は確認のうえ承認')+T('【カメラの承認基準】')+B('📹 全カメラが正常に起動しているか（全OK）')+B('⚠ 異常ありの場合は状況を確認してから承認')+T('【承認後の表示】')+B('💜 紫色 ─ 承認済み（エリアマネージャー確認済み）')+B('💙 水色 ─ 休業設定済み')+A('⚠ 承認にはエリアマネージャー・管理者パスワードが必要です')},
+{step:'まとめ',title:'エリアマネージャー業務は以上です',body:G('✅ シフト変更配信（店舗／スタッフ個人の2パターン）')+G('✅ お知らせ配信（お知らせ／注意／緊急の3レベル）')+G('✅ メニュー管理（外部リンク／テキストページ）')+G('✅ 修理事故確認（メンバー／ブロック長当事者）')+G('✅ ホーム画面から出勤・カメラの承認')}];
+
+var cur=0;
+var sls=document.querySelectorAll('.scr');
+var tot=sls.length;
+var prevBtn=document.getElementById('prevBtn');
+var nextBtn=document.getElementById('nextBtn');
+
+function go(n){
+  if(n<0||n>=tot)return;
+  sls[cur].classList.remove('active');
+  sls[cur].classList.remove('prev');
+  if(n>cur) sls[cur].classList.add('prev');
+  cur=n;
+  for(var i=0;i<tot;i++){sls[i].classList.remove('active');sls[i].classList.remove('prev');}
+  sls[cur].classList.add('active');
+  upd();
+}
+
+function upd(){
+  prevBtn.style.opacity=cur===0?'0.3':'1';
+  prevBtn.style.pointerEvents=cur===0?'none':'auto';
+  nextBtn.style.opacity='1';
+  nextBtn.style.pointerEvents='auto';
+  nextBtn.textContent=cur===tot-1?'✕ 閉じる':'次へ →';
+  document.getElementById('bar').style.width=((cur+1)/tot*100)+'%';
+  document.getElementById('cnt').textContent=(cur+1)+'/'+tot;
+  var d=document.getElementById('dots');
+  d.innerHTML='';
+  for(var i=0;i<tot;i++){
+    var e=document.createElement('div');
+    e.className='dot'+(i===cur?' a':i<cur?' d':'');
+    e.setAttribute('data-i',i);
+    e.addEventListener('click',function(){go(parseInt(this.getAttribute('data-i')));});
+    d.appendChild(e);
+  }
+  var info=DATA[cur]||{};
+  document.getElementById('rs').textContent=info.step||'';
+  document.getElementById('rt').textContent=info.title||'';
+  document.getElementById('rb').innerHTML=info.body||'';
+}
+
+prevBtn.addEventListener('click',function(){go(cur-1);});
+nextBtn.addEventListener('click',function(){
+  if(cur===tot-1){
+    try{window.parent.postMessage({action:'close'},'*');}catch(e){window.close();}
+  } else {go(cur+1);}
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1);}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1);}
+  if(e.key==='Escape'){try{window.parent.postMessage({action:'close'},'*');}catch(ex){window.close();}}
+});
+upd();
+
+
+document.getElementById('backManual').addEventListener('click',function(){try{window.parent.postMessage({action:'manual'},'*');}catch(e){window.close();}});
+document.getElementById('backHome').addEventListener('click',function(){try{window.parent.postMessage({action:'home'},'*');}catch(e){window.close();}});
+</script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>業務管理アプリ全体ガイド ─ 動画マニュアル</title>
+<style>
+:root{--c:#3b82f6;--cl:#60a5fa;--cd:#2563eb}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans JP','Hiragino Sans',sans-serif}
+.page{width:100%;height:100%;display:flex;flex-direction:column;background:#e8ecf1}
+.hdr{height:32px;background:#fff;border-bottom:1px solid #dde2e8;display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0}
+.hdr-rec{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:rec-p 1s infinite}
+@keyframes rec-p{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{opacity:.6;box-shadow:0 0 0 4px rgba(239,68,68,0)}}
+.hdr-badge{font-size:9px;font-weight:800;color:var(--c)}.hdr-title{font-size:10px;color:#94a3b8;flex:1}.hdr-counter{font-size:10px;color:#94a3b8;font-weight:700}
+.prog{height:3px;background:#e2e8f0;flex-shrink:0;position:relative;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--c),var(--cl));transition:width .5s cubic-bezier(.4,0,.2,1)}
+.prog-glow{position:absolute;top:-2px;height:7px;width:40px;background:radial-gradient(ellipse,rgba(59,130,246,.6),transparent);transition:left .5s;pointer-events:none}
+.split{flex:1;display:flex;overflow:hidden;min-height:0}
+.visual{width:72%;position:relative;overflow:hidden}
+.vbg{position:absolute;inset:0;z-index:0}.vbg-grad{position:absolute;inset:0;background:linear-gradient(160deg,#eff6ff,#f0fdf4,#f8fafc)}
+.vbg-orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.15;animation:orb-f 8s ease-in-out infinite alternate;pointer-events:none}
+.orb1{width:300px;height:300px;background:var(--cl);top:-80px;right:-60px}.orb2{width:250px;height:250px;background:#34d399;bottom:-60px;left:-40px;animation-delay:2s}.orb3{width:180px;height:180px;background:#a78bfa;top:50%;left:50%;animation-delay:4s}
+@keyframes orb-f{0%{transform:translate(0,0) scale(1)}100%{transform:translate(30px,-20px) scale(1.15)}}
+#particles{position:absolute;inset:0;z-index:1;pointer-events:none}
+.ptr{position:absolute;z-index:200;pointer-events:none;will-change:left,top;filter:drop-shadow(2px 3px 4px rgba(0,0,0,.25))}.ptr-svg{width:22px;height:22px}
+.ptr-ripple{position:absolute;top:-8px;left:-8px;width:36px;height:36px;border-radius:50%;pointer-events:none}
+.ptr-ripple.pop{animation:rip .6s ease-out forwards}
+@keyframes rip{0%{transform:scale(0);opacity:.7}60%{transform:scale(2);opacity:.3}100%{transform:scale(3);opacity:0}}
+.ptr-trail{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(59,130,246,.5);pointer-events:none;z-index:199;animation:trl .5s ease-out forwards}
+@keyframes trl{0%{opacity:.6;transform:scale(1)}100%{opacity:0;transform:scale(.2)}}
+.ptr.hidden{opacity:0;transition:opacity .2s}.ptr:not(.hidden){opacity:1;transition:left .55s cubic-bezier(.34,1.56,.64,1),top .55s cubic-bezier(.34,1.56,.64,1),opacity .2s}
+.vs{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none;padding:16px}
+.vs.enter-r{opacity:0;transform:translateX(60px) scale(.95)}.vs.on{opacity:1;transform:translateX(0) scale(1);pointer-events:auto;transition:all .5s cubic-bezier(.4,0,.2,1)}.vs.exit-l{opacity:0;transform:translateX(-60px) scale(.95);transition:all .4s ease-in}
+.vs-inner{display:flex;flex-direction:column;align-items:center;gap:12px;max-width:720px;width:100%}
+.part{opacity:0;transform:translateY(18px) scale(.96);transition:all .5s cubic-bezier(.4,0,.2,1)}.part.v{opacity:1;transform:translateY(0) scale(1)}.part.bounce{animation:p-bounce .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes p-bounce{0%{transform:scale(.8) translateY(10px)}60%{transform:scale(1.05) translateY(-3px)}100%{transform:scale(1) translateY(0)}}
+.bm{width:100%;max-width:96%;border-radius:14px;overflow:hidden;border:1.5px solid #d1d5db;box-shadow:0 4px 24px rgba(0,0,0,.06);background:#f1f5f9;position:relative;z-index:2}
+.bm-bar{height:28px;background:linear-gradient(180deg,#fff,#f8fafc);border-bottom:1px solid #e2e8f0;display:flex;align-items:center;padding:0 10px;gap:4px}
+.bm-d{width:8px;height:8px;border-radius:50%}.bm-url{flex:1;margin:0 6px;padding:3px 10px;border-radius:5px;background:#fff;border:1px solid #e2e8f0;font-size:11px;color:#64748b;overflow:hidden;white-space:nowrap}
+.bm-body{padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;max-height:calc(100vh - 180px);overflow-y:auto}
+.bm-body::-webkit-scrollbar{width:3px}.bm-body::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
+.mi{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;width:100%;transition:all .3s}
+.mi.hl{box-shadow:0 0 0 2.5px rgba(59,130,246,.3);background:rgba(59,130,246,.04)}
+.mi-i{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.mi-n{font-size:12px;font-weight:700;color:#1e293b}.mi-s{font-size:8px;color:#94a3b8;margin-top:1px}.mi-a{color:#94a3b8;font-size:12px;margin-left:auto}
+.v-badge{display:inline-flex;padding:7px 19px;border-radius:17px;font-size:14px;font-weight:800;letter-spacing:.3px}
+.vb-g{background:rgba(59,130,246,.06);color:var(--c);border:1px solid rgba(59,130,246,.12)}.vb-b{background:rgba(37,99,235,.05);color:#2563eb;border:1px solid rgba(37,99,235,.1)}
+.v-h1{font-size:clamp(34px,4.5vw,52px);font-weight:900;color:#1e293b;text-align:center}.v-h2{font-size:clamp(26px,3.5vw,38px);font-weight:800;color:#1e293b;text-align:center}
+.v-p{font-size:15px;color:#64748b;text-align:center;line-height:1.8;max-width:500px}
+.menu-list{width:100%;max-width:640px;display:flex;flex-direction:column;gap:5px}
+.ml-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;opacity:0;transform:translateX(20px);transition:all .4s}
+.ml-item.show{opacity:1;transform:translateX(0)}
+.ml-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ml-name{font-size:13px;font-weight:700;color:#1e293b}.ml-freq{font-size:9px;color:#94a3b8;margin-top:1px}
+.ml-badge{padding:3px 8px;border-radius:6px;font-size:9px;font-weight:700;flex-shrink:0}
+.vs-item{padding:12px 20px;border-radius:10px;font-size:16px;font-weight:700;max-width:540px;width:100%}
+.vsi-g{background:rgba(5,150,105,.04);color:#065f46}.vsi-a{background:rgba(180,83,9,.04);color:#92400e}.vsi-b{background:rgba(37,99,235,.04);color:#1e40af}
+.confetti{position:absolute;z-index:300;pointer-events:none}
+@keyframes conf-f{0%{transform:translateY(0) translateX(0) rotate(0);opacity:1}50%{opacity:.85}100%{transform:translateY(240px) translateX(var(--dx,0px)) rotate(680deg);opacity:0}}
+.nar-panel{width:28%;min-width:240px;background:#fff;border-left:2.5px solid var(--c);display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(59,130,246,.06)}
+.nar-head{padding:12px 14px 8px;background:linear-gradient(180deg,rgba(59,130,246,.03),transparent)}
+.nar-step{font-size:13px;font-weight:800;letter-spacing:.4px;color:var(--c);margin-bottom:4px}.nar-title{font-size:22px;font-weight:900;color:#1e293b;line-height:1.25}
+.nar-div{height:1px;background:linear-gradient(90deg,var(--c) 0%,#e2e8f0 50%);margin:0 20px}
+.nar-body{flex:1;overflow:hidden;padding:10px 14px}
+.nar-block{opacity:0;transform:translateY(8px);transition:all .4s ease;margin-bottom:4px}.nar-block.show{opacity:1;transform:translateY(0)}
+.nar-text{font-size:14px;color:#334155;line-height:1.6;margin-bottom:4px}
+.nar-tip{padding:8px 12px;border-radius:8px;font-size:13px;line-height:1.5;font-weight:600}
+.nt-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}.nt-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}.nt-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}.nt-g{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.1);color:#065f46}
+.footer{height:140px;background:#fff;border-top:2px solid #e2e8f0;display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
+.f-btn{height:80%;padding:0 22px;border-radius:12px;border:3px solid #94a3b8;background:#fff;color:#1e293b;font-size:28px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px}.f-btn:hover{background:#f1f5f9}
+.f-play{background:linear-gradient(135deg,var(--c),var(--cd));color:#fff;border:none;padding:0 14px}
+.f-play:hover{box-shadow:0 2px 10px rgba(5,150,105,.25);background:linear-gradient(135deg,var(--c),var(--cd));color:#fff}
+.f-dots{display:flex;gap:4px;flex:1;justify-content:center}.f-dot{width:6px;height:6px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all .25s}.f-dot.a{background:var(--c);transform:scale(1.6);box-shadow:0 0 6px rgba(59,130,246,.3)}.f-dot.p{background:var(--c);opacity:.5}
+.f-speed{font-size:28px;color:#1e293b;font-weight:900;padding:0 36px;height:80%;min-width:120px;border:3px solid #94a3b8;border-radius:12px;cursor:pointer;background:#fff;font-family:inherit;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.f-extra{display:flex;gap:10px;margin-left:auto}
+.f-extra-btn{height:80%;padding:0 28px;border-radius:12px;border:3px solid #94a3b8;background:#fff;color:#1e293b;font-size:28px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px;white-space:nowrap}.f-extra-btn:hover{background:#f1f5f9;transform:scale(1.05)}
+.f-extra-home{border-color:rgba(37,99,235,.35);color:#2563eb;background:rgba(37,99,235,.06)}
+.f-restart{height:80%;padding:0 22px;border-radius:12px;border:3px solid #2563eb;background:rgba(37,99,235,.05);color:#2563eb;font-size:28px;font-weight:900;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .15s;white-space:nowrap}.f-restart:hover{transform:scale(1.05)}
+.f-repeat{height:80%;padding:0 22px;border-radius:12px;border:3px solid #94a3b8;background:#fff;color:#64748b;font-size:28px;font-weight:900;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .15s;white-space:nowrap}.f-repeat:hover{transform:scale(1.05)}.f-repeat.on{border-color:var(--c);background:rgba(59,130,246,.1);color:var(--c)}
+.sec-label{font-size:8px;font-weight:800;letter-spacing:.5px;color:#94a3b8;padding:4px 4px 2px;text-align:left;width:100%}
+@keyframes bell-ring{0%{transform:rotate(0)}10%{transform:rotate(14deg)}20%{transform:rotate(-14deg)}30%{transform:rotate(10deg)}40%{transform:rotate(-8deg)}50%{transform:rotate(4deg)}60%,100%{transform:rotate(0)}}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="hdr"><div class="hdr-rec"></div><div class="hdr-badge">動画再生中</div><div class="hdr-title">📋 業務管理アプリ全体ガイド ─ 操作マニュアル動画</div><div class="hdr-counter" id="counter">1/?</div></div>
+<div class="prog"><div class="prog-fill" id="progFill"></div><div class="prog-glow" id="progGlow"></div></div>
+<div class="split">
+<div class="visual" id="VA">
+<div class="vbg"><div class="vbg-grad"></div><div class="vbg-orb orb1"></div><div class="vbg-orb orb2"></div><div class="vbg-orb orb3"></div></div>
+<canvas id="particles"></canvas>
+<div class="ptr hidden" id="ptr"><svg class="ptr-svg" viewBox="0 0 24 24"><path d="M4 2l16 12H12l-2 8L4 2z" fill="#1e293b" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg><div class="ptr-ripple" id="ptrRip"></div></div>
+
+<!-- 0: タイトル -->
+<div class="vs on" id="vs0"><div class="vs-inner">
+  <div class="part" style="font-size:64px">📋</div>
+  <div class="part v-badge vb-g">操作マニュアル動画</div>
+  <div class="part v-h1">業務管理アプリ<br>全体ガイド</div>
+  <div class="part v-p">モバイル修理救急便の業務管理アプリの<br>全体像と各機能の使い方をご案内します。</div>
+  <div class="part" style="padding:10px 18px;border-radius:9px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af;font-size:13px;font-weight:700;text-align:center"><b>4つの役割 ─ メンバー・ブロック長・エリアマネージャー・管理者</b></div>
+</div></div>
+
+<!-- 1: ポータルとは -->
+<div class="vs enter-r" id="vs1"><div class="vs-inner">
+  <div class="part v-badge vb-b">📋 はじめに</div>
+  <div class="part v-h2">業務管理アプリとは？</div>
+  <div class="part" style="display:flex;gap:10px;width:100%;max-width:520px">
+    <div style="flex:1;padding:14px;border-radius:10px;background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.12)"><div style="font-size:14px;font-weight:800;color:#2563eb;margin-bottom:4px">🖥️ 業務管理アプリ</div><div style="font-size:12px;color:#64748b;line-height:1.7">日々の店舗業務を<br>1つのアプリで管理<br>店舗PCのブラウザから操作</div></div>
+    <div style="flex:1;padding:14px;border-radius:10px;background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.12)"><div style="font-size:14px;font-weight:800;color:#059669;margin-bottom:4px">📊 自動記録</div><div style="font-size:12px;color:#64748b;line-height:1.7">報告データは自動で<br>スプレッドシートに記録<br>管理者がリアルタイム確認</div></div>
+  </div>
+  <div class="part" style="padding:10px 14px;border-radius:9px;background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e;font-size:12px;font-weight:600;max-width:520px;width:100%">⚠ 必ず<b>店舗PC</b>のブラウザから操作してください。</div>
+</div></div>
+
+<!-- 2: ホーム画面 ライトモード -->
+<div class="vs enter-r" id="vs2"><div class="bm">
+  <div class="bm-bar"><div class="bm-d" style="background:#f87171"></div><div class="bm-d" style="background:#fbbf24"></div><div class="bm-d" style="background:#34d399"></div><div class="bm-url">📋 業務管理アプリ ─ ホーム画面（ライトモード）</div></div>
+  <div class="bm-body">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:6px 10px;background:#fff;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:4px"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px">📋</span><span style="font-size:10px;font-weight:800;color:#1e293b">業務管理アプリ</span></div><div style="display:flex;align-items:center;gap:6px"><span style="font-size:8px;color:#64748b">2026/3/11</span><span style="font-size:10px;font-weight:800;color:#059669">10:00</span></div></div>
+    <div style="width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:8px">
+      <div style="font-size:10px;font-weight:800;color:#334155;padding:2px 4px 6px;border-bottom:1px solid #f1f5f9;margin-bottom:4px">📋 業務メニュー</div>
+      <div class="sec-label">▼ メンバー業務</div>
+      <div class="mi" id="m0"><div class="mi-i" style="background:rgba(16,185,129,.1)">🏪</div><div><div class="mi-n">出勤報告・カメラ確認</div><div class="mi-s">毎日</div></div><span class="mi-a">›</span></div>
+      <div class="mi" id="m1"><div class="mi-i" style="background:rgba(6,182,212,.1)">📹</div><div><div class="mi-n">カメラ起動確認</div><div class="mi-s">毎日</div></div><span class="mi-a">›</span></div>
+      <div class="mi" id="m2"><div class="mi-i" style="background:rgba(139,92,246,.1)">📱</div><div><div class="mi-n">Googleマイビジネス投稿報告</div><div class="mi-s">毎日</div></div><span class="mi-a">›</span></div>
+      <div class="mi" id="m3"><div class="mi-i" style="background:rgba(99,102,241,.1)">🔍</div><div><div class="mi-n">競合調査</div><div class="mi-s">金曜（価格調査は随時）</div></div><span class="mi-a">›</span></div>
+      <div class="mi" id="m4"><div class="mi-i" style="background:rgba(132,204,22,.1)">💎</div><div><div class="mi-n">買取業務</div><div class="mi-s">随時</div></div><span class="mi-a">›</span></div>
+      <div class="mi" id="m5"><div class="mi-i" style="background:rgba(59,130,246,.1)">💰</div><div><div class="mi-n">入金管理チェック</div><div class="mi-s">週末・月末</div></div><span class="mi-a">›</span></div>
+      <div class="mi" id="m6"><div class="mi-i" style="background:rgba(244,63,94,.1)">📦</div><div><div class="mi-n">備品注文相談</div><div class="mi-s">随時</div></div><span class="mi-a">›</span></div>
+      <div class="mi" id="m7"><div class="mi-i" style="background:rgba(220,38,38,.1)">🔧</div><div><div class="mi-n">修理事故報告</div><div class="mi-s">事故発生時</div></div><span class="mi-a">›</span></div>
+      <div class="mi" id="m8"><div class="mi-i" style="background:rgba(249,115,22,.1)">📋</div><div><div class="mi-n">月末・月初作業</div><div class="mi-s">月末・月初</div></div><span class="mi-a">›</span></div>
+      <div class="sec-label" style="margin-top:4px;border-top:1px solid #f1f5f9;padding-top:6px">▼ ブロック長・管理</div>
+      <div class="mi" id="m9"><div class="mi-i" style="background:rgba(251,191,36,.1)">👑</div><div><div class="mi-n">ブロック長業務</div><div class="mi-s">PW必要</div></div><span class="mi-a">›</span></div>
+      <div class="mi" id="m10"><div class="mi-i" style="background:rgba(220,38,38,.1)">🏆</div><div><div class="mi-n">エリアマネージャー業務</div><div class="mi-s">PW必要</div></div><span class="mi-a">›</span></div>
+      <div style="margin-top:4px;padding:6px 8px;border-radius:8px;background:rgba(139,92,246,.03);border:1px solid rgba(139,92,246,.15);position:relative">
+        <div style="position:absolute;top:-6px;left:10px;font-size:6px;font-weight:800;color:#7c3aed;background:#fff;padding:0 3px">📖 マニュアル</div>
+        <div class="mi" id="m11"><div class="mi-i" style="background:rgba(139,92,246,.1)">📖</div><div><div class="mi-n">操作マニュアル</div><div class="mi-s">スライド・動画</div></div><span class="mi-a">›</span></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+
+<!-- 3: お知らせ・シフト変更バナー -->
+<div class="vs enter-r" id="vs3"><div class="bm">
+  <div class="bm-bar"><div class="bm-d" style="background:#f87171"></div><div class="bm-d" style="background:#fbbf24"></div><div class="bm-d" style="background:#34d399"></div><div class="bm-url">📋 ホーム画面上部 ─ お知らせ・シフト変更バナー</div></div>
+  <div class="bm-body" style="gap:0;align-items:stretch">
+    <div class="part" id="bn0" style="margin:4px 0;padding:8px 12px;border-radius:10px;background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.02));border:1px solid rgba(245,158,11,.3);display:flex;align-items:flex-start;gap:8px;width:100%">
+      <div style="font-size:14px;flex-shrink:0;display:inline-block;transform-origin:top center;animation:bell-ring 2s ease-in-out infinite">🔔</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:7px;font-weight:800;color:#b45309;letter-spacing:.5px;margin-bottom:2px">管理者からのお知らせ</div>
+        <div style="font-size:10px;font-weight:600;color:#92400e;line-height:1.5">システムメンテナンスのお知らせ：3/20(木) 22:00〜翌6:00 までアプリが一時利用できません。</div>
+        <div style="font-size:7px;color:#b45309;margin-top:2px">🕐 2026/3/13 9:00</div>
+      </div>
+    </div>
+    <div class="part" id="bn1" style="margin:4px 0;padding:8px 12px;border-radius:10px;background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(139,92,246,.02));border:1px solid rgba(139,92,246,.2);display:flex;align-items:flex-start;gap:8px;width:100%">
+      <div style="font-size:14px;flex-shrink:0">📣</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:7px;font-weight:800;color:#7c3aed;letter-spacing:.5px;margin-bottom:2px">エリアマネージャーからのお知らせ</div>
+        <div style="font-size:10px;font-weight:600;color:#5b21b6;line-height:1.5">3/16.3/17はルミネ新宿店の営業開始時間が10時30分になります。</div>
+        <div style="font-size:7px;color:#6d28d9;margin-top:2px">🕐 2026/3/13 8:30</div>
+      </div>
+    </div>
+    <div class="part" id="bn2" style="margin:4px 0;padding:8px 12px;border-radius:10px;background:linear-gradient(135deg,rgba(59,130,246,.06),rgba(59,130,246,.02));border:1px solid rgba(59,130,246,.2);width:100%">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span style="font-size:12px">📅</span>
+        <span style="font-size:8px;font-weight:800;color:#1e40af;letter-spacing:.5px">3月のシフト変更</span>
+        <span style="font-size:7px;color:#64748b;margin-left:auto">6件</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px">
+        <div style="padding:3px 5px;background:#fff;border-radius:5px;font-size:7px;line-height:1.3;border:1px solid #e2e8f0"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#2563eb">3/05</span><span style="font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">ルミネ新宿</span></div><div style="font-size:6px;color:#64748b">田中→鈴木</div></div>
+        <div style="padding:3px 5px;background:rgba(239,68,68,.06);border-radius:5px;font-size:7px;line-height:1.3;border:1px solid rgba(239,68,68,.15)"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#dc2626">3/08</span><span style="background:#ef4444;color:#fff;font-size:6px;font-weight:700;padding:0 3px;border-radius:2px">欠</span><span style="font-weight:700">高橋</span></div><div style="font-size:6px;color:#dc2626">体調不良</div></div>
+        <div style="padding:3px 5px;background:rgba(16,185,129,.06);border-radius:5px;font-size:7px;line-height:1.3;border:1px solid rgba(16,185,129,.15)"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#059669">3/10</span><span style="background:#10b981;color:#fff;font-size:6px;font-weight:700;padding:0 3px;border-radius:2px">出</span><span style="font-weight:700">佐藤</span></div><div style="font-size:6px;color:#059669">池袋東口</div></div>
+        <div style="padding:3px 5px;background:#fff;border-radius:5px;font-size:7px;line-height:1.3;border:1px solid #e2e8f0"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#2563eb">3/12</span><span style="font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">渋谷センター街</span></div><div style="font-size:6px;color:#64748b">小林→加藤</div></div>
+        <div style="padding:3px 5px;background:rgba(239,68,68,.06);border-radius:5px;font-size:7px;line-height:1.3;border:1px solid rgba(239,68,68,.15)"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#dc2626">3/15</span><span style="background:#ef4444;color:#fff;font-size:6px;font-weight:700;padding:0 3px;border-radius:2px">欠</span><span style="font-weight:700">渡辺</span></div><div style="font-size:6px;color:#dc2626">有休</div></div>
+        <div style="padding:3px 5px;background:rgba(16,185,129,.06);border-radius:5px;font-size:7px;line-height:1.3;border:1px solid rgba(16,185,129,.15)"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#059669">3/18</span><span style="background:#10b981;color:#fff;font-size:6px;font-weight:700;padding:0 3px;border-radius:2px">出</span><span style="font-weight:700">山田</span></div><div style="font-size:6px;color:#059669">新宿東南口</div></div>
+      </div>
+    </div>
+    <div class="part" id="bn3" style="margin:2px 0;display:flex;gap:8px;font-size:7px;font-weight:600;color:#64748b;width:100%;padding:0 4px">
+      <span>🔔 管理者（全エリア共通）</span>
+      <span>📣 エリアマネージャー（エリア内）</span>
+      <span>📅 シフト変更（エリア内）</span>
+    </div>
+  </div>
+</div></div>
+
+<!-- 4: メンバー業務9つ -->
+<div class="vs enter-r" id="vs4"><div class="vs-inner">
+  <div class="part v-badge" style="background:rgba(16,185,129,.06);color:#059669;border:1px solid rgba(16,185,129,.12)">👤 メンバー業務</div>
+  <div class="part v-h2">メンバーが行う9つの業務</div>
+  <div class="part menu-list">
+    <div class="ml-item" id="s0"><div class="ml-icon" style="background:rgba(16,185,129,.1)">🏪</div><div style="flex:1"><div class="ml-name">出勤報告・カメラ確認</div><div class="ml-freq">出勤報告後→カメラ確認へ直接移行</div></div><div class="ml-badge" style="background:rgba(16,185,129,.1);color:#059669">毎日</div></div>
+    <div class="ml-item" id="s1"><div class="ml-icon" style="background:rgba(6,182,212,.1)">📹</div><div style="flex:1"><div class="ml-name">カメラ起動確認</div><div class="ml-freq">同ブロック全店舗のカメラを確認</div></div><div class="ml-badge" style="background:rgba(6,182,212,.1);color:#0891b2">毎日</div></div>
+    <div class="ml-item" id="s2"><div class="ml-icon" style="background:rgba(139,92,246,.1)">📱</div><div style="flex:1"><div class="ml-name">Googleマイビジネス投稿報告</div><div class="ml-freq">投稿数・口コミ返信数（0件も報告）</div></div><div class="ml-badge" style="background:rgba(139,92,246,.1);color:#7c3aed">毎日</div></div>
+    <div class="ml-item" id="s3"><div class="ml-icon" style="background:rgba(99,102,241,.1)">🔍</div><div style="flex:1"><div class="ml-name">競合調査</div><div class="ml-freq">価格は随時 / 口コミ・MEO・SEOは毎週金曜</div></div><div class="ml-badge" style="background:rgba(99,102,241,.1);color:#6366f1">金曜</div></div>
+    <div class="ml-item" id="s4"><div class="ml-icon" style="background:rgba(132,204,22,.1)">💎</div><div style="flex:1"><div class="ml-name">買取業務</div><div class="ml-freq">成約時にLINE＋Chatworkで報告</div></div><div class="ml-badge" style="background:rgba(132,204,22,.1);color:#65a30d">随時</div></div>
+    <div class="ml-item" id="s5"><div class="ml-icon" style="background:rgba(59,130,246,.1)">💰</div><div style="flex:1"><div class="ml-name">入金管理チェック</div><div class="ml-freq">週末・月末にチェック項目を確認</div></div><div class="ml-badge" style="background:rgba(59,130,246,.1);color:#2563eb">週末</div></div>
+    <div class="ml-item" id="s6"><div class="ml-icon" style="background:rgba(244,63,94,.1)">📦</div><div style="flex:1"><div class="ml-name">備品注文相談</div><div class="ml-freq">不足時に発注依頼</div></div><div class="ml-badge" style="background:rgba(244,63,94,.1);color:#e11d48">随時</div></div>
+    <div class="ml-item" id="s7"><div class="ml-icon" style="background:rgba(220,38,38,.1)">🔧</div><div style="flex:1"><div class="ml-name">修理事故報告</div><div class="ml-freq">事故発生時に報告・承認フロー</div></div><div class="ml-badge" style="background:rgba(220,38,38,.1);color:#dc2626">発生時</div></div>
+    <div class="ml-item" id="s8"><div class="ml-icon" style="background:rgba(249,115,22,.1)">📋</div><div style="flex:1"><div class="ml-name">月末・月初作業</div><div class="ml-freq">月末・月初のチェックリスト</div></div><div class="ml-badge" style="background:rgba(249,115,22,.1);color:#ea580c">月末・月初</div></div>
+  </div>
+</div></div>
+
+<!-- 5: ブロック長 -->
+<div class="vs enter-r" id="vs5"><div class="vs-inner">
+  <div class="part v-badge" style="background:rgba(245,158,11,.06);color:#b45309;border:1px solid rgba(245,158,11,.12)">👑 ブロック長</div>
+  <div class="part v-h2">ブロック長が行う業務</div>
+  <div class="part" style="font-size:12px;color:#64748b;text-align:center">メンバー業務9つ ＋ 以下の管理業務</div>
+  <div class="part menu-list">
+    <div class="ml-item" id="b0"><div class="ml-icon" style="background:rgba(251,191,36,.1)">👑</div><div style="flex:1"><div class="ml-name">ブロック長業務</div><div class="ml-freq">入金確認・カメラ確認・修理事故確認</div></div><div class="ml-badge" style="background:rgba(251,191,36,.1);color:#b45309">PW</div></div>
+    <div class="ml-item" id="b1"><div class="ml-icon" style="background:rgba(99,102,241,.1)">📂</div><div style="flex:1"><div class="ml-name">シフト変更アーカイブ</div><div class="ml-freq">過去月のシフト変更履歴</div></div><div class="ml-badge" style="background:rgba(99,102,241,.1);color:#6366f1">PW</div></div>
+    <div class="ml-item" id="b2"><div class="ml-icon" style="background:rgba(139,92,246,.1)">✅</div><div style="flex:1"><div class="ml-name">出勤・カメラの承認</div><div class="ml-freq">ホーム画面から店舗クリックで承認</div></div><div class="ml-badge" style="background:rgba(139,92,246,.1);color:#7c3aed">PW</div></div>
+    <div class="ml-item" id="b3"><div class="ml-icon" style="background:rgba(14,165,233,.1)">📢</div><div style="flex:1"><div class="ml-name">シフト変更お知らせ</div><div class="ml-freq">ホーム画面のバナーで確認</div></div><div class="ml-badge" style="background:rgba(14,165,233,.1);color:#0284c7">自動</div></div>
+  </div>
+</div></div>
+
+<!-- 6: エリアマネージャー -->
+<div class="vs enter-r" id="vs6"><div class="vs-inner">
+  <div class="part v-badge" style="background:rgba(220,38,38,.06);color:#dc2626;border:1px solid rgba(220,38,38,.12)">🏆 エリアマネージャー</div>
+  <div class="part v-h2">エリアマネージャーが行う業務</div>
+  <div class="part menu-list">
+    <div class="ml-item" id="a0"><div class="ml-icon" style="background:rgba(220,38,38,.1)">🏆</div><div style="flex:1"><div class="ml-name">エリアマネージャー業務</div><div class="ml-freq">修理事故確認・メンバー管理</div></div><div class="ml-badge" style="background:rgba(220,38,38,.1);color:#dc2626">PW</div></div>
+    <div class="ml-item" id="a1"><div class="ml-icon" style="background:rgba(99,102,241,.1)">📂</div><div style="flex:1"><div class="ml-name">シフト変更アーカイブ</div><div class="ml-freq">過去月のシフト変更履歴</div></div><div class="ml-badge" style="background:rgba(99,102,241,.1);color:#6366f1">PW</div></div>
+    <div class="ml-item" id="a2"><div class="ml-icon" style="background:rgba(139,92,246,.1)">✅</div><div style="flex:1"><div class="ml-name">出勤・カメラの承認</div><div class="ml-freq">ホーム画面から店舗クリックで承認</div></div><div class="ml-badge" style="background:rgba(139,92,246,.1);color:#7c3aed">PW</div></div>
+    <div class="ml-item" id="a3"><div class="ml-icon" style="background:rgba(14,165,233,.1)">📢</div><div style="flex:1"><div class="ml-name">シフト変更お知らせ</div><div class="ml-freq">ホーム画面のバナーで確認</div></div><div class="ml-badge" style="background:rgba(14,165,233,.1);color:#0284c7">自動</div></div>
+  </div>
+</div></div>
+
+<!-- 7: 管理者 -->
+<div class="vs enter-r" id="vs7"><div class="vs-inner">
+  <div class="part v-badge" style="background:rgba(245,158,11,.06);color:#b45309;border:1px solid rgba(245,158,11,.12)">🔑 管理者</div>
+  <div class="part v-h2">管理者が行う業務</div>
+  <div class="part menu-list">
+    <div class="ml-item" id="d0"><div class="ml-icon" style="background:rgba(245,158,11,.1)">🔑</div><div style="flex:1"><div class="ml-name">管理者業務</div><div class="ml-freq">お知らせ・パスワード一覧・2段階認証</div></div><div class="ml-badge" style="background:rgba(245,158,11,.1);color:#b45309">PW</div></div>
+    <div class="ml-item" id="d1"><div class="ml-icon" style="background:rgba(245,158,11,.1)">📢</div><div style="flex:1"><div class="ml-name">管理者からのお知らせ</div><div class="ml-freq">全メンバーにバナーで通知</div></div><div class="ml-badge" style="background:rgba(245,158,11,.1);color:#b45309">PW</div></div>
+    <div class="ml-item" id="d2"><div class="ml-icon" style="background:rgba(220,38,38,.1)">🏆</div><div style="flex:1"><div class="ml-name">エリアマネージャー業務</div><div class="ml-freq">修理事故確認・メンバー管理</div></div><div class="ml-badge" style="background:rgba(220,38,38,.1);color:#dc2626">PW</div></div>
+    <div class="ml-item" id="d3"><div class="ml-icon" style="background:rgba(99,102,241,.1)">📂</div><div style="flex:1"><div class="ml-name">シフト変更アーカイブ</div><div class="ml-freq">過去月のシフト変更履歴</div></div><div class="ml-badge" style="background:rgba(99,102,241,.1);color:#6366f1">PW</div></div>
+    <div class="ml-item" id="d4"><div class="ml-icon" style="background:rgba(139,92,246,.1)">✅</div><div style="flex:1"><div class="ml-name">出勤・カメラの承認</div><div class="ml-freq">ホーム画面から店舗クリックで承認</div></div><div class="ml-badge" style="background:rgba(139,92,246,.1);color:#7c3aed">PW</div></div>
+    <div class="ml-item" id="d5"><div class="ml-icon" style="background:rgba(14,165,233,.1)">📢</div><div style="flex:1"><div class="ml-name">シフト変更お知らせ</div><div class="ml-freq">ホーム画面のバナーで確認</div></div><div class="ml-badge" style="background:rgba(14,165,233,.1);color:#0284c7">自動</div></div>
+  </div>
+</div></div>
+
+<!-- 8: マニュアル -->
+<div class="vs enter-r" id="vs8"><div class="vs-inner">
+  <div class="part v-badge" style="background:rgba(139,92,246,.06);color:#7c3aed;border:1px solid rgba(139,92,246,.12)">📖 操作マニュアル</div>
+  <div class="part v-h2">わからない時は<br>マニュアルを確認</div>
+  <div class="part" style="display:flex;gap:10px;width:100%;max-width:520px">
+    <div style="flex:1;padding:14px;border-radius:10px;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.12)"><div style="font-size:14px;font-weight:800;color:#7c3aed;margin-bottom:4px">🎬 動画マニュアル</div><div style="font-size:12px;color:#64748b;line-height:1.7">自動再生で操作を<br>アニメーション付きで確認<br>再生速度も変更可能</div></div>
+    <div style="flex:1;padding:14px;border-radius:10px;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.12)"><div style="font-size:14px;font-weight:800;color:#7c3aed;margin-bottom:4px">📄 スライドマニュアル</div><div style="font-size:12px;color:#64748b;line-height:1.7">クリックで進む<br>じっくり確認したい時に<br>各業務ごとに用意</div></div>
+  </div>
+  <div class="part" style="padding:10px 14px;border-radius:9px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af;font-size:12px;font-weight:600;max-width:520px;width:100%">💡 ホーム画面下部の<b>「📖 操作マニュアル」</b>からアクセスできます。</div>
+</div></div>
+
+<!-- 9: 注意事項 -->
+<div class="vs enter-r" id="vs9"><div class="vs-inner">
+  <div class="part v-badge" style="background:rgba(220,38,38,.06);color:#dc2626;border:1px solid rgba(220,38,38,.12)">⚠ 重要な注意事項</div>
+  <div class="part v-h2">必ず守ってください</div>
+  <div class="part" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:560px">
+    <div style="padding:14px;border-radius:12px;border:1px solid rgba(220,38,38,.15);background:#fff"><div style="font-size:22px;margin-bottom:4px">⛔</div><div style="font-size:14px;font-weight:800;color:#dc2626;margin-bottom:4px">送信後の取り消し不可</div><div style="font-size:11px;color:#64748b;line-height:1.6">確認画面でしっかりチェック。</div></div>
+    <div style="padding:14px;border-radius:12px;border:1px solid rgba(245,158,11,.15);background:#fff"><div style="font-size:22px;margin-bottom:4px">⏰</div><div style="font-size:14px;font-weight:800;color:#b45309;margin-bottom:4px">遅延・未報告に注意</div><div style="font-size:11px;color:#64748b;line-height:1.6">出勤報告は営業開始前に。</div></div>
+    <div style="padding:14px;border-radius:12px;border:1px solid rgba(59,130,246,.15);background:#fff"><div style="font-size:22px;margin-bottom:4px">👤</div><div style="font-size:14px;font-weight:800;color:#2563eb;margin-bottom:4px">名前は統一表記</div><div style="font-size:11px;color:#64748b;line-height:1.6">毎回同じフルネームで入力。</div></div>
+    <div style="padding:14px;border-radius:12px;border:1px solid rgba(5,150,105,.15);background:#fff"><div style="font-size:22px;margin-bottom:4px">💡</div><div style="font-size:14px;font-weight:800;color:#059669;margin-bottom:4px">困ったら上長に報告</div><div style="font-size:11px;color:#64748b;line-height:1.6">操作がわからない時は遠慮なく。</div></div>
+  </div>
+</div></div>
+
+<!-- 10: まとめ -->
+<div class="vs enter-r" id="vs10"><div class="vs-inner">
+  <div class="part v-badge" style="background:rgba(99,102,241,.06);color:#6366f1;border:1px solid rgba(99,102,241,.12)">🎨 テーマ・ポータル</div>
+  <div class="part v-h2">画面設定とポータル</div>
+  <div class="part" style="display:flex;gap:10px;width:100%;max-width:500px">
+    <div style="flex:1;border-radius:12px;border:2px solid #e2e8f0;overflow:hidden;background:#fff"><div style="padding:6px 10px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:4px;font-size:9px"><span style="width:6px;height:6px;border-radius:50%;background:#10b981"></span><b style="color:#1e293b">☀️ ライト</b></div><div style="padding:8px;text-align:center;font-size:9px;color:#64748b">白背景</div></div>
+    <div style="flex:1;border-radius:12px;border:2px solid #334155;overflow:hidden;background:#0f172a"><div style="padding:6px 10px;background:#1e293b;border-bottom:1px solid #334155;display:flex;align-items:center;gap:4px;font-size:9px"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24"></span><b style="color:#f8fafc">🌙 ダーク</b></div><div style="padding:8px;text-align:center;font-size:9px;color:#94a3b8">暗い画面</div></div>
+  </div>
+  <div class="part" style="max-width:340px;width:100%;border-radius:14px;border:2.5px solid #3b82f6;background:linear-gradient(135deg,#f0f6ff,#eef2ff);padding:10px 14px;display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 3px 10px rgba(59,130,246,.25)">🏠</div><div><div style="font-size:12px;font-weight:800;color:#1e293b">ポータルサイト</div><div style="font-size:8px;color:#94a3b8;margin-top:1px">トップページに戻る</div></div><span style="margin-left:auto;color:#94a3b8;font-size:11px">←</span></div>
+</div></div>
+<div class="vs enter-r" id="vs11"><div class="vs-inner">
+  <div class="part" style="font-size:48px">📋</div>
+  <div class="part v-h2">まとめ</div>
+  <div class="part vs-item vsi-g">✅ メンバー：9業務（出勤・カメラ・Googleマイビジネス・競合・買取・入金・備品・修理・月末月初）</div>
+  <div class="part vs-item vsi-g">✅ ブロック長：＋ブロック長業務・シフトアーカイブ・承認・シフトお知らせ</div>
+  <div class="part vs-item vsi-g">✅ エリアマネージャー：＋エリアマネージャー業務・承認・シフトお知らせ</div>
+  <div class="part vs-item vsi-g">✅ 管理者：＋管理者業務・お知らせ配信・エリアマネージャー業務・承認</div>
+  <div class="part vs-item vsi-a">⚠ 送信後の取り消し不可 / 名前は統一表記</div>
+  <div class="part vs-item vsi-b">💡 各業務の詳細は操作マニュアルで確認</div>
+</div></div>
+
+</div>
+<div class="nar-panel"><div class="nar-head"><div class="nar-step" id="nS"></div><div class="nar-title" id="nT"></div></div><div class="nar-div"></div><div class="nar-body" id="nB"></div></div>
+</div>
+<div class="footer">
+  <button class="f-btn" id="prevBtn2">← 前へ</button>
+  <button class="f-btn f-play" id="playBtn">▶ 再生中</button>
+  <button class="f-btn" id="nextBtn2">次へ →</button>
+  <div class="f-dots" id="dots"></div>
+  <button class="f-speed" id="speedBtn">再生速度 ×1.0</button>
+  <button class="f-btn f-restart" id="restartBtn">⏮ 最初へ</button><button class="f-btn f-repeat" id="repeatBtn">🔁 リピート OFF</button>
+  <div class="f-extra"><button class="f-extra-btn" id="backManual">📖 一覧</button><button class="f-extra-btn f-extra-home" id="backHome">🏠 ホーム</button></div>
+</div>
+</div>
+<script>
+var cvs=document.getElementById('particles'),ctx=cvs.getContext('2d');var _p=[];
+function rC(){cvs.width=cvs.offsetWidth;cvs.height=cvs.offsetHeight;}
+window.addEventListener('resize',rC);rC();
+for(var i=0;i<30;i++)_p.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+1,a:Math.random()*.15+.05});
+function dP(){ctx.clearRect(0,0,cvs.width,cvs.height);_p.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=cvs.width;if(p.x>cvs.width)p.x=0;if(p.y<0)p.y=cvs.height;if(p.y>cvs.height)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(59,130,246,'+p.a+')';ctx.fill();});requestAnimationFrame(dP);}
+dP();
+
+var DATA=[
+{step:'',title:'業務管理アプリ全体ガイド',dur:5500,anim:null,blocks:[{type:'text',html:'モバイル修理救急便の業務管理アプリの全体像をご案内します。',delay:0},{type:'tip',cls:'nt-b',html:'<b>4つの役割</b> ─ メンバー・ブロック長・エリアマネージャー・管理者',delay:800}]},
+{step:'📋 はじめに',title:'業務管理アプリとは？',dur:6500,anim:null,blocks:[{type:'text',html:'この業務管理アプリは、日々の店舗業務をまとめて管理するためのWebアプリです。',delay:0},{type:'text',html:'報告データは<b>自動でスプレッドシートに記録</b>され、管理者がリアルタイムで確認できます。',delay:600},{type:'tip',cls:'nt-a',html:'⚠ 必ず<b>店舗PC</b>のブラウザから操作してください。',delay:1200}]},
+{step:'🏠 ホーム画面',title:'ホーム画面の構成',dur:8000,anim:'highlightMenus',blocks:[{type:'text',html:'ホーム画面には<b>メンバー業務9つ</b>＋<b>管理メニュー</b>＋<b>操作マニュアル</b>が並びます。',delay:0},{type:'text',html:'実際のアプリのライトモード画面です。役割に応じて使うメニューが異なります。',delay:600},{type:'tip',cls:'nt-b',html:'💡 各メニューをクリックすると業務画面に移動します。',delay:1200},{type:'tip',cls:'nt-b',html:'🏠 左メニュー上部の「ポータルサイト」カードでポータルに戻れます。',delay:1800}]},
+{step:'📢 お知らせ・シフト変更',title:'ホーム画面上部のバナー',dur:8000,anim:'showBanners',blocks:[{type:'text',html:'ホーム画面の上部に3種類のバナーが表示されます。',delay:0},{type:'tip',cls:'nt-b',html:'🔔 <b>管理者からのお知らせ</b> ─ 全エリア共通。3段階（お知らせ/注意/緊急）で配信。',delay:600},{type:'tip',cls:'nt-b',html:'📣 <b>エリアマネージャーからのお知らせ</b> ─ エリア内のみ。同じく3段階で配信。',delay:1200},{type:'tip',cls:'nt-b',html:'📅 <b>当月のシフト変更</b> ─ 変更（🔵）/欠勤（🔴）/出勤（🟢）/休業が色分け表示。',delay:1800}]},
+{step:'👤 メンバー',title:'メンバーが行う9つの業務',dur:8000,anim:'showStaff',blocks:[{type:'text',html:'全メンバーが使用する<b>9つの業務メニュー</b>です。',delay:0},{type:'tip',cls:'nt-b',html:'💡 <b>出勤報告・カメラ確認</b>→完了後カメラ確認へ直接スキップ可能',delay:600},{type:'tip',cls:'nt-a',html:'⏰ 毎日：出勤報告・カメラ確認→Googleマイビジネス投稿報告',delay:1200},{type:'tip',cls:'nt-b',html:'💡 カメラは再報告で上書き',delay:1800}]},
+{step:'👑 ブロック長',title:'ブロック長が行う業務',dur:7000,anim:'showBL',blocks:[{type:'text',html:'ブロック長は<b>メンバー業務9つ＋管理業務4つ</b>を使用します。',delay:0},{type:'tip',cls:'nt-b',html:'💡 <b>ブロック長業務</b>：入金確認・カメラ確認・修理事故確認',delay:600},{type:'tip',cls:'nt-b',html:'💡 <b>出勤・カメラの承認</b>：ホーム画面で店舗クリック→PW→承認（紫●）',delay:1200},{type:'tip',cls:'nt-a',html:'⚠ パスワードが必要です。',delay:1800}]},
+{step:'🏆 エリアマネージャー',title:'エリアマネージャーが行う業務',dur:8000,anim:'showAM',blocks:[{type:'text',html:'エリアマネージャーは<b>4つの管理業務</b>を使用します。',delay:0},{type:'tip',cls:'nt-b',html:'💡 <b>承認</b>：出勤・カメラの承認はブロック長と同じ操作',delay:1200},{type:'tip',cls:'nt-g',html:'📅 <b>シフト変更お知らせ</b>：ホーム画面バナーで確認',delay:1800}]},
+{step:'🔑 管理者',title:'管理者が行う業務',dur:7000,anim:'showAdmin',blocks:[{type:'text',html:'管理者は<b>全機能にアクセス</b>できます。全ての管理業務を使用。',delay:0},{type:'tip',cls:'nt-b',html:'💡 <b>管理者業務</b>：お知らせ配信・パスワード一覧・2段階認証',delay:600},{type:'tip',cls:'nt-b',html:'💡 <b>管理者からのお知らせ</b>：全メンバーのホームにバナー表示',delay:1200}]},
+{step:'📖 マニュアル',title:'操作マニュアルの使い方',dur:6500,anim:null,blocks:[{type:'text',html:'各業務の詳しい操作手順は<b>操作マニュアル</b>で確認できます。',delay:0},{type:'text',html:'<b>動画マニュアル</b>：自動再生でアニメーション付き<br><b>スライドマニュアル</b>：クリックで進むじっくり型',delay:600},{type:'tip',cls:'nt-b',html:'💡 ホーム画面下部の<b>「📖 操作マニュアル」</b>からアクセス。',delay:1200}]},
+{step:'⚠ 注意事項',title:'必ず守ってください',dur:7000,anim:null,blocks:[{type:'tip',cls:'nt-r',html:'⛔ <b>送信後の取り消し不可。</b>確認画面でしっかりチェック。',delay:0},{type:'tip',cls:'nt-a',html:'⏰ <b>出勤報告は営業開始前に。</b>遅延・未報告は管理者に通知。',delay:500},{type:'tip',cls:'nt-b',html:'👤 <b>名前は統一表記。</b>毎回同じフルネームで入力。',delay:1000},{type:'tip',cls:'nt-g',html:'💡 <b>困ったら上長に報告。</b>',delay:1500}]},
+{step:'🎨 テーマ・ポータル',title:'画面設定とポータルへの戻り方',dur:7000,anim:null,blocks:[{type:'text',html:'右上のトグルでテーマ切替、左メニュー上部でポータルに戻れます。',delay:0},{type:'tip',cls:'nt-b',html:'☀️ ライトモード ─ 白背景で通常使用向け',delay:500},{type:'tip',cls:'nt-b',html:'🌙 ダークモード ─ 暗い画面で夜間・暗い環境向け',delay:1000},{type:'tip',cls:'nt-g',html:'🏠 ポータルに戻る ─ 左メニュー上部の「ポータルサイト」カードをクリック',delay:1500}]},
+{step:'まとめ',title:'業務管理アプリ全体ガイドは以上です',dur:6000,anim:null,blocks:[{type:'tip',cls:'nt-g',html:'✅ メンバー：9業務（出勤・カメラ・Googleマイビジネス・競合・買取・入金・備品・修理・月末月初）',delay:0},{type:'tip',cls:'nt-g',html:'✅ ブロック長：＋ブロック長業務・シフトアーカイブ・承認・シフトお知らせ',delay:300},{type:'tip',cls:'nt-g',html:'✅ エリアマネージャー：＋エリアマネージャー業務・承認・シフトお知らせ',delay:600},{type:'tip',cls:'nt-g',html:'✅ 管理者：＋管理者業務・お知らせ・エリアマネージャー業務・承認',delay:900},{type:'tip',cls:'nt-b',html:'💡 各業務の詳細は操作マニュアルで確認',delay:1200}]},
+];
+
+var tot=DATA.length,cur=0,playing=true,autoTimer=null,T_=[];
+var speeds=[0.5,1.0,1.5,2.0,3.0,4.0],sI=1;
+var ptr=document.getElementById('ptr'),pR=document.getElementById('ptrRip');
+var VA=document.getElementById('VA');
+function spd(ms){return ms/speeds[sI];}
+function qt(t){T_.push(t);}
+function clr(){T_.forEach(clearTimeout);T_=[];clearTimeout(autoTimer);}
+function showPtr(){ptr.classList.remove('hidden');}
+function hidePtr(){ptr.classList.add('hidden');}
+function movePtr(el){if(!el)return;var r=el.getBoundingClientRect(),lr=VA.getBoundingClientRect();var x=r.left-lr.left+r.width*.55,y=r.top-lr.top+r.height*.5;ptr.style.left=x+'px';ptr.style.top=y+'px';}
+function clickFx(el){pR.classList.remove('pop');void pR.offsetWidth;pR.classList.add('pop');}
+function showList(prefix,count){for(var i=0;i<count;i++){(function(i){var el=document.getElementById(prefix+i);if(el){el.classList.remove('show');qt(setTimeout(function(){el.classList.add('show');},spd(200+i*300)));}})(i);}}
+var ANIMS={
+  highlightMenus:function(){showPtr();var ids=[];for(var i=0;i<=11;i++)ids.push('m'+i);ids.forEach(function(id,i){qt(setTimeout(function(){var el=document.getElementById(id);if(!el)return;movePtr(el);el.classList.add('hl');qt(setTimeout(function(){el.classList.remove('hl');},spd(500)));},spd(400+i*550)));});},
+  showStaff:function(){showList('s',9);},
+  showBL:function(){showList('b',4);},
+  showAM:function(){showList('a',6);},
+  showAdmin:function(){showList('d',6);},
+  showBanners:function(){['bn0','bn1','bn2','bn3'].forEach(function(id,i){var el=document.getElementById(id);if(el){el.style.opacity='0';el.style.transform='translateY(15px)';qt(setTimeout(function(){el.style.transition='all .5s cubic-bezier(.34,1.56,.64,1)';el.style.opacity='1';el.style.transform='translateY(0)';},spd(300+i*500)));}});},
+};
+function showParts(i){var sc=document.getElementById('vs'+i);if(!sc)return;sc.querySelectorAll('.part').forEach(function(p,j){p.classList.remove('v','bounce');qt(setTimeout(function(){p.classList.add('v','bounce');},spd(j*200)));});}
+function renderNar(i){var d=DATA[i];document.getElementById('nS').textContent=d.step;document.getElementById('nT').textContent=d.title;var b=document.getElementById('nB');b.innerHTML='';d.blocks.forEach(function(bl){var el=document.createElement('div');el.className='nar-block';el.innerHTML=bl.type==='text'?'<div class="nar-text">'+bl.html+'</div>':'<div class="nar-tip '+bl.cls+'">'+bl.html+'</div>';b.appendChild(el);qt(setTimeout(function(){el.classList.add('show');},spd(bl.delay)));});}
+function resetAll(){document.querySelectorAll('.mi').forEach(function(m){m.classList.remove('hl');});document.querySelectorAll('.ml-item').forEach(function(m){m.classList.remove('show');});document.querySelectorAll('.confetti,.ptr-trail').forEach(function(e){e.remove();});document.querySelectorAll('.bm-body').forEach(function(b){b.scrollTop=0;});}
+function buildDots(){var d=document.getElementById('dots');d.innerHTML='';for(var i=0;i<tot;i++){var e=document.createElement('div');e.className='f-dot'+(i===cur?' a':i<cur?' p':'');e.setAttribute('data-i',i);e.onclick=function(){go(parseInt(this.getAttribute('data-i')));};d.appendChild(e);}}
+function go(n){if(n<0||n>=tot)return;clr();hidePtr();resetAll();var old=document.getElementById('vs'+cur);if(old){old.classList.remove('on');old.classList.add('exit-l');qt(setTimeout(function(){old.classList.remove('exit-l');old.classList.add('enter-r');},500));}cur=n;var nw=document.getElementById('vs'+cur);if(nw){nw.classList.remove('exit-l');nw.classList.add('enter-r');qt(setTimeout(function(){nw.classList.remove('enter-r');nw.classList.add('on');},50));}document.getElementById('counter').textContent=(cur+1)+'/'+tot;var pct=(cur+1)/tot*100;document.getElementById('progFill').style.width=pct+'%';document.getElementById('progGlow').style.left='calc('+pct+'% - 20px)';renderNar(cur);showParts(cur);var an=DATA[cur].anim;if(an&&ANIMS[an])qt(setTimeout(function(){ANIMS[an]();},spd(300)));buildDots();if(playing)schedNext();}
+function schedNext(){clearTimeout(autoTimer);autoTimer=setTimeout(function(){hidePtr();if(cur<tot-1)go(cur+1);else if(looping){go(0);}else{playing=false;upPB();}},spd(DATA[cur].dur));}
+function togglePlay(){playing=!playing;upPB();if(playing){if(cur>=tot-1)go(0);else schedNext();}else clearTimeout(autoTimer);}
+function upPB(){document.getElementById('playBtn').innerHTML=playing?'▶ 再生中':'⏸ 停止中';}
+function closeManual(){try{window.parent.postMessage({action:'close'},'*');}catch(e){window.close();}}
+function cycleSpeed(){sI=(sI+1)%speeds.length;document.getElementById('speedBtn').textContent='再生速度 ×'+speeds[sI].toFixed(1);if(playing){clearTimeout(autoTimer);schedNext();}}
+document.getElementById('prevBtn2').addEventListener('click',function(){go(cur-1);});
+document.getElementById('nextBtn2').addEventListener('click',function(){go(cur+1);});
+document.getElementById('playBtn').addEventListener('click',function(){togglePlay();});
+document.getElementById('speedBtn').addEventListener('click',function(){cycleSpeed();});
+go(0);
+document.getElementById('backManual').addEventListener('click',function(){try{window.parent.postMessage({action:'manual'},'*');}catch(e){window.close();}});
+document.getElementById('backHome').addEventListener('click',function(){try{window.parent.postMessage({action:'home'},'*');}catch(e){window.close();}});
+var looping=false;
+document.getElementById('restartBtn').addEventListener('click',function(){go(0);playing=true;upPB();schedNext();});
+document.getElementById('repeatBtn').addEventListener('click',function(){looping=!looping;this.className=looping?'f-btn f-repeat on':'f-btn f-repeat';this.textContent=looping?'🔁 リピート ON':'🔁 リピート OFF';});
+</script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>組織設定</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans JP','Hiragino Sans',sans-serif;background:#e8ecf1}
+.page{width:100%;height:100%;display:flex;flex-direction:column}
+.top{height:30px;background:#fff;border-bottom:1px solid #dde2e8;display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0}
+.top-b{font-size:10px;font-weight:800;color:#0ea5e9}.top-t{font-size:10px;color:#64748b;flex:1}.top-c{font-size:10px;color:#94a3b8;font-weight:700}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#0ea5e9,#0284c7);z-index:101;transition:width .4s}
+.main{flex:1;display:flex;overflow:hidden;min-height:0}
+.left{width:72%;display:flex;align-items:center;justify-content:center;padding:14px 10px 14px 18px;position:relative;background:#e8ecf1}
+.right{width:28%;min-width:240px;background:#fff;border-left:2.5px solid #0ea5e9;display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(14,165,233,.06)}
+.right-head{padding:12px 14px 8px;background:linear-gradient(180deg,rgba(14,165,233,.035),transparent)}
+.right-step{font-size:13px;font-weight:800;letter-spacing:.4px;margin-bottom:4px;color:#0ea5e9}
+.right-title{font-size:22px;font-weight:900;color:#1e293b;line-height:1.25}
+.right-divider{height:1px;background:linear-gradient(90deg,#0ea5e9 0%,#e2e8f0 60%);margin:0 24px}
+.right-body{flex:1;overflow-y:auto;padding:10px 14px 8px}
+.right-text{font-size:14px;color:#334155;line-height:1.6;margin-bottom:6px}
+.right-tip{display:block;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.5;margin-top:4px;font-weight:600}
+.rt-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}
+.rt-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}
+.rt-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}
+.rt-g{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.1);color:#065f46}
+.screens{position:relative;width:100%;height:100%}
+.scr{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.scr.active{opacity:1;pointer-events:auto}
+.scr-full{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;background:linear-gradient(160deg,#f8fafc,#eff6ff,#f0fdf4)}
+.scr-split{display:flex;align-items:center;justify-content:center;padding:14px 10px 14px 18px;overflow:hidden}
+.win{width:100%;max-width:920px;height:100%;border-radius:10px;overflow:hidden;border:1.5px solid #c2c9d4;box-shadow:0 4px 24px rgba(0,0,0,.07);background:#f1f5f9;display:flex;flex-direction:column;position:relative}
+.win-bar{height:28px;flex-shrink:0;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;padding:0 10px;gap:5px}
+.wd{width:9px;height:9px;border-radius:50%}
+.wu{flex:1;margin:0 8px;padding:2px 10px;border-radius:5px;background:#fff;border:1px solid #e2e8f0;font-size:9px;color:#94a3b8;overflow:hidden}
+.wc{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:20px 24px;gap:8px}
+.hb{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:24px;font-size:11px;font-weight:800;margin-bottom:4px}
+.card{width:100%;max-width:520px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.card-title{color:#1e293b;font-size:15px;font-weight:700;text-align:center;margin-bottom:3px}
+.card-sub{color:#94a3b8;font-size:11px;text-align:center;margin-bottom:10px}
+.bm-input{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;border:1.5px solid #e2e8f0;background:#f8fafc;margin-bottom:4px;font-size:10px;font-weight:600;color:#64748b}
+.bm-input .pw-dots{letter-spacing:3px;font-size:14px;color:#334155}
+.bm-btn{display:block;padding:6px 10px;border-radius:6px;margin-bottom:3px;font-size:10px;font-weight:700;cursor:default}
+.bm-row{display:flex;align-items:center;gap:6px;padding:4px 8px;border-radius:6px;margin-bottom:2px;font-size:10px;font-weight:600}
+.bm-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.bm-label{flex:1;color:#334155}
+.bm-val{font-weight:700}
+h1{font-size:clamp(26px,4.8vw,38px);font-weight:900;color:#1e293b;text-align:center;margin-bottom:6px}
+h2{font-size:clamp(22px,3.6vw,29px);font-weight:800;color:#1e293b;text-align:center;margin-bottom:4px}
+.sub2{font-size:17px;color:#64748b;text-align:center;max-width:520px;line-height:1.7;margin-bottom:12px}
+.badge3{display:inline-flex;align-items:center;gap:6px;padding:6px 17px;border-radius:22px;font-size:13px;font-weight:700;margin-bottom:12px}
+.b3-g{background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.15);color:#0ea5e9}
+.b3-b{background:rgba(37,99,235,.05);border:1px solid rgba(37,99,235,.12);color:#2563eb}
+.b3-x{background:rgba(100,116,139,.05);border:1px solid rgba(100,116,139,.12);color:#64748b}
+.ft{padding:12px 17px;border-radius:10px;font-size:16px;line-height:1.7;margin-top:5px;max-width:560px;width:100%}
+.ft b{font-weight:800}
+.ft-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}
+.ft-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}
+.ft-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}
+.ft-g{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.1);color:#065f46}
+.fu{opacity:0;transform:translateY(10px);transition:all .4s ease}
+.scr.active .fu{opacity:1;transform:translateY(0)}
+.scr.active .fu:nth-child(2){transition-delay:.06s}
+.scr.active .fu:nth-child(3){transition-delay:.12s}
+.scr.active .fu:nth-child(4){transition-delay:.18s}
+.scr.active .fu:nth-child(5){transition-delay:.24s}
+.scr.active .fu:nth-child(6){transition-delay:.3s}
+.scr.active .fu:nth-child(7){transition-delay:.36s}
+.scr.active .fu:nth-child(8){transition-delay:.42s}
+.scr.active .fu:nth-child(9){transition-delay:.48s}
+.scr.prev{opacity:0;transform:translateX(-40px)}
+.right-nav{flex-shrink:0;padding:20px 24px 22px;border-top:1px solid #eef1f5;background:#fafbfc}
+.right-nav-dots{display:flex;gap:5px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.dot{width:7px;height:7px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all .25s}
+.dot.a{background:#0ea5e9;transform:scale(1.5)}.dot.d{background:#0284c7}
+.right-nav-btns{display:flex;gap:12px}
+.nav-btn{flex:1;padding:20px 0;border:none;border-radius:14px;font-size:28px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;letter-spacing:.3px}
+.nav-btn-prev{background:#f1f5f9;color:#64748b;border:3px solid #94a3b8;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.nav-btn-prev:hover{background:#e2e8f0;color:#1e293b}
+.nav-btn-next{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;border:none;box-shadow:0 2px 10px rgba(14,165,233,.25)}
+.nav-btn-next:hover{box-shadow:0 4px 16px rgba(14,165,233,.35)}
+.right-nav-extra{display:flex;gap:10px;margin-top:14px}
+.nav-extra-btn{flex:1;padding:16px 0;border:3px solid #94a3b8;border-radius:12px;font-size:24px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-weight:700;cursor:pointer;font-family:inherit;background:#fff;color:#64748b;text-align:center;transition:all .15s}
+.nav-extra-btn:hover{background:#f1f5f9;color:#1e293b}
+.nav-extra-home{border-color:rgba(37,99,235,.15);color:#2563eb;background:rgba(37,99,235,.03)}
+.nav-extra-home:hover{background:rgba(37,99,235,.08)}
+.tree-area{padding:8px 10px;border-radius:8px;border:1.5px solid rgba(14,165,233,.2);background:rgba(14,165,233,.03);margin-bottom:6px}
+.tree-area-name{font-size:11px;font-weight:800;color:#0284c7;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.tree-block{margin-left:16px;padding:4px 8px;border-left:2px solid rgba(14,165,233,.15);margin-bottom:3px}
+.tree-block-name{font-size:10px;font-weight:700;color:#334155;margin-bottom:2px}
+.tree-store{font-size:9px;color:#64748b;margin-left:12px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="bar" id="bar" style="width:0%"></div>
+<div class="top"><span class="top-b">⚙ 組織設定</span><span class="top-t" id="cnt">1/1</span></div>
+<div class="main">
+<div class="left"><div class="screens">
+
+<!-- P0: タイトル -->
+<div class="scr scr-full active" data-i="0"><div class="badge3 b3-g fu">⚙ 業務マニュアル</div><h1 class="fu">組織設定</h1><div class="sub2 fu">エリア・ブロック・店舗の構成を管理する<br>管理者専用の設定画面です。</div><div class="ft ft-a fu" style="text-align:center;max-width:420px"><b>管理者パスワード（第1）で認証</b></div></div>
+
+<!-- P1: 機能一覧 -->
+<div class="scr scr-full" data-i="1"><div class="badge3 b3-x fu">📋 基本ルール</div><h2 class="fu">組織設定でできること</h2><div class="ft ft-b fu" style="max-width:460px">🏢 <b>組織マスター管理</b> ─ エリア→ブロック→店舗のツリー構造</div><div class="ft ft-b fu" style="max-width:460px">🏪 <b>店舗の追加・編集・削除</b> ─ 営業時間・施設フラグ</div><div class="ft ft-b fu" style="max-width:460px">📍 <b>地域マッピング</b> ─ 競合調査用の地域名設定</div><div class="ft ft-b fu" style="max-width:460px">⚙ <b>GAS URL設定</b> ─ データ連携先の設定</div></div>
+
+<!-- P2: パスワード認証 -->
+<div class="scr scr-split" data-i="2"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">⚙ 組織設定</div></div><div class="wc"><div class="hb" style="background:rgba(14,165,233,.06);color:#0ea5e9;border-color:rgba(14,165,233,.12)">⚙ 組織設定</div><div class="card"><div style="text-align:center;padding:8px 0"><div style="font-size:18px;margin-bottom:4px">🔐</div><div class="card-title">管理者パスワード（第1）を入力</div><div class="card-sub">組織設定は管理者パスワード①のみで認証</div><div class="bm-input"><span>🔑</span><span class="pw-dots">● ● ● ● ● ●</span></div><div style="display:flex;gap:6px;justify-content:center;margin-top:8px"><div class="bm-btn" style="background:#f1f5f9;color:#64748b;padding:6px 16px">キャンセル</div><div class="bm-btn" style="background:#0ea5e9;color:#fff;padding:6px 16px">認証</div></div></div></div></div></div></div>
+
+<!-- P3: エリア一覧（ツリー構造） -->
+<div class="scr scr-split" data-i="3"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">⚙ 組織設定 ─ エリア一覧</div></div><div class="wc"><div class="hb" style="background:rgba(14,165,233,.06);color:#0ea5e9;border-color:rgba(14,165,233,.12)">⚙ 組織設定</div><div class="card"><div class="card-title">組織マスター</div><div class="card-sub">エリア → ブロック → 店舗</div><div class="tree-area"><div class="tree-area-name">🏢 都心エリア <span style="font-size:8px;color:#94a3b8;font-weight:600">6ブロック・19店舗</span></div><div class="tree-block"><div class="tree-block-name">📦 新宿ブロック</div><div class="tree-store">ルミネ新宿 / 新宿東南口 / 下北沢</div></div><div class="tree-block"><div class="tree-block-name">📦 池袋ブロック</div><div class="tree-store">池袋東口 / 池袋西口 / 池袋西口地下街</div></div><div class="tree-block"><div class="tree-block-name">📦 渋谷ブロック</div><div class="tree-store">渋谷センター街 / 渋谷宮益坂</div></div></div><div class="bm-btn" style="background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.12);color:#0284c7;text-align:center;margin-top:6px">＋ エリア追加</div></div></div></div></div>
+
+<!-- P4: ブロック編集 -->
+<div class="scr scr-split" data-i="4"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📦 ブロック編集 ─ 新宿ブロック</div></div><div class="wc"><div class="hb" style="background:rgba(14,165,233,.06);color:#0ea5e9;border-color:rgba(14,165,233,.12)">⚙ 組織設定</div><div class="card"><div class="bm-input"><span style="font-size:10px;color:#64748b">ブロック名</span><span style="font-size:10px;font-weight:700;color:#334155">新宿ブロック</span></div><div style="font-size:10px;font-weight:800;color:#64748b;margin:6px 0 4px;letter-spacing:.5px">店舗一覧</div><div class="bm-row" style="background:#f8fafc;border:1px solid #e2e8f0"><span class="bm-label">ルミネ新宿</span><span class="bm-val" style="color:#64748b;font-size:10px">11:00</span><span style="font-size:8px;padding:1px 4px;border-radius:3px;background:rgba(14,165,233,.06);color:#0284c7;font-weight:700;cursor:default">編集</span><span style="font-size:8px;padding:1px 4px;border-radius:3px;background:#fef2f2;color:#dc2626;font-weight:700;cursor:default">✕</span></div><div class="bm-row" style="background:#f8fafc;border:1px solid #e2e8f0"><span class="bm-label">新宿東南口</span><span class="bm-val" style="color:#64748b;font-size:10px">10:00</span><span style="font-size:8px;padding:1px 4px;border-radius:3px;background:rgba(14,165,233,.06);color:#0284c7;font-weight:700;cursor:default">編集</span><span style="font-size:8px;padding:1px 4px;border-radius:3px;background:#fef2f2;color:#dc2626;font-weight:700;cursor:default">✕</span></div><div class="bm-row" style="background:#f8fafc;border:1px solid #e2e8f0"><span class="bm-label">下北沢</span><span class="bm-val" style="color:#64748b;font-size:10px">10:00</span><span style="font-size:8px;padding:1px 4px;border-radius:3px;background:rgba(14,165,233,.06);color:#0284c7;font-weight:700;cursor:default">編集</span><span style="font-size:8px;padding:1px 4px;border-radius:3px;background:#fef2f2;color:#dc2626;font-weight:700;cursor:default">✕</span></div><div class="bm-btn" style="background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.12);color:#0284c7;text-align:center;margin-top:6px">＋ 店舗追加</div></div></div></div></div>
+
+<!-- P5: 店舗追加 -->
+<div class="scr scr-split" data-i="5"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🏪 店舗追加</div></div><div class="wc"><div class="hb" style="background:rgba(14,165,233,.06);color:#0ea5e9;border-color:rgba(14,165,233,.12)">⚙ 組織設定</div><div class="card"><div class="card-title">店舗を追加</div><div class="card-sub">新宿ブロック</div><div class="bm-input"><span style="font-size:10px;color:#64748b">店舗名</span><span style="font-size:10px;font-weight:700;color:#334155">吉祥寺駅前</span></div><div class="bm-input"><span style="font-size:10px;color:#64748b">営業開始時間</span><span style="font-size:10px;font-weight:700;color:#334155">10:00</span></div><div class="bm-input"><span style="font-size:10px;color:#64748b">所属ブロック</span><span style="font-size:10px;font-weight:700;color:#334155">新宿ブロック</span></div><div class="bm-btn" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;text-align:center;margin-top:8px;padding:8px">追加する</div></div></div></div></div>
+
+<!-- P6: 商業施設設定 -->
+<div class="scr scr-split" data-i="6"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🏬 商業施設設定</div></div><div class="wc"><div class="hb" style="background:rgba(14,165,233,.06);color:#0ea5e9;border-color:rgba(14,165,233,.12)">⚙ 組織設定</div><div class="card"><div class="card-title">商業施設フラグ</div><div class="card-sub">ONにすると入金チェックで「入金なし」が初期選択</div><div class="bm-row" style="background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.12)"><div class="bm-dot" style="background:#10b981"></div><span class="bm-label">ルミネ新宿</span><span class="bm-val" style="color:#059669;font-size:10px">🏬 ON</span></div><div class="bm-row" style="background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.12)"><div class="bm-dot" style="background:#10b981"></div><span class="bm-label">池袋西口地下街</span><span class="bm-val" style="color:#059669;font-size:10px">🏬 ON</span></div><div class="bm-row" style="background:#f8fafc;border:1px solid #e2e8f0"><div class="bm-dot" style="background:#94a3b8"></div><span class="bm-label">新宿東南口</span><span class="bm-val" style="color:#64748b;font-size:10px">OFF</span></div><div class="bm-row" style="background:#f8fafc;border:1px solid #e2e8f0"><div class="bm-dot" style="background:#94a3b8"></div><span class="bm-label">下北沢</span><span class="bm-val" style="color:#64748b;font-size:10px">OFF</span></div></div></div></div></div>
+
+<!-- P7: 地域マッピング -->
+<div class="scr scr-split" data-i="7"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📍 地域マッピング</div></div><div class="wc"><div class="hb" style="background:rgba(14,165,233,.06);color:#0ea5e9;border-color:rgba(14,165,233,.12)">⚙ 組織設定</div><div class="card"><div class="card-title">地域マッピング</div><div class="card-sub">各店舗の地域名を設定（競合調査で使用）</div><div class="bm-row" style="background:#f8fafc;border:1px solid #e2e8f0"><span class="bm-label">ルミネ新宿</span><span class="bm-val" style="color:#0284c7;font-size:10px">📍 新宿</span></div><div class="bm-row" style="background:#f8fafc;border:1px solid #e2e8f0"><span class="bm-label">新宿東南口</span><span class="bm-val" style="color:#0284c7;font-size:10px">📍 新宿</span></div><div class="bm-row" style="background:#f8fafc;border:1px solid #e2e8f0"><span class="bm-label">池袋東口</span><span class="bm-val" style="color:#0284c7;font-size:10px">📍 池袋</span></div><div class="bm-row" style="background:#f8fafc;border:1px solid #e2e8f0"><span class="bm-label">渋谷センター街</span><span class="bm-val" style="color:#0284c7;font-size:10px">📍 渋谷</span></div></div></div></div></div>
+
+<!-- P8: GAS URL設定 -->
+<div class="scr scr-split" data-i="8"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">⚙ GAS URL設定</div></div><div class="wc"><div class="hb" style="background:rgba(14,165,233,.06);color:#0ea5e9;border-color:rgba(14,165,233,.12)">⚙ 組織設定</div><div class="card"><div class="card-title">GAS URL設定</div><div class="card-sub">スプレッドシート連携先のURLを設定</div><div class="bm-input" style="border-color:rgba(14,165,233,.3)"><span style="font-size:10px;color:#64748b">GAS URL</span><span style="font-size:8px;font-weight:600;color:#334155;word-break:break-all">https://script.google.com/macros/s/AKfy...</span></div><div style="display:flex;gap:6px;margin-top:8px"><div class="bm-btn" style="background:#f1f5f9;color:#64748b;flex:1;text-align:center;padding:6px">キャンセル</div><div class="bm-btn" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;flex:1;text-align:center;padding:6px">💾 保存</div></div></div></div></div></div>
+
+<!-- P9: まとめ -->
+<div class="scr scr-full" data-i="9"><div class="badge3 b3-g fu">✅ まとめ</div><h2 class="fu">組織設定は以上です</h2><div style="display:flex;flex-direction:column;gap:6px;margin-top:10px"><div class="ft ft-g fu" style="max-width:400px">✅ エリア・ブロック・店舗のツリー構造管理</div><div class="ft ft-g fu" style="max-width:400px">✅ 店舗の追加・編集・削除・営業時間設定</div><div class="ft ft-g fu" style="max-width:400px">✅ 商業施設フラグの管理</div><div class="ft ft-g fu" style="max-width:400px">✅ 地域マッピングの設定</div><div class="ft ft-g fu" style="max-width:400px">✅ GAS URL設定</div><div class="ft ft-a fu" style="max-width:400px">⚠ 変更はアプリ全体に即時反映されます</div></div></div>
+
+</div></div>
+<div class="right">
+<div class="right-head"><div class="right-step" id="rs"></div><div class="right-title" id="rt"></div></div>
+<div class="right-divider"></div>
+<div class="right-body" id="rb"></div>
+<div class="right-nav">
+<div class="right-nav-dots" id="dots"></div>
+<div class="right-nav-btns">
+<button class="nav-btn nav-btn-prev" id="prevBtn">← 前へ</button>
+<button class="nav-btn nav-btn-next" id="nextBtn">次へ →</button>
+</div>
+<div class="right-nav-extra">
+<button class="nav-extra-btn" id="backManual">📖 マニュアル一覧</button>
+<button class="nav-extra-btn nav-extra-home" id="backHome">🏠 ホームに戻る</button>
+</div>
+</div></div></div></div>
+
+<script>
+var T=function(s){return '<span class="right-text">'+s+'</span>';};
+var B=function(s){return '<span class="right-tip rt-b">'+s+'</span>';};
+var A=function(s){return '<span class="right-tip rt-a">'+s+'</span>';};
+var R=function(s){return '<span class="right-tip rt-r">'+s+'</span>';};
+var G=function(s){return '<span class="right-tip rt-g">'+s+'</span>';};
+var DATA=[
+{step:'',title:'組織設定マニュアル',body:T('エリア・ブロック・店舗の構成を管理する設定画面です。')+A('⚠ 管理者パスワード（第1）で認証が必要です。')},
+{step:'📋 基本ルール',title:'組織設定でできること',body:T('組織設定では4つの管理機能があります。')+B('🏢 組織マスター管理 ─ エリア→ブロック→店舗のツリー')+B('🏪 店舗追加・編集 ─ 営業時間・施設フラグ設定')+B('📍 地域マッピング ─ 競合調査用の地域名')+B('⚙ GAS URL設定 ─ データ連携先の設定')},
+{step:'STEP 1',title:'パスワード認証',body:T('メニューから「組織設定」を選択します。')+T('管理者パスワード（第1）を入力して認証。')+B('💡 組織設定は管理者パスワード①のみで認証（2段階認証ではありません）。')},
+{step:'STEP 2',title:'組織マスター（ツリー構造）',body:T('認証後、現在のエリア・ブロック・店舗のツリー構造が表示されます。')+B('🏢 エリア ─ 最上位の組織単位')+B('📦 ブロック ─ エリア内のグループ')+B('🏪 店舗 ─ 各ブロック内の店舗')+B('💡 エリアの追加・削除も可能です。')},
+{step:'STEP 3',title:'ブロック編集',body:T('ブロックをタップすると編集画面が開きます。')+T('ブロック内の店舗一覧と営業時間が表示されます。')+B('💡 店舗ごとに「編集」で営業時間の変更、「✕」で削除ができます。')+A('⚠ 削除した店舗は復元できません。')},
+{step:'STEP 4',title:'店舗追加',body:T('「＋ 店舗追加」で新しい店舗を追加できます。')+B('📝 店舗名 ─ 正式名称で入力')+B('⏰ 営業開始時間 ─ 開店時間を設定')+B('📦 所属ブロック ─ どのブロックに入れるか')+B('💡 追加後は全業務メニューの店舗選択に反映されます。')},
+{step:'STEP 5',title:'商業施設設定',body:T('商業施設フラグを設定します。')+B('🏬 ON ─ 入金チェックで「入金なし」が初期選択に')+B('OFF ─ 通常の入金チェックフロー')+B('💡 ルミネ・アトレなどの商業施設はONにしてください。')},
+{step:'STEP 6',title:'地域マッピング',body:T('各店舗に地域名を設定します。')+T('競合調査の地域絞り込みに使用されます。')+B('💡 同一地域の店舗は競合調査で同じグループになります。')},
+{step:'STEP 7',title:'GAS URL設定',body:T('スプレッドシート連携先のGAS URLを設定します。')+T('URLを入力して「保存」するだけのシンプルな画面です。')+A('⚠ URLを間違えるとデータ連携が停止します。慎重に操作してください。')},
+{step:'まとめ',title:'組織設定は以上です',body:G('✅ エリア・ブロック・店舗のツリー構造管理')+G('✅ 店舗の追加・編集・削除・営業時間設定')+G('✅ 商業施設フラグの管理')+G('✅ 地域マッピング・GAS URL設定')+R('⚠ 変更はアプリ全体に即時反映されます。慎重に操作してください。')}
+];
+
+var cur=0;
+var sls=document.querySelectorAll('.scr');
+var tot=sls.length;
+var prevBtn=document.getElementById('prevBtn');
+var nextBtn=document.getElementById('nextBtn');
+
+function go(n){
+  if(n<0||n>=tot)return;
+  sls[cur].classList.remove('active');
+  sls[cur].classList.remove('prev');
+  if(n>cur) sls[cur].classList.add('prev');
+  cur=n;
+  for(var i=0;i<tot;i++){sls[i].classList.remove('active');sls[i].classList.remove('prev');}
+  sls[cur].classList.add('active');
+  upd();
+}
+
+function upd(){
+  prevBtn.style.opacity=cur===0?'0.3':'1';
+  prevBtn.style.pointerEvents=cur===0?'none':'auto';
+  nextBtn.style.opacity='1';
+  nextBtn.style.pointerEvents='auto';
+  nextBtn.textContent=cur===tot-1?'✕ 閉じる':'次へ →';
+  document.getElementById('bar').style.width=((cur+1)/tot*100)+'%';
+  document.getElementById('cnt').textContent=(cur+1)+'/'+tot;
+  var d=document.getElementById('dots');
+  d.innerHTML='';
+  for(var i=0;i<tot;i++){
+    var e=document.createElement('div');
+    e.className='dot'+(i===cur?' a':i<cur?' d':'');
+    e.setAttribute('data-i',i);
+    e.addEventListener('click',function(){go(parseInt(this.getAttribute('data-i')));});
+    d.appendChild(e);
+  }
+  var info=DATA[cur]||{};
+  document.getElementById('rs').textContent=info.step||'';
+  document.getElementById('rt').textContent=info.title||'';
+  document.getElementById('rb').innerHTML=info.body||'';
+}
+
+prevBtn.addEventListener('click',function(){go(cur-1);});
+nextBtn.addEventListener('click',function(){
+  if(cur===tot-1){
+    try{window.parent.postMessage({action:'close'},'*');}catch(e){window.close();}
+  } else {go(cur+1);}
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1);}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1);}
+  if(e.key==='Escape'){try{window.parent.postMessage({action:'close'},'*');}catch(ex){window.close();}}
+});
+upd();
+
+document.getElementById('backManual').addEventListener('click',function(){try{window.parent.postMessage({action:'manual'},'*');}catch(e){window.close();}});
+document.getElementById('backHome').addEventListener('click',function(){try{window.parent.postMessage({action:'home'},'*');}catch(e){window.close();}});
+</script>
+</body>
+</html>

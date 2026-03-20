@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>修理事故報告 ─ スライドマニュアル</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans JP','Hiragino Sans',sans-serif;background:#e8ecf1}
+.page{width:100%;height:100%;display:flex;flex-direction:column}
+.top{height:30px;background:#fff;border-bottom:1px solid #dde2e8;display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0}
+.top-b{font-size:10px;font-weight:800;color:#dc2626}.top-t{font-size:10px;color:#64748b;flex:1}.top-c{font-size:10px;color:#94a3b8;font-weight:700}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#dc2626,#2563eb);z-index:101;transition:width .4s}
+.main{flex:1;display:flex;overflow:hidden;min-height:0}
+.left{width:72%;display:flex;align-items:center;justify-content:center;padding:14px 10px 14px 18px;position:relative;background:#e8ecf1}
+.right{width:28%;min-width:240px;background:#fff;border-left:2.5px solid #dc2626;display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(220,38,38,.06)}
+.right-head{padding:12px 14px 8px;background:linear-gradient(180deg,rgba(220,38,38,.035),transparent)}
+.right-step{font-size:13px;font-weight:800;letter-spacing:.4px;margin-bottom:4px;color:#dc2626}
+.right-title{font-size:22px;font-weight:900;color:#1e293b;line-height:1.25}
+.right-divider{height:1px;background:linear-gradient(90deg,#dc2626 0%,#e2e8f0 60%);margin:0 24px}
+.right-body{flex:1;overflow:hidden;padding:10px 14px 8px}
+.right-text{font-size:14px;color:#334155;line-height:1.6;margin-bottom:6px}
+.right-tip{display:block;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.5;margin-top:4px;font-weight:600}
+.rt-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}
+.rt-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}
+.rt-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}
+.rt-g{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#065f46}
+/* Screens */
+.screens{position:relative;width:100%;height:100%}
+.scr{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.scr.active{opacity:1;pointer-events:auto}
+.scr-full{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;background:linear-gradient(160deg,#f8fafc,#eff6ff,#f0fdf4)}
+.scr-split{display:flex;align-items:center;justify-content:center;padding:14px 10px 14px 18px;overflow:hidden}
+/* Browser mock */
+.win{width:100%;max-width:920px;height:100%;border-radius:10px;overflow:hidden;border:1.5px solid #c2c9d4;box-shadow:0 4px 24px rgba(0,0,0,.07);background:#f1f5f9;display:flex;flex-direction:column;position:relative}
+.win-bar{height:28px;flex-shrink:0;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;padding:0 10px;gap:5px}
+.wd{width:9px;height:9px;border-radius:50%}
+.wu{flex:1;margin:0 8px;padding:2px 10px;border-radius:5px;background:#fff;border:1px solid #e2e8f0;font-size:9px;color:#94a3b8;overflow:hidden}
+.wc{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:20px 24px}
+/* App CSS */
+:root{--c-text:#1e293b;--c-sub:#64748b;--c-green:#dc2626}
+.hb{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:24px;font-size:11px;font-weight:800;margin-bottom:12px;background:rgba(220,38,38,.06);color:#dc2626;border:1px solid rgba(220,38,38,.12)}
+.card{width:100%;max-width:520px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.card-title{color:#1e293b;font-size:19px;font-weight:700;text-align:center;margin-bottom:3px}
+.card-sub{color:#94a3b8;font-size:12px;text-align:center;margin-bottom:14px}
+.gc{width:100%;max-width:520px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.gi{text-align:center;font-size:36px;margin-bottom:8px}
+.gt{text-align:center;font-size:17px;font-weight:700;color:#dc2626;margin-bottom:3px}
+.gs{text-align:center;font-size:10px;color:#94a3b8;margin-bottom:14px}
+.gsteps{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.gstep{display:flex;align-items:center;gap:9px;padding:9px 11px;background:#f8fafc;border-radius:9px;border:1px solid #e2e8f0}
+.gnum{min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;background:#dc2626}
+.gtext{color:#334155;font-size:11px;line-height:1.4}.gtext b{color:#1e293b}
+.gnote{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:9px 11px;margin-bottom:14px;font-size:9px;color:#64748b;line-height:1.5}
+.pbtn{width:100%;padding:13px;border:none;border-radius:12px;color:white;font-size:13px;font-weight:700;background:linear-gradient(135deg,#dc2626,#b91c1c);text-align:center}
+.sw{position:relative;margin-bottom:10px}.sic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94a3b8}
+.sin{width:100%;padding:10px 12px 10px 32px;background:#f8fafc;border:1px solid #d1d5db;border-radius:10px;color:#1e293b;font-size:12px;font-family:inherit;outline:none}.sin::placeholder{color:#9ca3af}
+.blb{color:#64748b;font-size:9px;font-weight:600;margin:7px 0 3px;display:flex;align-items:center;gap:5px}
+.blb::before{content:'';display:inline-block;width:3px;height:10px;border-radius:2px;background:#dc2626}
+.bsg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:3px}
+.sb{border-radius:10px;padding:11px 6px;color:#334155;font-size:11px;font-weight:600;text-align:center;background:rgba(220,38,38,.04);border:1.5px solid rgba(220,38,38,.18);transition:all .3s}
+.sb.sel{border-color:#dc2626;background:rgba(220,38,38,.1);color:#dc2626;font-weight:700}
+.il{color:#64748b;font-size:11px;font-weight:600;margin-bottom:5px;display:block}
+.ti{width:100%;padding:11px 12px;background:#f8fafc;border:1px solid #d1d5db;border-radius:10px;color:#1e293b;font-size:14px;min-height:40px;display:flex;align-items:center}
+.cc{padding:24px 18px;text-align:center;background:#fff;border:1px solid #e2e8f0;border-radius:18px;max-width:520px;width:100%;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.cr{display:flex;justify-content:space-between;align-items:center;padding:8px 0}.cr+.cr{border-top:1px solid #f1f5f9}
+.crl{color:#94a3b8;font-size:11px;font-weight:600}.crv{color:#1e293b;font-size:13px;font-weight:700}.crv.hl{color:#dc2626;font-size:17px}
+.cbs{display:flex;gap:6px;margin-top:8px}
+.cb-no{flex:1;padding:11px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#94a3b8;font-size:12px;font-weight:700;text-align:center}
+.cb-ok{flex:1;padding:11px;border-radius:10px;border:none;color:white;font-size:12px;font-weight:700;text-align:center;background:linear-gradient(135deg,#dc2626,#b91c1c)}
+.dc{border:1px solid rgba(220,38,38,.2);padding:24px 18px;text-align:center;max-width:520px;width:100%;background:#fff;border-radius:18px}
+.dti{color:#dc2626;font-size:19px;font-weight:700;margin:8px 0 3px}.dsu{color:#94a3b8;font-size:10px;margin-bottom:14px}
+.rb{background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:14px;text-align:left;border:1px solid #e2e8f0}
+.rr{display:flex;justify-content:space-between;padding:7px 0}.rr+.rr{border-top:1px solid #e2e8f0}
+.rrk{color:#94a3b8;font-size:11px;font-weight:600}.rrv{color:#1e293b;font-size:13px;font-weight:700}
+.nb{display:flex;gap:6px;margin-top:10px;max-width:520px;width:100%}
+.nbk{flex:1;display:flex;align-items:center;justify-content:center;padding:11px;background:#f8fafc;border:1px solid #d1d5db;border-radius:12px;color:#64748b;font-size:11px;font-weight:600}
+.nbh{display:flex;align-items:center;justify-content:center;gap:4px;padding:11px 14px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.12);border-radius:12px;color:#2563eb;font-size:10px;font-weight:700}
+.dmi{display:flex;align-items:center;gap:10px;padding:13px;border-radius:12px;cursor:default;transition:all .15s}
+.dmi-i{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.dmi-n{font-size:13px;font-weight:700;color:#1e293b}.dmi-s{font-size:9px;color:#94a3b8;margin-top:1px}.dmi-a{color:#cbd5e1;font-size:13px;margin-left:auto}
+.si{text-align:center;padding:8px;border-radius:9px;font-size:11px;font-weight:600;color:#64748b;background:#f8fafc;border:1px solid #e2e8f0}
+.si.ok{color:#dc2626;background:rgba(220,38,38,.04);border-color:rgba(220,38,38,.12)}
+.wc2{background:#fff;border:2px solid rgba(220,38,38,.15);border-radius:18px;padding:28px 18px;text-align:center;max-width:520px;width:100%}
+.wc3{background:#fff;border:2px solid rgba(180,83,9,.15);border-radius:18px;padding:28px 18px;text-align:center;max-width:520px;width:100%}
+.sc2{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;max-width:520px;width:100%}
+.sci{padding:10px 14px;border-radius:9px;font-size:12px;font-weight:700;margin-bottom:4px}
+.ring{position:relative;display:inline-block;width:100%}
+.ring::after{content:'';position:absolute;inset:-3px;border:2px solid #f59e0b;border-radius:12px;animation:rp 1.5s infinite}
+@keyframes rp{0%,100%{opacity:1}50%{opacity:.3}}
+/* Full-page elements */
+h1{font-size:clamp(26px,4.8vw,38px);font-weight:900;color:#1e293b;text-align:center;margin-bottom:6px}
+h2{font-size:clamp(22px,3.6vw,29px);font-weight:800;color:#1e293b;text-align:center;margin-bottom:4px}
+.sub2{font-size:17px;color:#64748b;text-align:center;max-width:520px;line-height:1.7;margin-bottom:12px}
+.badge3{display:inline-flex;align-items:center;gap:6px;padding:6px 17px;border-radius:22px;font-size:13px;font-weight:700;margin-bottom:12px}
+.b3-g{background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.15);color:#dc2626}
+.b3-b{background:rgba(37,99,235,.05);border:1px solid rgba(37,99,235,.12);color:#2563eb}
+.b3-r{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.12);color:#dc2626}
+.b3-x{background:rgba(100,116,139,.05);border:1px solid rgba(100,116,139,.12);color:#64748b}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;max-width:560px;width:100%;margin-bottom:10px}
+.fl{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 4px;text-align:center}
+.fl-n{font-size:17px;font-weight:900;margin-bottom:2px}.fl-l{font-size:12px;color:#64748b}
+.cmp{display:flex;gap:10px;max-width:560px;width:100%;margin-bottom:8px}
+.cmp-c{flex:1;border-radius:10px;padding:14px}
+.cmp-ok{background:rgba(220,38,38,.03);border:1.5px solid rgba(220,38,38,.12)}.cmp-ng{background:rgba(220,38,38,.03);border:1.5px solid rgba(220,38,38,.12)}
+.cmp-t{font-size:14px;font-weight:800;margin-bottom:6px;text-align:center}.cmp-i{font-size:12px;color:#475569;margin-bottom:4px;line-height:1.5;text-align:center}
+.strow{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;margin-bottom:4px;max-width:500px;width:100%}
+.strow-d{width:8px;height:8px;border-radius:50%;flex-shrink:0}.strow-n{font-size:12px;font-weight:700;color:#1e293b;flex:1}.strow-s{font-size:10px;color:#94a3b8}.strow-i{font-size:11px;font-weight:700;flex-shrink:0}
+.ft{padding:12px 17px;border-radius:10px;font-size:16px;line-height:1.7;margin-top:5px;max-width:560px;width:100%}
+.ft b{font-weight:800}
+.ft-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}
+.ft-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}
+.ft-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}
+.ft-g{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#065f46}
+.sitem{padding:13px 19px;border-radius:10px;font-size:17px;font-weight:700;margin-bottom:5px;max-width:500px;width:100%}
+.fu{opacity:0;transform:translateY(10px);transition:all .4s ease}
+.scr.active .fu{opacity:1;transform:translateY(0)}
+.scr.active .fu:nth-child(2){transition-delay:.06s}
+.scr.active .fu:nth-child(3){transition-delay:.12s}
+.scr.active .fu:nth-child(4){transition-delay:.18s}
+.scr.active .fu:nth-child(5){transition-delay:.24s}
+.scr.active .fu:nth-child(6){transition-delay:.3s}
+.scr.active .fu:nth-child(7){transition-delay:.36s}
+.scr.active .fu:nth-child(8){transition-delay:.42s}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.tc{display:inline-block;width:1px;height:14px;background:#1e293b;margin-left:1px;animation:blink .7s infinite;vertical-align:text-bottom}
+
+.right-nav{flex-shrink:0;padding:20px 24px 22px;border-top:1px solid #eef1f5;background:#fafbfc}
+.right-nav-dots{display:flex;gap:5px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.dot{width:7px;height:7px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all .25s}
+.dot.a{background:#dc2626;transform:scale(1.5)}.dot.d{background:#2563eb}
+.right-nav-btns{display:flex;gap:12px}
+.nav-btn{flex:1;padding:20px 0;border:none;border-radius:14px;font-size:28px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;letter-spacing:.3px}
+.nav-btn-prev{background:#f1f5f9;color:#64748b;border:3px solid #94a3b8;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.nav-btn-prev:hover{background:#e2e8f0;color:#1e293b}
+.nav-btn-next{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;border:none;box-shadow:0 2px 10px rgba(220,38,38,.25)}
+.nav-btn-next:hover{box-shadow:0 4px 16px rgba(220,38,38,.35)}
+
+.scr.prev{opacity:0;transform:translateX(-40px)}
+
+.right-nav-extra{display:flex;gap:10px;margin-top:14px}
+.nav-extra-btn{flex:1;padding:16px 0;border:3px solid #94a3b8;border-radius:12px;font-size:24px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-weight:700;cursor:pointer;font-family:inherit;background:#fff;color:#64748b;text-align:center;transition:all .15s}
+.nav-extra-btn:hover{background:#f1f5f9;color:#1e293b}
+.nav-extra-home{border-color:rgba(37,99,235,.15);color:#2563eb;background:rgba(37,99,235,.03)}
+.nav-extra-home:hover{background:rgba(37,99,235,.08)}
+
+.st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:580px;width:100%;margin-bottom:6px}
+.st-card{padding:10px;border-radius:9px;text-align:center}
+.st-card-icon{font-size:18px;margin-bottom:2px}
+.st-card-label{font-size:12px;font-weight:800;margin-bottom:2px}
+.st-card-desc{font-size:9px;line-height:1.5}
+.st-ok{background:rgba(16,185,129,.06);border:1.5px solid rgba(16,185,129,.2);color:#dc2626}
+.st-delay{background:rgba(234,179,8,.06);border:1.5px solid rgba(234,179,8,.2);color:#b45309}
+.st-late{background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);color:#dc2626}
+.st-appr{background:rgba(167,139,250,.06);border:1.5px solid rgba(167,139,250,.2);color:#7c3aed}
+.st-hol{background:rgba(56,189,248,.06);border:1.5px solid rgba(56,189,248,.2);color:#0284c7}
+.st-wait{background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b}
+
+
+.st-circle{width:24px;height:24px;border-radius:50%;margin:0 auto 4px;display:block;position:relative}
+.st-circle::after{content:'';position:absolute;top:3px;left:5px;width:10px;height:8px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,255,255,.7) 0%,rgba(255,255,255,0) 100%)}
+
+.sd{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle;margin-right:2px;position:relative}
+.sd::after{content:'';position:absolute;top:1px;left:2px;width:5px;height:4px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 100%)}
+
+.finger{font-size:20px;vertical-align:middle;margin-left:4px;display:inline-block;position:relative;animation:tap4 1.8s infinite;transform-origin:center bottom;z-index:10}
+.finger::after{content:'';position:absolute;bottom:-4px;left:50%;width:20px;height:20px;border-radius:50%;border:2.5px solid rgba(220,38,38,.5);transform:translate(-50%,0) scale(0);animation:ripple4 1.8s infinite;pointer-events:none}
+@keyframes tap4{0%,100%{transform:scale(1) translateY(0)}35%{transform:scale(.8) translateY(4px)}45%{transform:scale(.8) translateY(4px)}55%{transform:scale(1) translateY(0)}}
+@keyframes ripple4{0%,34%{transform:translate(-50%,0) scale(0);opacity:0}45%{transform:translate(-50%,0) scale(.5);opacity:.9}70%{transform:translate(-50%,0) scale(3);opacity:0}100%{transform:translate(-50%,0) scale(0);opacity:0}}
+.ring,.pbtn,.sb,.cb-ok,.dmi{overflow:visible !important}
+
+.role-card{display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid #e2e8f0;border-radius:12px;margin-bottom:6px;background:#fff}
+.role-card.sel{border-color:rgba(59,130,246,.4);background:rgba(59,130,246,.04)}
+.role-icon{font-size:22px}
+.role-name{font-size:13px;font-weight:700;color:#1e293b}
+.role-desc{font-size:9px;color:#94a3b8;margin-top:1px}
+.appr-row{display:flex;gap:8px;margin-bottom:12px}
+.appr-btn{flex:1;padding:12px;border-radius:10px;text-align:center;font-size:12px;font-weight:700;cursor:default}
+.appr-yes{background:rgba(16,185,129,.06);border:1.5px solid rgba(16,185,129,.25);color:#059669}
+.appr-no{background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.25);color:#dc2626}
+.appr-sel{border-width:2.5px}
+.ta-mock{width:100%;min-height:60px;padding:10px 14px;border-radius:10px;background:#f8fafc;border:1.5px solid #d1d5db;font-size:11px;color:#334155;line-height:1.8;white-space:pre-line}
+.img-drop{border:2px dashed rgba(220,38,38,.25);border-radius:12px;padding:20px;text-align:center;margin-bottom:12px}
+.img-preview{display:flex;gap:6px;margin-bottom:10px}
+.img-thumb{width:60px;height:60px;border-radius:8px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid #d1d5db}
+.goal-box{padding:14px;border-radius:12px;background:rgba(220,38,38,.04);border:1.5px solid rgba(220,38,38,.15);text-align:left;margin:10px 0}
+.goal-title{font-size:13px;font-weight:800;color:#dc2626;margin-bottom:6px}
+.goal-text{font-size:10px;color:#64748b;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="bar" id="bar"></div>
+<div class="top"><div class="top-b">🔧 修理事故報告</div><div class="top-t">─ スライドマニュアル</div><div class="top-c" id="cnt"></div></div>
+<div class="main">
+<div class="left"><div class="screens">
+<div class="scr scr-full active" data-i="0"><div class="badge3 b3-g fu">🔧 業務マニュアル</div><h1 class="fu">修理事故報告</h1><div class="sub2 fu">修理事故が発生した場合の報告フォームです。</div><div class="ft ft-a fu" style="text-align:center;max-width:420px"><b>⚠ 少なくとも、ブロック長またはエリアマネージャーのいずれかの承認を得てください<br>⚠ ブロック長が当事者の場合はエリアマネージャーの承認が必要</b></div><div class="ft ft-b fu" style="text-align:center;max-width:420px"><b>全8ステップ ・ 所要時間 約3〜5分</b><br>店舗PCから操作します</div></div>
+
+
+<div class="scr scr-full" data-i="1"><div class="badge3 b3-x fu">📋 基本ルール</div><h2 class="fu">修理事故報告のルール</h2><div class="cmp fu"><div class="cmp-c cmp-ok"><div class="cmp-t" style="color:#dc2626">📋 報告の流れ</div><div class="cmp-i"><b>事故発生時</b>に速やかに報告</div><div class="cmp-i">少なくともブロック長もしくはエリアマネージャーの<b>承認が必須</b></div><div class="cmp-i">事故内容・原因・再発防止策を入力</div><div class="cmp-i">修理事故報告書に記入し写真を撮って<b>1枚以上</b>アップ</div></div><div class="cmp-c cmp-ng"><div class="cmp-t" style="color:#dc2626">⚠ 重要</div><div class="cmp-i">メンバーの報告は、ブロック長またはエリアマネージャーいずれかの承認を最低限必要とします。未承認の場合は報告後に承認を得てください。最終的には双方の承認が必要となります。</div><div class="cmp-i">ブロック長の申請は、エリアマネージャーの承認を必須とします。</div></div></div></div>
+
+
+<div class="scr scr-full" data-i="2"><div class="badge3 b3-b fu">📋 全体の流れ</div><h2 class="fu">修理事故報告フロー</h2><div class="sub2 fu">8つのステップで完了します</div><div class="flow fu" style="grid-template-columns:repeat(4,1fr)"><div class="fl"><div class="fl-n" style="color:#64748b">1</div><div class="fl-l">店舗・名前</div></div><div class="fl"><div class="fl-n" style="color:#dc2626">2</div><div class="fl-l">当事者区分</div></div><div class="fl"><div class="fl-n" style="color:#dc2626">3</div><div class="fl-l">承認確認</div></div><div class="fl"><div class="fl-n" style="color:#dc2626">4</div><div class="fl-l">事故日・機種</div></div></div><div class="flow fu" style="grid-template-columns:repeat(4,1fr);margin-top:8px"><div class="fl"><div class="fl-n" style="color:#dc2626">5</div><div class="fl-l">事故内容</div></div><div class="fl"><div class="fl-n" style="color:#dc2626">6</div><div class="fl-l">原因・防止策</div></div><div class="fl"><div class="fl-n" style="color:#dc2626">7</div><div class="fl-l">画像アップ</div></div><div class="fl"><div class="fl-n" style="color:#059669">8</div><div class="fl-l">確認→送信</div></div></div></div>
+
+
+<div class="scr scr-split" data-i="3"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📋 業務管理アプリ - 都心エリア</div></div><div class="wc" style="align-items:flex-start"><div style="font-size:11px;font-weight:700;color:#94a3b8;margin-bottom:8px">📋 業務メニュー</div><div style="display:flex;flex-direction:column;gap:3px;width:100%;max-width:520px"><div class="dmi" style="border:1px solid #f1f5f9"><div class="dmi-i" style="background:rgba(5,150,105,.08)">🏪</div><div><div class="dmi-n">出勤報告</div><div class="dmi-s">毎日</div></div><span class="dmi-a">›</span></div><div class="dmi" style="border:1px solid #f1f5f9"><div class="dmi-i" style="background:rgba(244,63,94,.08)">📦</div><div><div class="dmi-n">備品注文相談</div><div class="dmi-s">随時</div></div><span class="dmi-a">›</span></div><div class="ring"><div class="dmi" style="background:rgba(220,38,38,.03);border:1px solid rgba(220,38,38,.15)"><div class="dmi-i" style="background:rgba(220,38,38,.12)">🔧</div><div><div class="dmi-n">修理事故報告</div><div class="dmi-s">事故発生時</div></div><span class="finger">👆</span><span class="dmi-a">›</span></div></div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="4"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="gc"><div class="gi">🔧</div><div class="gt" style="color:#dc2626">修理事故報告</div><div class="gs">修理事故が発生した場合の報告フォームです</div><div class="gsteps"><div class="gstep"><div class="gnum" style="background:#dc2626">1</div><div class="gtext"><b>店舗を選択</b>して名前を入力</div></div><div class="gstep"><div class="gnum" style="background:#dc2626">2</div><div class="gtext">事故当事者の区分・承認状況を選択</div></div><div class="gstep"><div class="gnum" style="background:#dc2626">3</div><div class="gtext">事故日・機種・事故内容・原因を入力</div></div><div class="gstep"><div class="gnum" style="background:#dc2626">4</div><div class="gtext">修理事故報告書に記入し写真を撮って<b>1枚以上</b>アップ</div></div></div><div class="gnote">⚠ 少なくとも、ブロック長またはエリアマネージャーのいずれかの承認を得てください<br>⚠ ブロック長が当事者の場合はエリアマネージャーの承認が必要</div><div class="ring"><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">開始する → <span class="finger">👆</span></div></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="5"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 店舗選択</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">店舗を選択</div><div class="card-sub">事故が発生した店舗をクリック</div><div class="blb">新宿ブロック</div><div class="bsg"><div class="sb">ルミネ新宿</div><div class="sb sel ring">新宿東南口 <span class="finger">👆</span></div><div class="sb">下北沢</div></div><div class="blb">池袋ブロック</div><div class="bsg"><div class="sb">池袋東口</div><div class="sb">池袋西口地下街</div><div class="sb">BIGBOX高田馬場</div></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="6"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ スタッフ名</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">スタッフ名を入力</div><div style="margin-bottom:14px"><label class="il">担当スタッフ名</label><div class="ti">田中 太郎</div></div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="7"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 当事者区分</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">🔧 事故発生当事者</div><div class="card-sub">修理事故の報告者（当事者）を選択</div><div class="role-card sel"><div class="role-icon">👤</div><div><div class="role-name">メンバー（自身が当事者） <span class="finger">👆</span></div><div class="role-desc">修理事故を起こしたメンバー本人が報告</div></div></div><div class="role-card"><div class="role-icon">👑</div><div><div class="role-name">ブロック長（自身が当事者）</div><div class="role-desc">ブロック長自身が当事者（エリアマネージャーの承認が必要）</div></div></div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="8"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 承認確認</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">📝 上長の承認確認</div><div class="card-sub">報告者がメンバーの場合<br><span style="font-size:10px;color:#dc2626;font-weight:700">※ 少なくとも、ブロック長またはエリアマネージャーのいずれかの承認を得てください</span></div><div style="margin-bottom:12px"><label class="il">ブロック長の承認</label><div class="appr-row"><div class="appr-btn appr-yes appr-sel">✅ 承認あり <span class="finger">👆</span></div><div class="appr-btn appr-no">❌ 承認なし</div></div></div><div style="margin-bottom:12px"><label class="il">エリアマネージャーの承認</label><div class="appr-row"><div class="appr-btn appr-yes appr-sel">✅ 承認あり</div><div class="appr-btn appr-no">❌ 承認なし</div></div></div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="9"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 事故詳細</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">📅 事故発生日・📱 対象機種</div><div style="margin-bottom:10px"><label class="il">事故発生日</label><div class="ti">2026/03/06</div></div><div style="margin-bottom:10px"><label class="il">機種名</label><div class="ti">iPhone 15 Pro</div></div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="10"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 事故内容</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">📝 事故内容</div><div class="card-sub">発生した事故の詳細を入力</div><div class="ta-mock">バッテリー交換時に画面が割れてしまった。
+お客様に説明しLCDで交換対応。</div><div class="pbtn" style="margin-top:12px;background:linear-gradient(135deg,#dc2626,#b91c1c)"" >次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="11"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 原因・防止策</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">🔍 事故原因と再発防止策</div><div class="card-sub">自身で考える原因と再発防止策を入力</div><div style="margin-bottom:10px"><label class="il">事故原因</label><div class="ta-mock">作業手順の確認不足。ヒートマットでの温めとエタノールが適正に使用していなかった。ミネシマヘラを使用してしまい割れてしまった。</div></div><div><label class="il">再発防止策</label><div class="ta-mock">ヒートマットとエタノール使用ルールの再確認。太いヘラを使用せず必ず専用のヘラで作業を行う。</div></div><div class="pbtn" style="margin-top:12px;background:linear-gradient(135deg,#dc2626,#b91c1c)"" >次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="12"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 画像</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">📸 修理事故報告書</div><div class="card-sub">修理事故報告書に記入し、写真を撮ってアップロード</div><div class="img-drop"><div style="font-size:36px">📷</div><div style="color:#94a3b8;font-size:12px">タップして画像を追加</div></div><div class="img-preview"><div class="img-thumb">📄</div><div class="img-thumb">📄</div></div><div style="text-align:center;font-size:11px;font-weight:700;color:#dc2626;margin-bottom:10px">📷 2枚選択済み</div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">確認画面へ <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+
+<div class="scr scr-split" data-i="13"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 確認</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="cc" style="border-color:rgba(220,38,38,.3)"><div style="font-size:28px">📋</div><div style="color:#dc2626;font-size:14px;font-weight:700;margin:4px 0 10px">この内容で報告しますか？</div><div style="text-align:left"><div class="cr"><span class="crl">店舗</span><span class="crv">新宿東南口</span></div><div class="cr"><span class="crl">担当者</span><span class="crv">田中 太郎</span></div><div class="cr"><span class="crl">当事者</span><span class="crv">👤 メンバー</span></div><div class="cr"><span class="crl">ブロック長承認</span><span class="crv" style="color:#059669">✅ あり</span></div><div class="cr"><span class="crl">エリアマネージャー承認</span><span class="crv" style="color:#059669">✅ あり</span></div><div class="cr"><span class="crl">事故日</span><span class="crv">2026/03/06</span></div><div class="cr"><span class="crl">機種</span><span class="crv">iPhone 15 Pro</span></div><div class="cr"><span class="crl">報告書画像</span><span class="crv">2枚</span></div></div><div class="cbs"><div class="cb-no">修正する</div><div class="ring" style="flex:1"><div class="cb-ok" style="width:100%;background:linear-gradient(135deg,#dc2626,#b91c1c)"" >OK 報告する <span class="finger">👆</span></div></div></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="14"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 確認（未承認あり）</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="cc" style="border-color:rgba(220,38,38,.3)"><div style="font-size:28px">📋</div><div style="color:#dc2626;font-size:14px;font-weight:700;margin:4px 0 10px">この内容で報告しますか？</div><div style="text-align:left"><div class="cr"><span class="crl">店舗</span><span class="crv">新宿東南口</span></div><div class="cr"><span class="crl">担当者</span><span class="crv">田中 太郎</span></div><div class="cr"><span class="crl">当事者</span><span class="crv">👤 メンバー</span></div><div class="cr"><span class="crl">ブロック長承認</span><span class="crv" style="color:#059669">✅ あり</span></div><div class="cr"><span class="crl">エリアマネージャー承認</span><span class="crv" style="color:#dc2626">❌ なし</span></div><div class="cr"><span class="crl">事故日</span><span class="crv">2026/03/06</span></div><div class="cr"><span class="crl">機種</span><span class="crv">iPhone 15 Pro</span></div><div class="cr"><span class="crl">報告書画像</span><span class="crv">2枚</span></div></div><div style="margin:10px 0;padding:10px 14px;border-radius:8px;background:rgba(245,158,11,.08);border:1.5px solid rgba(245,158,11,.25)"><div style="font-size:11px;font-weight:700;color:#b45309">⚠ 承認が得られていない項目があります</div><div style="font-size:10px;color:#92400e;margin-top:3px">報告後、必ずエリアマネージャーの承認を得てください。</div></div><div class="cbs"><div class="cb-no">修正する</div><div class="ring" style="flex:1"><div class="cb-ok" style="width:100%;background:linear-gradient(135deg,#dc2626,#b91c1c)"" >OK 報告する <span class="finger">👆</span></div></div></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="15"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 完了</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="dc" style="border-color:rgba(220,38,38,.2)"><div style="font-size:42px">✅</div><div style="color:#dc2626;font-size:19px;font-weight:700;margin:8px 0 3px">報告完了</div><div style="color:#94a3b8;font-size:10px;margin-bottom:10px">修理事故報告を受け付けました</div><div class="rb"><div class="rr"><span class="rrk">店舗</span><span class="rrv">新宿東南口</span></div><div class="rr"><span class="rrk">担当者</span><span class="rrv">田中 太郎</span></div><div class="rr"><span class="rrk">事故日</span><span class="rrv">2026/03/06</span></div><div class="rr"><span class="rrk">機種</span><span class="rrv">iPhone 15 Pro</span></div><div class="rr"><span class="rrk">画像</span><span class="rrv">2枚</span></div></div><div class="goal-box"><div class="goal-title">🎯 修理事故件数「0」を目指しましょう</div><div class="goal-text">修理事故の発生は<b>在庫への損害</b>に加え、<b>お客様からの信頼低下</b>にもつながります。<br><b>📖 マニュアル確認テスト</b>を必ず実施し、作業手順の再確認をお願いします。</div></div></div><div style="margin-top:8px;max-width:520px;width:100%"><div class="nbh" style="width:100%;justify-content:center">🏠 ホームに戻る</div></div></div></div></div>
+
+
+
+<div class="scr scr-full" data-i="16"><div class="badge3 b3-x fu" style="background:rgba(245,158,11,.1);color:#b45309">👑 ブロック長が当事者の場合</div><h2 class="fu">メンバーとの違い</h2><div class="sub2 fu">ブロック長自身が修理事故の当事者の場合、<br>以下の点がメンバーの報告と異なります。</div><div class="ft ft-b fu"><b>① 当事者区分</b><br>→ 「👑 ブロック長（自身が当事者）」を選択</div><div class="ft ft-b fu"><b>② 承認画面</b><br>→ エリアマネージャーの承認<b>のみ</b>表示（ブロック長承認は非表示）</div><div class="ft ft-b fu"><b>③ 確認画面</b><br>→ 当事者欄が「👑 ブロック長」、ブロック長承認行なし</div><div class="ft ft-a fu"><b>⚠ エリアマネージャーの承認は必須です</b><br>→ 承認なしでは報告できません。</div></div>
+
+<div class="scr scr-split" data-i="17"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 当事者区分</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">🔧 事故発生当事者</div><div class="card-sub">ブロック長自身が当事者の場合</div><div class="role-card"><div class="role-icon">👤</div><div><div class="role-name">メンバー（自身が当事者）</div><div class="role-desc">修理事故を起こしたメンバー本人が報告</div></div></div><div class="role-card sel"><div class="role-icon">👑</div><div><div class="role-name">ブロック長（自身が当事者） <span class="finger">👆</span></div><div class="role-desc">ブロック長自身が当事者（エリアマネージャーの承認が必要）</div></div></div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="18"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 承認確認（ブロック長）</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">📝 エリアマネージャーの承認確認</div><div class="card-sub">ブロック長が当事者の場合<br><span style="font-size:10px;color:#dc2626;font-weight:700">※ エリアマネージャーの承認が必須です</span></div><div style="margin-bottom:12px"><label class="il">エリアマネージャーの承認</label><div class="appr-row"><div class="appr-btn appr-yes appr-sel">✅ 承認あり <span class="finger">👆</span></div><div class="appr-btn appr-no">❌ 承認なし</div></div></div><div style="padding:10px;border-radius:8px;background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.12);margin-bottom:12px;font-size:10px;color:#2563eb;font-weight:600">💡 ブロック長が当事者のため、ブロック長承認は不要です</div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="19"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 確認（ブロック長）</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="cc" style="border-color:rgba(220,38,38,.3)"><div style="font-size:28px">📋</div><div style="color:#dc2626;font-size:14px;font-weight:700;margin:4px 0 10px">この内容で報告しますか？</div><div style="text-align:left"><div class="cr"><span class="crl">店舗</span><span class="crv">新宿東南口</span></div><div class="cr"><span class="crl">担当者</span><span class="crv">田中 太郎</span></div><div class="cr"><span class="crl">当事者</span><span class="crv" style="color:#b45309;font-weight:900">👑 ブロック長</span></div><div class="cr"><span class="crl">エリアマネージャー承認</span><span class="crv" style="color:#059669">✅ あり</span></div><div class="cr"><span class="crl">事故日</span><span class="crv">2026/03/06</span></div><div class="cr"><span class="crl">機種</span><span class="crv">iPhone 15 Pro</span></div><div class="cr"><span class="crl">報告書画像</span><span class="crv">2枚</span></div></div><div class="cbs"><div class="cb-no">修正する</div><div class="ring" style="flex:1"><div class="cb-ok" style="width:100%;background:linear-gradient(135deg,#dc2626,#b91c1c)"" >OK 報告する <span class="finger">👆</span></div></div></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-full" data-i="20"><div class="badge3 b3-r fu">❌ 承認NGの場合</div><h2 class="fu">承認が得られないとどうなる？</h2><div class="sub2 fu">承認状況によって以下のNG画面が表示されます。</div><div class="ft ft-r fu"><b>❌ メンバーの場合</b><br>→ ブロック長・エリアマネージャー両方が「承認なし」の場合、報告できません。</div><div class="ft ft-r fu"><b>❌ ブロック長の場合</b><br>→ エリアマネージャーが「承認なし」の場合、報告できません。</div><div class="ft ft-b fu"><b>💡 承認を得てから再度報告してください</b><br>→ 承認画面に戻り、承認を得た後に再度選択してください。</div></div>
+
+<div class="scr scr-split" data-i="21"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 承認NG（メンバー）</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">📝 上長の承認確認</div><div class="card-sub">報告者がメンバーの場合</div><div style="margin-bottom:12px"><label class="il">ブロック長の承認</label><div class="appr-row"><div class="appr-btn appr-yes">✅ 承認あり</div><div class="appr-btn appr-no appr-sel">❌ 承認なし <span class="finger">👆</span></div></div></div><div style="margin-bottom:12px"><label class="il">エリアマネージャーの承認</label><div class="appr-row"><div class="appr-btn appr-yes">✅ 承認あり</div><div class="appr-btn appr-no appr-sel">❌ 承認なし</div></div></div><div style="padding:10px;border-radius:8px;background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);margin-bottom:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#dc2626">❌ 両方「承認なし」→ この状態で「次へ進む」を押すと警告画面へ</div></div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="22"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 承認が必要です</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card" style="text-align:center;padding:32px 24px;border:2px solid rgba(239,68,68,0.3)"><div style="font-size:48px;margin-bottom:12px">⚠️</div><div style="color:#dc2626;font-size:18px;font-weight:800;margin-bottom:8px">承認が必要です</div><div style="color:#64748b;font-size:12px;margin-bottom:20px;line-height:1.7">修理事故報告には<b>少なくとも、ブロック長またはエリアマネージャーの<br>いずれかの承認</b>を得てください。<br><br>承認を得てから再度報告してください。</div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">承認画面に戻る</div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="23"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 承認NG（ブロック長）</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card"><div class="card-title">📝 エリアマネージャーの承認確認</div><div class="card-sub">ブロック長が当事者の場合<br><span style="font-size:10px;color:#dc2626;font-weight:700">※ エリアマネージャーの承認が必須です</span></div><div style="margin-bottom:12px"><label class="il">エリアマネージャーの承認</label><div class="appr-row"><div class="appr-btn appr-yes">✅ 承認あり</div><div class="appr-btn appr-no appr-sel">❌ 承認なし <span class="finger">👆</span></div></div></div><div style="padding:10px;border-radius:8px;background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);margin-bottom:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#dc2626">❌ エリアマネージャー「承認なし」→ この状態で「次へ進む」を押すと警告画面へ</div></div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="24"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🔧 修理事故報告 ─ 承認が必要です</div></div><div class="wc"><div class="hb" style="background:rgba(220,38,38,.06);color:#dc2626;border-color:rgba(220,38,38,.12)">🔧 修理事故報告</div><div class="card" style="text-align:center;padding:32px 24px;border:2px solid rgba(239,68,68,0.3)"><div style="font-size:48px;margin-bottom:12px">⚠️</div><div style="color:#dc2626;font-size:18px;font-weight:800;margin-bottom:8px">承認が必要です</div><div style="color:#64748b;font-size:12px;margin-bottom:20px;line-height:1.7">ブロック長が当事者の場合は<br><b>エリアマネージャーの承認</b>が必要です。<br><br>承認を得てから再度報告してください。</div><div class="pbtn" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">承認画面に戻る</div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+<div class="scr scr-full" data-i="25"><div class="badge3 b3-r fu">⚠ 注意点</div><h2 class="fu">こうならないように注意</h2><div class="ft ft-r fu"><b>❌ 承認なしで報告しようとした</b><br>→ 少なくとも、ブロック長またはエリアマネージャーのいずれかの承認を得てください。</div><div class="ft ft-r fu"><b>❌ 画像をアップし忘れた</b><br>→ 修理事故報告書の画像は1枚以上必須です。</div><div class="ft ft-b fu"><b>💡 ブロック長自身が当事者の場合</b><br>→ 当事者区分で「ブロック長」を選択。エリアマネージャーの承認のみ必要。</div></div>
+
+
+<div class="scr scr-full" data-i="26"><div class="badge3 b3-b fu">🆘 困ったとき</div><h2 class="fu">こんなときはどうする？</h2><div class="ft ft-b fu"><b>📝 事故内容の書き方が分からない</b><br>→ 「何をしていたか」「何が起きたか」「お客様への影響」を簡潔に記載。</div><div class="ft ft-b fu"><b>🔍 原因・再発防止策の書き方</b><br>→ 【原因】と【再発防止策】を分けて記載。上長に相談もOK。</div><div class="ft ft-b fu"><b>❌ 間違えて報告した</b><br>→ 上長に報告。</div></div>
+
+
+<div class="scr scr-full" data-i="27"><div style="font-size:42px" class="fu">🔧</div><h2 class="fu">修理事故報告まとめ</h2><div class="sitem fu" style="background:rgba(220,38,38,.04);color:#991b1b">✅ 事故発生時に速やかに報告</div><div class="sitem fu" style="background:rgba(220,38,38,.04);color:#991b1b">✅ 少なくともブロック長もしくはエリアマネージャーの承認が必要</div><div class="sitem fu" style="background:rgba(220,38,38,.04);color:#991b1b">✅ ブロック長はエリアマネージャーの承認が必要</div><div class="sitem fu" style="background:rgba(220,38,38,.04);color:#991b1b">✅ 事故内容・原因・再発防止策・画像を入力</div><div class="sitem fu" style="background:rgba(180,83,9,.04);color:#92400e">⚠ 修理事故件数「0」を目指しましょう</div><div class="sitem fu" style="background:rgba(37,99,235,.04);color:#1e40af">💡 困ったら上長に報告</div></div>
+
+</div></div>
+<div class="right">
+<div class="right-head"><div class="right-step" id="rs"></div><div class="right-title" id="rt"></div></div>
+<div class="right-divider"></div>
+<div class="right-body" id="rb"></div>
+<div class="right-nav">
+<div class="right-nav-dots" id="dots"></div>
+<div class="right-nav-btns">
+<button class="nav-btn nav-btn-prev" id="prevBtn">← 前へ</button>
+<button class="nav-btn nav-btn-next" id="nextBtn">次へ →</button>
+</div>
+<div class="right-nav-extra">
+<button class="nav-extra-btn" id="backManual">📖 マニュアル一覧</button>
+<button class="nav-extra-btn nav-extra-home" id="backHome">🏠 ホームに戻る</button>
+</div>
+</div></div></div></div>
+<script>
+
+var T=function(s){return '<span class="right-text">'+s+'</span>';};
+var B=function(s){return '<span class="right-tip rt-b">'+s+'</span>';};
+var A=function(s){return '<span class="right-tip rt-a">'+s+'</span>';};
+var R=function(s){return '<span class="right-tip rt-r">'+s+'</span>';};
+var G=function(s){return '<span class="right-tip rt-g">'+s+'</span>';};
+
+var DATA=[
+{step:'',title:'修理事故報告マニュアル',body:T('修理事故が発生した場合の報告手順を説明します。')+A('⚠ 少なくとも、ブロック長またはエリアマネージャーのいずれかの承認を得てください<br>⚠ ブロック長が当事者の場合はエリアマネージャーの承認が必要。')},
+{step:'📋 基本ルール',title:'修理事故報告のルール',body:T('事故発生時に<b>速やかに</b>報告。')+T('少なくともブロック長もしくはエリアマネージャーの<b>承認が必須</b>。')+T('事故内容・原因・再発防止策を入力し、報告書に記入→写真を撮って<b>1枚以上</b>アップ。')},
+{step:'📋 全体の流れ',title:'8ステップで完了',body:T('店舗・名前 → 当事者区分 → 承認確認 → 事故日・機種 → 事故内容 → 原因・防止策 → 画像アップ → 確認→送信')},
+{step:'STEP 1',title:'修理事故報告をクリック',body:T('ホームの<b>「🔧 修理事故報告」</b>をクリック。')+A('⚠ 個人端末や店舗のiPhone・iPadは使用出来ません。必ず店舗PCを使用してください。')},
+{step:'STEP 2',title:'ガイド画面を確認',body:T('操作手順が表示されます。確認したら<b>「開始する →」</b>をクリック。')+A('⚠ 少なくとも、ブロック長またはエリアマネージャーのいずれかの承認を得てください<br>⚠ ブロック長が当事者の場合はエリアマネージャーの承認が必要。')},
+{step:'STEP 3',title:'店舗を選択',body:T('事故が発生した<b>店舗</b>をクリック。')},
+{step:'STEP 4',title:'スタッフ名を入力',body:T('<b>フルネーム</b>を入力して「次へ進む」をクリック。')+R('⚠ <b>毎回同じ表記で入力してください。</b>フルネームで統一してください。')},
+{step:'STEP 5',title:'事故発生当事者を選択',body:T('当事者区分を選択します。')+B('👤 メンバー → 少なくともブロック長もしくはエリアマネージャーの承認が必要')+B('👑 ブロック長（自身が当事者）→ エリアマネージャーの承認のみ必要')},
+{step:'STEP 6',title:'上長の承認確認',body:T('メンバーの場合：ブロック長とエリアマネージャーの承認状況を選択。')+G('✅ 少なくとも一方の承認があれば次へ進めます。')+T('ブロック長の場合：エリアマネージャーの承認のみ表示。')+A('⚠ どちらかの承認が得られていない場合、確認画面で未承認の対象名（ブロック長 or エリアマネージャー）が自動表示されます。')},
+{step:'STEP 7',title:'事故日と機種を入力',body:T('事故が発生した<b>日付</b>と<b>対象機種</b>を入力。')},
+{step:'STEP 8',title:'事故内容を入力',body:T('発生した事故の詳細を記載。')+B('💡 何をしていたか・何が起きたか・お客様への影響を簡潔に。')},
+{step:'STEP 9',title:'原因と再発防止策を入力',body:T('自身で考える<b>原因</b>と<b>再発防止策</b>を入力。')+B('💡 【原因】と【再発防止策】を分けて記載すると分かりやすい。')},
+{step:'STEP 10',title:'報告書画像をアップ',body:T('修理事故報告書に記入し、写真を撮って<b>1枚以上</b>アップロード。')+B('💡 報告書の記入項目：発生日・対応者・修理受付番号・機種・交換部品・ご署名')+A('⚠ 画像なしでは報告できません。')},
+{step:'STEP 11',title:'確認画面（両方承認あり）',body:T('全入力内容を確認してください。')+T('ブロック長・エリアマネージャー両方の承認がある場合、警告なしで報告できます。')+A('⚠ 送信後の修正はできません。')},
+{step:'STEP 11（未承認あり）',title:'確認画面（未承認の場合）',body:T('いずれかの承認が得られていない場合、黄色の警告が表示されます。')+A('⚠ 「報告後、必ず○○の承認を得てください」と未承認の対象名が自動表示。')+T('報告は可能ですが、報告後に必ず残りの承認を得てください。')},
+{step:'STEP 12 ─ 完了！',title:'報告完了',body:T('修理事故報告を受け付けました。')+R('🎯 修理事故件数「0」を目指しましょう。')+B('📖 マニュアル確認テストを必ず実施してください。')},
+{step:'👑 ブロック長が当事者',title:'メンバーとの違い',body:T('ブロック長自身が修理事故の当事者の場合の説明です。')+B('① 当事者区分で「👑 ブロック長」を選択')+B('② 承認画面はエリアマネージャーのみ表示（ブロック長承認は非表示）')+B('③ 確認画面の当事者欄が「👑 ブロック長」に変わる')+A('⚠ エリアマネージャーの承認は必須。承認なしでは報告できません。')},
+{step:'👑 当事者区分',title:'ブロック長を選択',body:T('当事者区分で<b>「👑 ブロック長（自身が当事者）」</b>を選択します。')+B('💡 メンバーの場合と同じフォームで報告します。承認画面のみ異なります。')},
+{step:'👑 承認確認',title:'エリアマネージャーの承認のみ',body:T('ブロック長が当事者のため、ブロック長承認は不要です。')+T('<b>エリアマネージャーの承認のみ</b>が表示されます。')+R('❌ 承認なし → エリアマネージャーの承認を得てから報告してください。')},
+{step:'👑 確認画面',title:'ブロック長の確認画面',body:T('メンバーとの違い：')+B('・当事者欄が「👑 ブロック長」')+B('・ブロック長承認の行が非表示')+B('・エリアマネージャー承認のみ表示')+T('それ以外（事故日・機種・事故内容・原因・画像）はメンバーと同じです。')},
+{step:'❌ 承認NG',title:'承認が得られないとどうなる？',body:T('承認状況によってNG画面が表示され、報告できません。')+R('❌ メンバー → ブロック長・エリアマネージャー両方「承認なし」で報告不可')+R('❌ ブロック長 → エリアマネージャー「承認なし」で報告不可')+B('💡 承認を得てから再度報告してください。')},
+{step:'❌ NG例①',title:'メンバー：両方承認なし',body:T('メンバーがブロック長・エリアマネージャー両方「承認なし」を選んだ状態です。')+R('❌ この状態で「次へ進む」を押すと次ページの警告画面が表示されます。')+A('⚠ 少なくとも一方の承認が必要です。')},
+{step:'❌ NG例①',title:'メンバー：承認NGの警告画面',body:T('両方「承認なし」で「次へ進む」を押すとこの画面が表示されます。')+R('⚠ 承認が必要です')+T('「承認画面に戻る」をクリックして、承認を得てから再選択。')},
+{step:'❌ NG例②',title:'ブロック長：エリアマネージャー承認なし',body:T('ブロック長がエリアマネージャー「承認なし」を選んだ状態です。')+R('❌ エリアマネージャーの承認がないためこの状態で次へ進むと警告画面が表示されます。')+R('❌ この状態で「次へ進む」を押すと次ページの警告画面が表示されます。')},
+{step:'❌ NG例②',title:'ブロック長：承認NGの警告画面',body:T('エリアマネージャー「承認なし」で「次へ進む」を押すとこの画面が表示されます。')+R('⚠ 承認が必要です')+T('「承認画面に戻る」をクリックして、承認を得てから再選択。')},
+{step:'⚠ 注意点',title:'こうならないように注意',body:R('❌ 承認なし → 少なくとも、ブロック長またはエリアマネージャーのいずれかの承認を得てください。未承認の場合、確認画面で「報告後、必ず○○の承認を得てください」と警告されます。')+R('❌ 画像未アップ → 報告書画像は1枚以上必須。')+B('💡 ブロック長自身が当事者 → 当事者区分で「ブロック長」を選択。エリアマネージャーの承認のみ必要。')},
+{step:'🆘 困ったとき',title:'こんなときはどうする？',body:B('📝 事故内容の書き方 → 何をしていたか・何が起きたか・影響を簡潔に。')+B('🔍 原因・防止策 → 【原因】と【再発防止策】を分けて記載。')+B('❌ 間違えた → 上長に報告。')},
+{step:'まとめ',title:'修理事故報告は以上です',body:G('✅ 事故発生時に速やかに報告')+G('✅ 少なくともブロック長もしくはエリアマネージャーの承認が必要')+G('✅ 事故内容・原因・防止策・画像を入力')+A('⚠ 修理事故件数「0」を目指しましょう')+B('💡 困ったら上長に報告')},
+];
+var cur=0;
+var sls=document.querySelectorAll('.scr');
+var tot=sls.length;
+var prevBtn=document.getElementById('prevBtn');
+var nextBtn=document.getElementById('nextBtn');
+
+function go(n){
+  if(n<0||n>=tot)return;
+  sls[cur].classList.remove('active');
+  sls[cur].classList.remove('prev');
+  if(n>cur) sls[cur].classList.add('prev');
+  cur=n;
+  for(var i=0;i<tot;i++){sls[i].classList.remove('active');sls[i].classList.remove('prev');}
+  sls[cur].classList.add('active');
+  upd();
+}
+
+function upd(){
+  prevBtn.style.opacity=cur===0?'0.3':'1';
+  prevBtn.style.pointerEvents=cur===0?'none':'auto';
+  nextBtn.style.opacity='1';
+  nextBtn.style.pointerEvents='auto';
+  nextBtn.textContent=cur===tot-1?'✕ 閉じる':'次へ →';
+  document.getElementById('bar').style.width=((cur+1)/tot*100)+'%';
+  document.getElementById('cnt').textContent=(cur+1)+'/'+tot;
+  var d=document.getElementById('dots');
+  d.innerHTML='';
+  for(var i=0;i<tot;i++){
+    var e=document.createElement('div');
+    e.className='dot'+(i===cur?' a':i<cur?' d':'');
+    e.setAttribute('data-i',i);
+    e.addEventListener('click',function(){go(parseInt(this.getAttribute('data-i')));});
+    d.appendChild(e);
+  }
+  var info=DATA[cur]||{};
+  document.getElementById('rs').textContent=info.step||'';
+  document.getElementById('rt').textContent=info.title||'';
+  document.getElementById('rb').innerHTML=info.body||'';
+}
+
+prevBtn.addEventListener('click',function(){go(cur-1);});
+nextBtn.addEventListener('click',function(){
+  if(cur===tot-1){
+    try{window.parent.postMessage({action:'close'},'*');}catch(e){window.close();}
+  } else {go(cur+1);}
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1);}
+  if(e.key==='ArrowLeft'){go(cur-1);}
+});
+
+var tx=0;
+document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;});
+document.addEventListener('touchend',function(e){
+  var dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50){dx<0?go(cur+1):go(cur-1);}
+});
+
+upd();
+
+document.getElementById('backManual').addEventListener('click',function(){
+  try{window.parent.postMessage({action:'manual'},'*');}catch(e){window.close();}
+});
+document.getElementById('backHome').addEventListener('click',function(){
+  try{window.parent.postMessage({action:'home'},'*');}catch(e){window.close();}
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全体マニュアル ─ スライドマニュアル</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans JP','Hiragino Sans',sans-serif;background:#e8ecf1}
+.page{width:100%;height:100%;display:flex;flex-direction:column}
+.top{height:45px;background:#fff;border-bottom:1.5px solid #dde2e8;display:flex;align-items:center;padding:0 24px;gap:12px;flex-shrink:0}
+.top-b{font-size:15px;font-weight:800;color:#1e40af}.top-t{font-size:15px;color:#64748b;flex:1}.top-c{font-size:15px;color:#94a3b8;font-weight:700}
+.bar{position:fixed;top:0;left:0;height:4.5px;background:linear-gradient(90deg,#1e40af,#6366f1);z-index:101;transition:width .4s}
+.main{flex:1;display:flex;overflow:hidden;min-height:0}
+.left{width:72%;display:flex;align-items:center;justify-content:center;padding:14px 10px 14px 18px;position:relative;background:#e8ecf1}
+.right{width:28%;min-width:240px;background:#fff;border-left:2.5px solid #1e40af;display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(30,64,175,.06)}
+.right-head{padding:12px 14px 8px;background:linear-gradient(180deg,rgba(30,64,175,.035),transparent)}
+.right-step{font-size:13px;font-weight:800;letter-spacing:.4px;margin-bottom:4px;color:#1e40af}
+.right-title{font-size:22px;font-weight:900;color:#1e293b;line-height:1.25}
+.right-divider{height:1px;background:linear-gradient(90deg,#1e40af 0%,#e2e8f0 60%);margin:0 18px}
+.right-body{flex:1;overflow:hidden;padding:10px 14px 8px}
+.right-text{font-size:14px;color:#334155;line-height:1.95;margin-bottom:9px}
+.right-tip{display:block;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.5;margin-top:4px;font-weight:600}
+.rt-b{background:rgba(37,99,235,.04);border:1.5px solid rgba(37,99,235,.1);color:#1e40af}
+.rt-a{background:rgba(180,83,9,.04);border:1.5px solid rgba(180,83,9,.1);color:#92400e}
+.rt-r{background:rgba(220,38,38,.04);border:1.5px solid rgba(220,38,38,.1);color:#991b1b}
+.rt-g{background:rgba(5,150,105,.04);border:1.5px solid rgba(5,150,105,.1);color:#065f46}
+.screens{position:relative;width:100%;height:100%}
+.scr{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.scr.active{opacity:1;pointer-events:auto}
+.scr-full{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px;overflow-y:auto;background:linear-gradient(160deg,#f8fafc,#eff6ff,#f0fdf4)}
+.scr.prev{opacity:0;transform:translateX(-40px)}
+h1{font-size:clamp(39px,6vw,57px);font-weight:900;color:#1e293b;text-align:center;margin-bottom:9px}
+h2{font-size:clamp(33px,5vw,44px);font-weight:800;color:#1e293b;text-align:center;margin-bottom:6px}
+.sub2{font-size:25px;color:#64748b;text-align:center;max-width:870px;line-height:1.7;margin-bottom:18px}
+.badge3{display:inline-flex;align-items:center;gap:9px;padding:9px 25px;border-radius:33px;font-size:20px;font-weight:700;margin-bottom:18px}
+.b3-navy{background:rgba(30,64,175,.06);border:1.5px solid rgba(30,64,175,.15);color:#1e40af}
+.b3-b{background:rgba(37,99,235,.05);border:1.5px solid rgba(37,99,235,.12);color:#2563eb}
+.b3-x{background:rgba(100,116,139,.05);border:1.5px solid rgba(100,116,139,.12);color:#64748b}
+.b3-r{background:rgba(220,38,38,.05);border:1.5px solid rgba(220,38,38,.12);color:#dc2626}
+.ft{padding:18px 25px;border-radius:15px;font-size:22px;line-height:1.7;margin-top:8px;max-width:900px;width:100%}
+.ft b{font-weight:800}
+.ft-b{background:rgba(37,99,235,.04);border:1.5px solid rgba(37,99,235,.1);color:#1e40af}
+.ft-a{background:rgba(180,83,9,.04);border:1.5px solid rgba(180,83,9,.1);color:#92400e}
+.ft-r{background:rgba(220,38,38,.04);border:1.5px solid rgba(220,38,38,.1);color:#991b1b}
+.ft-g{background:rgba(5,150,105,.04);border:1.5px solid rgba(5,150,105,.1);color:#065f46}
+.sitem{padding:18px 27px;border-radius:15px;font-size:24px;font-weight:700;margin-bottom:8px;max-width:840px;width:100%}
+.fu{opacity:0;transform:translateY(10px);transition:all .4s ease}
+.scr.active .fu{opacity:1;transform:translateY(0)}
+.scr.active .fu:nth-child(2){transition-delay:.06s}
+.scr.active .fu:nth-child(3){transition-delay:.12s}
+.scr.active .fu:nth-child(4){transition-delay:.18s}
+.scr.active .fu:nth-child(5){transition-delay:.24s}
+.scr.active .fu:nth-child(6){transition-delay:.3s}
+.scr.active .fu:nth-child(7){transition-delay:.36s}
+.scr.active .fu:nth-child(8){transition-delay:.42s}
+.scr.active .fu:nth-child(9){transition-delay:.48s}
+.scr.active .fu:nth-child(10){transition-delay:.54s}
+
+.right-nav{flex-shrink:0;padding:15px 18px 16px;border-top:1px solid #eef1f5;background:#fafbfc}
+.right-nav-dots{display:flex;gap:4px;justify-content:center;margin-bottom:9px;flex-wrap:wrap}
+.dot{width:5px;height:5px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all .25s}
+.dot.a{background:#1e40af;transform:scale(1.5)}.dot.d{background:#2563eb}
+.right-nav-btns{display:flex;gap:9px}
+.nav-btn{flex:1;padding:15px 0;border:none;border-radius:10px;font-size:21px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;letter-spacing:.3px}
+.nav-btn-prev{background:#f1f5f9;color:#64748b;border:2px solid #94a3b8;box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.nav-btn-prev:hover{background:#e2e8f0;color:#1e293b}
+.nav-btn-next{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:#fff;border:none;box-shadow:0 1px 6px rgba(30,64,175,.25)}
+.nav-btn-next:hover{box-shadow:0 2px 10px rgba(30,64,175,.35)}
+.right-nav-extra{display:flex;gap:8px;margin-top:10px}
+.nav-extra-btn{flex:1;padding:12px 0;border:2px solid #94a3b8;border-radius:9px;font-size:18px;box-shadow:0 1px 6px rgba(0,0,0,.08);font-weight:700;cursor:pointer;font-family:inherit;background:#fff;color:#64748b;text-align:center;transition:all .15s}
+.nav-extra-btn:hover{background:#f1f5f9;color:#1e293b}
+.nav-extra-home{border-color:rgba(37,99,235,.15);color:#2563eb;background:rgba(37,99,235,.03)}
+.nav-extra-home:hover{background:rgba(37,99,235,.08)}
+
+/* Schedule grid */
+.sched-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:900px;width:100%}
+.sched-card{padding:21px;border-radius:18px;text-align:center}
+.sched-icon{font-size:42px;margin-bottom:6px}
+.sched-title{font-size:20px;font-weight:800;margin-bottom:5px}
+.sched-desc{font-size:15px;line-height:1.6}
+.sc-daily{background:rgba(5,150,105,.04);border:2px solid rgba(5,150,105,.15);color:#059669}
+.sc-weekly{background:rgba(99,102,241,.04);border:2px solid rgba(99,102,241,.15);color:#4f46e5}
+.sc-monthly{background:rgba(37,99,235,.04);border:2px solid rgba(37,99,235,.15);color:#1d4ed8}
+.sc-anytime{background:rgba(234,88,12,.04);border:2px solid rgba(234,88,12,.15);color:#c2410c}
+.sc-incident{background:rgba(220,38,38,.04);border:2px solid rgba(220,38,38,.15);color:#b91c1c}
+.sc-role{background:rgba(139,92,246,.04);border:2px solid rgba(139,92,246,.15);color:#6d28d9}
+
+/* Module card */
+.mod-row{display:flex;align-items:center;gap:15px;padding:15px 21px;border-radius:15px;border:1.5px solid #e2e8f0;background:#fff;margin-bottom:8px;max-width:900px;width:100%;transition:all .3s}
+.mod-icon{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:27px;flex-shrink:0}
+.mod-name{font-size:20px;font-weight:700;color:#1e293b}
+.mod-sub{font-size:14px;color:#94a3b8;margin-top:2px}
+.mod-freq{font-size:15px;font-weight:700;margin-left:auto;padding:5px 15px;border-radius:9px;flex-shrink:0}
+
+/* Org tree */
+.org-tree{display:flex;flex-direction:column;align-items:center;gap:9px;max-width:750px;width:100%}
+.org-level{display:flex;align-items:center;gap:12px;padding:21px 33px;border-radius:18px;width:100%;justify-content:center}
+.org-arrow{font-size:27px;color:#94a3b8}
+
+/* Common flow */
+.flow-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;max-width:840px;width:100%}
+.flow-step{background:#fff;border:1.5px solid #e2e8f0;border-radius:15px;padding:18px 9px;text-align:center}
+.flow-num{font-size:30px;font-weight:900;margin-bottom:3px}
+.flow-label{font-size:16px;color:#64748b}
+
+/* Dashboard mock */
+.dash-mock{flex:1;background:#fff;border:2px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.dm-hdr{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1.5px solid #e2e8f0;background:#fafbfc}
+.dm-hdr-icon{font-size:20px}
+.dm-hdr-title{font-size:18px;font-weight:800;color:#1e293b;flex:1}
+.dm-hdr-time{font-size:14px;font-weight:700;color:#059669;background:rgba(5,150,105,.08);padding:4px 12px;border-radius:8px}
+.dm-summary{display:flex;gap:16px;padding:10px 18px;border-bottom:1px solid #f1f5f9}
+.dm-sum-item{font-size:16px;font-weight:800}
+.dm-body{padding:12px 18px;display:flex;flex-direction:column;gap:6px}
+.dm-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;border:1px solid #f1f5f9;background:#fff}
+.dm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dm-store{font-size:15px;font-weight:700;color:#1e293b;flex:1}
+.dm-staff{font-size:11px;font-weight:500;color:#94a3b8;margin-top:1px}
+.dm-val{font-size:15px;font-weight:800;flex-shrink:0}
+.dm-cam-tag{font-size:12px;padding:3px 10px;border-radius:6px;font-weight:700}
+.dm-cam-block{font-size:12px;font-weight:700;color:#64748b;padding:6px 0 2px;border-bottom:1px solid #f1f5f9;margin-bottom:4px}
+.dm-legend{display:flex;gap:12px;flex-wrap:wrap;padding:10px 18px;border-top:1px solid #f1f5f9;font-size:11px;color:#64748b;font-weight:600}
+.dm-ld{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.dm-tag{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:700;flex-shrink:0;margin-left:6px}
+
+/* Admin cards */
+.admin-card{flex:1;min-width:220px;padding:20px;border-radius:16px;background:#fff}
+.ac-icon{font-size:32px;margin-bottom:8px}
+.ac-title{font-size:20px;font-weight:800;margin-bottom:6px}
+.ac-who{font-size:12px;color:#64748b;margin-bottom:10px;font-weight:600}
+.ac-desc{font-size:14px;color:#475569;line-height:1.7}
+.ac-desc b{font-weight:800}
+.ac-purple{border:2px solid rgba(167,139,250,.25);box-shadow:0 2px 8px rgba(167,139,250,.08)}.ac-purple .ac-title{color:#7c3aed}
+.ac-blue{border:2px solid rgba(56,189,248,.25);box-shadow:0 2px 8px rgba(56,189,248,.08)}.ac-blue .ac-title{color:#0284c7}
+.ac-red{border:2px solid rgba(239,68,68,.2);box-shadow:0 2px 8px rgba(239,68,68,.06)}.ac-red .ac-title{color:#dc2626}
+.ac-amber{border:2px solid rgba(245,158,11,.2);box-shadow:0 2px 8px rgba(245,158,11,.06)}.ac-amber .ac-title{color:#b45309}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="bar" id="bar"></div>
+<div class="top"><div class="top-b">📘 全体マニュアル</div><div class="top-t">─ スライドマニュアル</div><div class="top-c" id="cnt"></div></div>
+<div class="main">
+<div class="left"><div class="screens">
+
+<!-- 0: Title -->
+<div class="scr scr-full active" data-i="0">
+<div class="badge3 b3-navy fu">📘 業務管理アプリ</div>
+<h1 class="fu">全体マニュアル</h1>
+<div class="sub2 fu">メンバー業務9つ＋管理業務の概要・スケジュール・組織構成・共通操作フローを<br>まとめた総合ガイドです。</div>
+<div class="ft ft-b fu" style="text-align:center;max-width:690px"><b>メンバー業務9つ ＋ 管理業務 ・ 4つのスケジュール区分</b><br>店舗PCのブラウザから操作します</div>
+</div>
+
+<!-- 1: App overview -->
+<div class="scr scr-full" data-i="1">
+<div class="badge3 b3-navy fu">📋 アプリ概要</div>
+<h2 class="fu">業務管理アプリとは？</h2>
+<div class="sub2 fu">各店舗の日常業務をデジタルで一元管理するアプリケーションです。</div>
+<div class="ft ft-b fu"><b>主な機能</b><br>出勤報告・カメラ確認・Googleマイビジネス投稿報告・競合調査・買取業務・入金管理チェック・備品注文相談・修理事故報告・月末月初作業のレポートと管理</div>
+<div class="ft ft-g fu"><b>アクセス方法</b><br>店舗PCのブラウザからアクセス。個人端末やiPhone・iPadからはアクセスできません。</div>
+<div class="ft ft-a fu">⚠ <b>必ず店舗PCから操作してください。</b></div>
+</div>
+
+<!-- 2: Attendance status -->
+<div class="scr scr-full" data-i="2">
+<div class="badge3 b3-navy fu">🏪 出勤状況パネル</div>
+<h2 class="fu">ホーム画面 ─ 出勤状況</h2>
+<div class="sub2 fu">全6パターンのステータスで各店舗の出勤状況を表示します</div>
+<div class="dash-mock fu" style="max-width:700px;width:100%">
+<div class="dm-hdr"><span class="dm-hdr-icon">🏪</span><span class="dm-hdr-title">出勤状況</span><span class="dm-hdr-time">10:15</span></div>
+<div class="dm-summary"><span class="dm-sum-item" style="color:#059669">✅ 1</span><span class="dm-sum-item" style="color:#b45309">⚠ 1</span><span class="dm-sum-item" style="color:#dc2626">🔴 1</span><span class="dm-sum-item" style="color:#7c3aed">✓ 1</span><span class="dm-sum-item" style="color:#0284c7">💤 1</span><span class="dm-sum-item" style="color:#64748b">⚪ 1</span></div>
+<div class="dm-body">
+<div class="dm-row" style="border:1.5px solid rgba(16,185,129,.2)"><div class="dm-dot" style="background:#10b981"></div><div class="dm-store">新宿東南口<div class="dm-staff">田中 太郎</div></div><div class="dm-val" style="color:#059669">9:52</div><div class="dm-tag" style="background:rgba(16,185,129,.08);color:#059669">出勤済</div></div>
+<div class="dm-row" style="border:1.5px solid rgba(148,163,184,.2)"><div class="dm-dot" style="background:#94a3b8"></div><div class="dm-store">ルミネ新宿<div class="dm-staff" style="color:#94a3b8">─</div></div><div class="dm-val" style="color:#94a3b8">─</div><div class="dm-tag" style="background:rgba(148,163,184,.08);color:#64748b">出勤前</div></div>
+<div class="dm-row" style="border:1.5px solid rgba(239,68,68,.2)"><div class="dm-dot" style="background:#ef4444"></div><div class="dm-store">下北沢<div class="dm-staff" style="color:#ef4444">未報告</div></div><div class="dm-val" style="color:#ef4444">🔴</div><div class="dm-tag" style="background:rgba(239,68,68,.08);color:#dc2626">未報告</div></div>
+<div class="dm-row" style="border:1.5px solid rgba(167,139,250,.2)"><div class="dm-dot" style="background:#a78bfa"></div><div class="dm-store">池袋東口<div class="dm-staff">高橋 美咲</div></div><div class="dm-val" style="color:#7c3aed">9:55</div><div class="dm-tag" style="background:rgba(167,139,250,.08);color:#7c3aed">承認済</div></div>
+<div class="dm-row" style="border:1.5px solid rgba(56,189,248,.2)"><div class="dm-dot" style="background:#38bdf8"></div><div class="dm-store">池袋西口地下街<div class="dm-staff" style="color:#0284c7">休業</div></div><div class="dm-val" style="color:#0284c7">💤</div><div class="dm-tag" style="background:rgba(56,189,248,.08);color:#0284c7">休業</div></div>
+<div class="dm-row" style="border:1.5px solid rgba(234,179,8,.2)"><div class="dm-dot" style="background:#eab308"></div><div class="dm-store">BIGBOX高田馬場<div class="dm-staff">鈴木 花子</div></div><div class="dm-val" style="color:#b45309">11:08</div><div class="dm-tag" style="background:rgba(234,179,8,.08);color:#b45309">遅延</div></div>
+</div>
+<div class="dm-legend">
+<span><span class="dm-ld" style="background:#10b981"></span>出勤済</span>
+<span><span class="dm-ld" style="background:#eab308"></span>遅延</span>
+<span><span class="dm-ld" style="background:#ef4444"></span>未報告</span>
+<span><span class="dm-ld" style="background:#a78bfa"></span>承認</span>
+<span><span class="dm-ld" style="background:#38bdf8"></span>休業</span>
+<span><span class="dm-ld" style="background:#94a3b8"></span>出勤前</span>
+</div>
+</div>
+</div>
+
+<!-- 3: Camera status -->
+<div class="scr scr-full" data-i="3">
+<div class="badge3 b3-navy fu">📹 カメラ確認パネル</div>
+<h2 class="fu">ホーム画面 ─ カメラ起動確認</h2>
+<div class="sub2 fu">ブロック単位でカメラ確認結果を表示します</div>
+<div class="dash-mock fu" style="max-width:700px;width:100%">
+<div class="dm-hdr"><span class="dm-hdr-icon">📹</span><span class="dm-hdr-title">カメラ起動確認</span><span class="dm-hdr-time">10:15</span></div>
+<div class="dm-body">
+<div class="dm-cam-block">新宿ブロック ─ 田中 太郎（新宿東南口）</div>
+<div class="dm-row" style="border:1.5px solid rgba(234,179,8,.2)"><div class="dm-dot" style="background:#eab308"></div><div class="dm-store">新宿東南口<div class="dm-staff">自店舗</div></div><div class="dm-val dm-cam-tag" style="color:#b45309;background:rgba(234,179,8,.1)">― スキップ</div><div class="dm-tag" style="background:rgba(234,179,8,.08);color:#b45309">自店舗</div></div>
+<div class="dm-row" style="border:1.5px solid rgba(16,185,129,.2)"><div class="dm-dot" style="background:#10b981"></div><div class="dm-store">ルミネ新宿</div><div class="dm-val dm-cam-tag" style="color:#059669;background:rgba(5,150,105,.1)">✓ 確認OK</div><div class="dm-tag" style="background:rgba(16,185,129,.08);color:#059669">OK</div></div>
+<div class="dm-row" style="border:1.5px solid rgba(239,68,68,.2)"><div class="dm-dot" style="background:#ef4444"></div><div class="dm-store">下北沢</div><div class="dm-val dm-cam-tag" style="color:#dc2626;background:rgba(239,68,68,.1)">✗ 未確認</div><div class="dm-tag" style="background:rgba(239,68,68,.08);color:#dc2626">異常あり</div></div>
+<div class="dm-cam-block" style="margin-top:10px">池袋ブロック</div>
+<div class="dm-row" style="border:1.5px solid rgba(148,163,184,.2)"><div class="dm-dot" style="background:#94a3b8"></div><div class="dm-store">池袋東口</div><div class="dm-val" style="color:#94a3b8;font-size:12px">未報告</div><div class="dm-tag" style="background:rgba(148,163,184,.08);color:#64748b">未報告</div></div>
+<div class="dm-row" style="border:1.5px solid rgba(167,139,250,.2)"><div class="dm-dot" style="background:#a78bfa"></div><div class="dm-store">池袋西口地下街</div><div class="dm-val dm-cam-tag" style="color:#7c3aed;background:rgba(139,92,246,.1)">✅ 承認</div><div class="dm-tag" style="background:rgba(167,139,250,.08);color:#7c3aed">承認済</div></div>
+</div>
+<div class="dm-legend">
+<span><span class="dm-ld" style="background:#10b981"></span>OK</span>
+<span><span class="dm-ld" style="background:#eab308"></span>自店舗（スキップ）</span>
+<span><span class="dm-ld" style="background:#ef4444"></span>異常あり（未確認）</span>
+<span><span class="dm-ld" style="background:#a78bfa"></span>承認</span>
+<span><span class="dm-ld" style="background:#94a3b8"></span>未報告</span>
+</div>
+</div>
+<div class="ft ft-r fu" style="max-width:700px">⚠ <b>異常あり（赤）</b>はカメラが映らなかった店舗です。上長に連絡してください。</div>
+</div>
+
+<!-- 4: Approval & Holiday & Admin -->
+
+<div class="scr scr-full" data-i="4">
+<div class="badge3 b3-purple fu">📱 マイビジネスパネル</div>
+<h2 class="fu">ホーム画面右下</h2>
+<div class="sub2 fu">Googleマイビジネス投稿報告の状況がリアルタイムで確認できます</div>
+<div style="max-width:340px;width:100%;margin:16px auto;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:12px;font-family:system-ui" class="fu">
+<div style="font-size:11px;font-weight:700;color:#334155;margin-bottom:8px">📱 マイビジネス投稿・口コミ返信</div>
+<div style="display:flex;gap:14px;margin-bottom:10px;font-size:10px;text-align:center">
+<div><div style="font-size:18px;font-weight:800;color:#7c3aed">4</div><div style="color:#64748b">報告済</div></div>
+<div><div style="font-size:18px;font-weight:800;color:#dc2626">2</div><div style="color:#64748b">未報告</div></div>
+<div><div style="font-size:18px;font-weight:800;color:#7c3aed">14</div><div style="color:#64748b">📱投稿</div></div>
+<div><div style="font-size:18px;font-weight:800;color:#d97706">8</div><div style="color:#64748b">💬返信</div></div>
+</div>
+<div style="border-top:1px solid #e2e8f0;padding-top:8px">
+<div style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:#f0eaff;border:1px solid #ddd5f9;border-radius:8px;margin-bottom:4px;font-size:10px"><span style="width:7px;height:7px;border-radius:50%;background:#7c3aed"></span><b>ルミネ新宿</b> 田中<span style="margin-left:auto;color:#7c3aed">📱4</span><span style="color:#d97706">💬2</span></div>
+<div style="display:flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:10px"><span style="width:7px;height:7px;border-radius:50%;background:#dc2626"></span><b>下北沢</b><span style="color:#dc2626;margin-left:auto">未報告 🔴</span></div>
+</div>
+</div>
+<div class="cmp fu" style="max-width:500px;margin-top:16px">
+<div class="cmp-t" style="color:#7c3aed">パネルの見方</div>
+<div class="cmp-i">🟣 報告済 ─ 投稿数と返信数を表示</div>
+<div class="cmp-i">🔴 未報告 ─ まだ報告していない店舗</div>
+<div class="cmp-i">🔄 同日再報告は上書き（二重カウントなし）</div>
+<div class="cmp-i">💡 30秒ごとに自動更新</div>
+</div>
+</div>
+<div class="scr scr-full" data-i="6">
+<div class="badge3 b3-navy fu">🔒 承認・休業・管理者操作</div>
+<h2 class="fu">上位権限で行えること</h2>
+<div class="sub2 fu">ブロック長・エリアマネージャー・管理者がホーム画面から操作できます</div>
+<div style="display:flex;gap:14px;max-width:1000px;width:100%;flex-wrap:wrap" class="fu">
+<div class="admin-card ac-purple"><div class="ac-icon">✅</div><div class="ac-title">出勤の承認</div><div class="ac-who">👑 ブロック長 / 🏆 エリアマネージャー / 🔑 管理者</div><div class="ac-desc">遅延・未報告の店舗について、カメラやジョブカン等で営業開始前に出勤が確認できた場合、手動で<b>「承認済」</b>に変更できます。承認すると紫色（承認済）に表示が変わります。</div></div>
+<div class="admin-card ac-blue"><div class="ac-icon">💤</div><div class="ac-title">休業の設定</div><div class="ac-who">👑 ブロック長 / 🏆 エリアマネージャー / 🔑 管理者</div><div class="ac-desc">臨時休業・定休日などの場合、該当店舗を<b>「休業」</b>に設定できます。休業に設定すると水色で表示され、出勤報告は不要になります。</div></div>
+<div class="admin-card ac-red"><div class="ac-icon">🔧</div><div class="ac-title">修理事故の承認</div><div class="ac-who">👑 ブロック長 / 🏆 エリアマネージャー</div><div class="ac-desc">スタッフが報告した修理事故について、少なくともブロック長またはエリアマネージャーいずれかが<b>承認</b>を行います。</div></div>
+</div>
+<div class="ft ft-b fu" style="max-width:1000px">💡 承認・休業の操作は、ホーム画面の出勤状況パネルから店舗をクリックし、パスワードを入力して行います。</div>
+</div>
+
+
+<!-- 4: Banners -->
+<div class="scr scr-full" data-i="5">
+<div class="badge3 b3-navy fu">📢 お知らせ・シフト変更バナー</div>
+<h2 class="fu">ホーム画面上部に表示されるバナー</h2>
+<div class="sub2 fu">管理者・エリアマネージャーからのお知らせと当月のシフト変更が表示されます</div>
+<div style="display:flex;flex-direction:column;gap:6px;max-width:680px;width:100%">
+
+<div class="fu" style="padding:8px 12px;border-radius:10px;background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.02));border:1px solid rgba(245,158,11,.3);display:flex;align-items:flex-start;gap:8px">
+  <div style="font-size:14px;flex-shrink:0">🔔</div>
+  <div style="flex:1;min-width:0;text-align:left">
+    <div style="font-size:7px;font-weight:800;color:#b45309;letter-spacing:.5px;margin-bottom:2px">管理者からのお知らせ</div>
+    <div style="font-size:10px;font-weight:600;color:#92400e;line-height:1.5">システムメンテナンスのお知らせ：3/20(木) 22:00〜翌6:00 までアプリが一時利用できません。</div>
+    <div style="font-size:7px;color:#b45309;margin-top:2px">🕐 2026/3/13 9:00</div>
+  </div>
+</div>
+
+<div class="fu" style="padding:8px 12px;border-radius:10px;background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(139,92,246,.02));border:1px solid rgba(139,92,246,.2);display:flex;align-items:flex-start;gap:8px">
+  <div style="font-size:14px;flex-shrink:0">📣</div>
+  <div style="flex:1;min-width:0;text-align:left">
+    <div style="font-size:7px;font-weight:800;color:#7c3aed;letter-spacing:.5px;margin-bottom:2px">エリアマネージャーからのお知らせ</div>
+    <div style="font-size:10px;font-weight:600;color:#5b21b6;line-height:1.5">3/16.3/17はルミネ新宿店の営業開始時間が10時30分になります。</div>
+    <div style="font-size:7px;color:#6d28d9;margin-top:2px">🕐 2026/3/13 8:30</div>
+  </div>
+</div>
+
+<div class="fu" style="padding:8px 12px;border-radius:10px;background:linear-gradient(135deg,rgba(59,130,246,.06),rgba(59,130,246,.02));border:1px solid rgba(59,130,246,.2)">
+  <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+    <span style="font-size:12px">📅</span>
+    <span style="font-size:8px;font-weight:800;color:#1e40af;letter-spacing:.5px">3月のシフト変更</span>
+    <span style="font-size:7px;color:#64748b;margin-left:auto">6件</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;text-align:left">
+    <div style="padding:3px 5px;background:#fff;border-radius:5px;font-size:7px;line-height:1.3;border:1px solid #e2e8f0"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#2563eb">3/05</span><span style="font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">ルミネ新宿</span></div><div style="font-size:6px;color:#64748b">田中→鈴木</div></div>
+    <div style="padding:3px 5px;background:rgba(239,68,68,.06);border-radius:5px;font-size:7px;line-height:1.3;border:1px solid rgba(239,68,68,.15)"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#dc2626">3/08</span><span style="background:#ef4444;color:#fff;font-size:6px;font-weight:700;padding:0 3px;border-radius:2px">欠</span><span style="font-weight:700">高橋</span></div><div style="font-size:6px;color:#dc2626">体調不良</div></div>
+    <div style="padding:3px 5px;background:rgba(16,185,129,.06);border-radius:5px;font-size:7px;line-height:1.3;border:1px solid rgba(16,185,129,.15)"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#059669">3/10</span><span style="background:#10b981;color:#fff;font-size:6px;font-weight:700;padding:0 3px;border-radius:2px">出</span><span style="font-weight:700">佐藤</span></div><div style="font-size:6px;color:#059669">池袋東口</div></div>
+    <div style="padding:3px 5px;background:#fff;border-radius:5px;font-size:7px;line-height:1.3;border:1px solid #e2e8f0"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#2563eb">3/12</span><span style="font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">渋谷センター街</span></div><div style="font-size:6px;color:#64748b">小林→加藤</div></div>
+    <div style="padding:3px 5px;background:rgba(239,68,68,.06);border-radius:5px;font-size:7px;line-height:1.3;border:1px solid rgba(239,68,68,.15)"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#dc2626">3/15</span><span style="background:#ef4444;color:#fff;font-size:6px;font-weight:700;padding:0 3px;border-radius:2px">欠</span><span style="font-weight:700">渡辺</span></div><div style="font-size:6px;color:#dc2626">有休</div></div>
+    <div style="padding:3px 5px;background:rgba(16,185,129,.06);border-radius:5px;font-size:7px;line-height:1.3;border:1px solid rgba(16,185,129,.15)"><div style="display:flex;align-items:center;gap:2px"><span style="font-weight:800;color:#059669">3/18</span><span style="background:#10b981;color:#fff;font-size:6px;font-weight:700;padding:0 3px;border-radius:2px">出</span><span style="font-weight:700">山田</span></div><div style="font-size:6px;color:#059669">新宿東南口</div></div>
+  </div>
+</div>
+
+<div class="fu" style="display:flex;gap:8px;font-size:7px;font-weight:600;color:#64748b;padding:0 4px">
+  <span>🔔 管理者（全エリア共通）</span>
+  <span>📣 エリアマネージャー（エリア内）</span>
+  <span>📅 シフト変更（エリア内）</span>
+</div>
+
+</div>
+</div>
+
+<!-- 5: Organization -->
+<div class="scr scr-full" data-i="7">
+<div class="badge3 b3-b fu">🏢 組織構成</div>
+<h2 class="fu">エリア → ブロック → 店舗</h2>
+<div class="sub2 fu">3階層の組織構成で管理されています</div>
+<div class="org-tree fu">
+<div class="org-level" style="background:rgba(30,64,175,.06);border:2.5px solid rgba(30,64,175,.2)"><span style="font-size:30px">🏢</span><div><div style="font-size:22px;font-weight:800;color:#1e40af">エリア</div><div style="font-size:15px;color:#64748b">例：都心エリア</div></div></div>
+<div class="org-arrow">▼</div>
+<div class="org-level" style="background:rgba(245,158,11,.06);border:2.5px solid rgba(245,158,11,.2)"><span style="font-size:30px">👑</span><div><div style="font-size:22px;font-weight:800;color:#b45309">ブロック</div><div style="font-size:15px;color:#64748b">例：新宿ブロック、池袋ブロック</div></div></div>
+<div class="org-arrow">▼</div>
+<div class="org-level" style="background:rgba(5,150,105,.06);border:2.5px solid rgba(5,150,105,.2)"><span style="font-size:30px">🏪</span><div><div style="font-size:22px;font-weight:800;color:#059669">店舗</div><div style="font-size:15px;color:#64748b">例：新宿東南口、ルミネ新宿、下北沢</div></div></div>
+</div>
+<div class="ft ft-b fu" style="max-width:750px">💡 <b>組織設定</b>は管理者パスワード（第1）で管理します。ブロック・店舗の追加や営業時間の変更などが行えます。</div>
+<div class="ft ft-g fu" style="max-width:750px">📅 <b>シフト変更お知らせ</b> ─ ブロック長がシフト変更を配信すると、メンバーのホーム画面上部にバナーで表示されます。</div>
+</div>
+
+<!-- 3: Schedule overview -->
+<div class="scr scr-full" data-i="8">
+<div class="badge3 b3-b fu">📅 業務スケジュール</div>
+<h2 class="fu">4つのスケジュール区分</h2>
+<div class="sub2 fu"></div>
+<div class="sched-grid fu">
+<div class="sched-card sc-daily"><div class="sched-icon">☀️</div><div class="sched-title">毎日</div><div class="sched-desc">出勤報告<br>カメラ起動確認<br><span style="font-size:13px">─ 出勤時 ─</span><br>Googleマイビジネス<br>投稿報告<br><span style="font-size:13px">─ 営業時間内 ─</span></div></div>
+<div class="sched-card sc-weekly"><div class="sched-icon">📅</div><div class="sched-title">毎週金曜</div><div class="sched-desc">競合調査<br>（口コミ・MEO・SEO）<br><span style="font-size:13px">※価格調査だけは随時、</span></div></div>
+<div class="sched-card sc-monthly"><div class="sched-icon">📋</div><div class="sched-title">週末・月末月初</div><div class="sched-desc">入金管理チェック<br>月末・月初作業</div></div>
+</div>
+<div class="sched-grid fu" style="grid-template-columns:1fr;margin-top:8px;max-width:400px">
+<div class="sched-card sc-anytime"><div class="sched-icon">⚡</div><div class="sched-title">随時 / 事故発生時</div><div class="sched-desc">買取業務・備品注文相談・修理事故報告</div></div>
+</div>
+</div>
+
+<!-- 4: Daily tasks -->
+<div class="scr scr-full" data-i="9">
+<div class="badge3 b3-navy fu">☀️ 毎日の業務</div>
+<h2 class="fu">毎日実施する3つの業務</h2>
+<div class="sub2 fu">出勤したスタッフが店舗PCから毎日報告します</div>
+<div class="mod-row fu" style="border-color:rgba(5,150,105,.2)"><div class="mod-icon" style="background:rgba(5,150,105,.08)">🏪</div><div><div class="mod-name">出勤報告</div><div class="mod-sub">営業開始時刻までに報告。遅れると「遅延」、未報告は「未報告」表示。</div></div><div class="mod-freq" style="background:rgba(5,150,105,.08);color:#059669">毎日</div></div>
+<div class="mod-row fu" style="border-color:rgba(8,145,178,.2)"><div class="mod-icon" style="background:rgba(8,145,178,.08)">📹</div><div><div class="mod-name">カメラ起動確認</div><div class="mod-sub">同ブロック全店舗の監視カメラ映像を目視確認。自店舗はスキップ可能。</div></div><div class="mod-freq" style="background:rgba(8,145,178,.08);color:#0891b2">毎日</div></div>
+<div class="mod-row fu" style="border-color:rgba(124,58,237,.2)"><div class="mod-icon" style="background:rgba(124,58,237,.08)">📱</div><div><div class="mod-name">Googleマイビジネス投稿報告</div><div class="mod-sub">営業時間内に実施。投稿数と口コミ返信数を報告。0件の日も必ず報告。</div></div><div class="mod-freq" style="background:rgba(124,58,237,.08);color:#7c3aed">毎日</div></div>
+<div class="ft ft-a fu" style="max-width:900px">⚠ <b>出勤したら①出勤報告→②カメラ起動確認。③Googleマイビジネス投稿報告は営業時間内</b>に実施してください。</div>
+</div>
+
+<!-- 5: Weekly tasks -->
+<div class="scr scr-full" data-i="10">
+<div class="badge3 b3-navy fu">📅 毎週の業務</div>
+<h2 class="fu">毎週金曜に実施する業務</h2>
+<div class="sub2 fu"></div>
+<div class="mod-row fu" style="border-color:rgba(99,102,241,.2)"><div class="mod-icon" style="background:rgba(99,102,241,.08)">🔍</div><div><div class="mod-name">競合調査</div><div class="mod-sub">4種類の調査：💰 価格（随時・）/ ⭐ 口コミ / 📍 MEO / 📊 SEO（毎週金曜）</div></div><div class="mod-freq" style="background:rgba(99,102,241,.08);color:#6366f1">毎週金曜</div></div>
+<div class="ft ft-b fu"><b>💰 価格調査</b> ─ 価格調査ファイル記載の他社と比較（調査は随時。可能であれば毎日。）</div>
+<div class="ft ft-b fu"><b>⭐ 口コミ調査</b> ─ 自店舗＋他社のGoogle口コミ件数を入力</div>
+<div class="ft ft-b fu"><b>📍 MEO調査</b> ─ Googleマップで自店舗が上位3位以内か確認</div>
+<div class="ft ft-b fu"><b>📊 SEO調査</b> ─ Google検索で自社サイトの順位を入力</div>
+<div class="ft ft-r fu">⚠ <b>MEO・SEO調査は必ずシークレットモード（プライベートモード）で検索してください。</b>通常モードだと正確な順位が出ません。</div>
+</div>
+
+<!-- 6: Monthly tasks -->
+<div class="scr scr-full" data-i="11">
+<div class="badge3 b3-navy fu">📋 週末・月末月初の業務</div>
+<h2 class="fu">週末・月末月初に実施する業務</h2>
+<div class="sub2 fu"></div>
+<div class="mod-row fu" style="border-color:rgba(37,99,235,.2)"><div class="mod-icon" style="background:rgba(37,99,235,.08)">💰</div><div><div class="mod-name">入金管理チェック</div><div class="mod-sub">5つのチェック項目に順番に回答。全項目「相違なし」で完了。商業施設は「入金なし」選択可能。</div></div><div class="mod-freq" style="background:rgba(37,99,235,.08);color:#2563eb">週末・月末</div></div>
+<div class="mod-row fu" style="border-color:rgba(234,88,12,.2)"><div class="mod-icon" style="background:rgba(234,88,12,.08)">📋</div><div><div class="mod-name">月末・月初作業チェック</div><div class="mod-sub">在庫棚卸・本社発送物・月間報告書などの完了した作業にチェック。複数選択可能。</div></div><div class="mod-freq" style="background:rgba(234,88,12,.08);color:#ea580c">月末月初</div></div>
+<div class="ft ft-a fu">⚠ 入金管理チェックで<b>「相違あり」</b>を選ぶとやり直しになります。</div>
+<div class="ft ft-b fu">💡 月末・月初作業チェックはブロック長がブロック長業務メニューから確認できます。</div>
+</div>
+
+<!-- 7: Anytime tasks -->
+<div class="scr scr-full" data-i="12">
+<div class="badge3 b3-navy fu">⚡ 随時の業務</div>
+<h2 class="fu">発生時に実施する業務</h2>
+<div class="sub2 fu">買取成約・備品不足・修理事故の発生時にアプリから報告</div>
+<div class="mod-row fu" style="border-color:rgba(132,204,22,.2)"><div class="mod-icon" style="background:rgba(132,204,22,.08)">💎</div><div><div class="mod-name">買取業務</div><div class="mod-sub">買取成約時にグループLINE【買取用】＋チャットワーク【中古端末買取成立報告】の2箇所に報告。</div></div><div class="mod-freq" style="background:rgba(132,204,22,.08);color:#65a30d">随時</div></div>
+<div class="mod-row fu" style="border-color:rgba(244,63,94,.2)"><div class="mod-icon" style="background:rgba(244,63,94,.08)">📦</div><div><div class="mod-name">備品注文相談</div><div class="mod-sub">備品の注文・相談を本部へ送信。品名・個数・希望納期を入力。緊急度（通常/緊急）を選択。</div></div><div class="mod-freq" style="background:rgba(244,63,94,.08);color:#e11d48">随時</div></div>
+<div class="mod-row fu" style="border-color:rgba(220,38,38,.2)"><div class="mod-icon" style="background:rgba(220,38,38,.08)">🔧</div><div><div class="mod-name">修理事故報告</div><div class="mod-sub">修理事故発生時に報告。少なくともブロック長またはエリアマネージャーいずれかの承認が必要。</div></div><div class="mod-freq" style="background:rgba(220,38,38,.08);color:#dc2626">事故発生時</div></div>
+<div class="ft ft-r fu">⚠ 修理事故報告は<b>修理事故報告書に記入し写真を撮って1枚以上アップロード</b>が必須です。</div>
+</div>
+
+<!-- 8: Common flow -->
+<div class="scr scr-full" data-i="13">
+<div class="badge3 b3-b fu">🔄 共通操作フロー</div>
+<h2 class="fu">全業務共通の操作フロー</h2>
+<div class="sub2 fu">ほぼ全ての業務が同じ流れで完了します</div>
+<div class="flow-grid fu">
+<div class="flow-step"><div class="flow-num" style="color:#94a3b8">1</div><div class="flow-label">ホームでメニューをクリック</div></div>
+<div class="flow-step"><div class="flow-num" style="color:#2563eb">2</div><div class="flow-label">ガイド画面で「開始する」</div></div>
+<div class="flow-step"><div class="flow-num" style="color:#059669">3</div><div class="flow-label">店舗を選択</div></div>
+<div class="flow-step"><div class="flow-num" style="color:#b45309">4</div><div class="flow-label">スタッフ名を入力</div></div>
+</div>
+<div class="flow-grid fu" style="margin-top:8px">
+<div class="flow-step"><div class="flow-num" style="color:#7c3aed">5</div><div class="flow-label">業務ごとの入力</div></div>
+<div class="flow-step"><div class="flow-num" style="color:#dc2626">6</div><div class="flow-label">確認画面でチェック</div></div>
+<div class="flow-step"><div class="flow-num" style="color:#059669">7</div><div class="flow-label">「OK 報告する」</div></div>
+<div class="flow-step"><div class="flow-num" style="color:#1e40af">8</div><div class="flow-label">完了！</div></div>
+</div>
+<div class="ft ft-a fu">⚠ <b>送信後の取り消し・修正はできません。</b>確認画面で必ず内容をチェックしてください。</div>
+<div class="ft ft-b fu">💡 スタッフ名は<b>毎回同じ表記（漢字フルネーム）</b>で統一してください。</div>
+</div>
+
+<!-- 9: Navigation -->
+<div class="scr scr-full" data-i="14">
+<div class="badge3 b3-b fu">🧭 画面操作ガイド</div>
+<h2 class="fu">画面の基本操作</h2>
+<div class="sub2 fu"></div>
+<div class="ft ft-b fu"><b>🏠 ホームに戻る</b><br>どの画面でも「🏠 ホーム」ボタンでトップに戻れます。</div>
+<div class="ft ft-b fu"><b>← 戻る</b><br>1つ前の画面に戻ります。送信前であればいつでも戻れます。</div>
+<div class="ft ft-b fu"><b>📖 操作マニュアル</b><br>ホーム画面下部の「📖 操作マニュアル」から各業務のスライド・動画マニュアルを確認できます。</div>
+<div class="ft ft-b fu"><b>☀️/🌙 テーマ切替</b><br>画面右上のトグルでダークモード・ライトモードを切り替えられます。</div>
+<div class="ft ft-a fu">⚠ <b>ブラウザの「戻る」ボタンは使用しないでください。</b>アプリ内の「← 戻る」を使ってください。</div>
+</div>
+
+<!-- 10: Role features -->
+
+<div class="scr scr-full" data-i="15">
+<div class="badge3 b3-g fu">🎨 テーマ・ポータル</div>
+<h2 class="fu">ダーク/ライトモードとポータル</h2>
+<div class="sub2 fu">テーマは右上、ポータルは左メニュー上部</div>
+<div style="display:flex;gap:14px;max-width:600px;width:100%" class="fu">
+<div style="flex:1;border-radius:14px;border:2px solid #e2e8f0;overflow:hidden;background:#fff">
+<div style="padding:8px 12px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:6px;font-size:11px"><span style="width:8px;height:8px;border-radius:50%;background:#10b981"></span><b style="color:#1e293b">☀️ ライトモード</b></div>
+<div style="padding:12px"><div style="display:flex;gap:6px;margin-bottom:8px"><div style="flex:1;padding:10px;border-radius:10px;background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.12);font-size:10px;font-weight:700;color:#1e293b;text-align:center">🏪 出勤報告</div><div style="flex:1;padding:10px;border-radius:10px;background:rgba(168,85,247,.04);border:1px solid rgba(168,85,247,.12);font-size:10px;font-weight:700;color:#1e293b;text-align:center">📱 投稿報告</div></div><div style="padding:6px 10px;border-radius:8px;background:#f1f5f9;font-size:9px;color:#64748b;text-align:center">白背景・目に優しい配色</div></div></div>
+<div style="flex:1;border-radius:14px;border:2px solid #334155;overflow:hidden;background:#0f172a">
+<div style="padding:8px 12px;background:#1e293b;border-bottom:1px solid #334155;display:flex;align-items:center;gap:6px;font-size:11px"><span style="width:8px;height:8px;border-radius:50%;background:#fbbf24"></span><b style="color:#f8fafc">🌙 ダークモード</b></div>
+<div style="padding:12px"><div style="display:flex;gap:6px;margin-bottom:8px"><div style="flex:1;padding:10px;border-radius:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);font-size:10px;font-weight:700;color:#f8fafc;text-align:center">🏪 出勤報告</div><div style="flex:1;padding:10px;border-radius:10px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);font-size:10px;font-weight:700;color:#f8fafc;text-align:center">📱 投稿報告</div></div><div style="padding:6px 10px;border-radius:8px;background:#1e293b;border:1px solid #334155;font-size:9px;color:#94a3b8;text-align:center">暗い環境でも見やすい</div></div></div>
+</div>
+<div style="margin-top:14px;max-width:500px;width:100%;border-radius:12px;border:1.5px solid #e2e8f0;overflow:hidden;background:#fff" class="fu">
+<div style="padding:14px 18px;border-radius:16px;border:2.5px solid #3b82f6;background:linear-gradient(135deg,#f0f6ff,#eef2ff);display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(59,130,246,.12)"><div style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#3b82f6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 12px rgba(59,130,246,.25)">🏠</div><div><div style="font-size:14px;font-weight:800;color:#1e293b">ポータルサイト</div><div style="font-size:10px;color:#94a3b8;margin-top:2px">トップページに戻る</div></div><span style="margin-left:auto;color:#94a3b8;font-size:14px">←</span></div>
+<div style="padding:8px 12px;font-size:10px;color:#64748b;text-align:center">↑ 左メニュー上部のカードをクリックでポータルに戻ります</div>
+</div>
+</div>
+<div class="scr scr-full" data-i="16">
+<div class="badge3 b3-navy fu">👥 役職別機能</div>
+<h2 class="fu">ブロック長・エリアマネージャー・管理者</h2>
+<div class="sub2 fu">パスワードで解除する上位機能です</div>
+<div class="mod-row fu" style="border-color:rgba(245,158,11,.3)"><div class="mod-icon" style="background:rgba(245,158,11,.1)">👑</div><div><div class="mod-name">ブロック長業務</div><div class="mod-sub">ブロック内の出勤承認・入金確認・修理事故確認・月末月初作業の確認</div></div><div class="mod-freq" style="background:rgba(245,158,11,.08);color:#b45309">🔒</div></div>
+<div class="mod-row fu" style="border-color:rgba(220,38,38,.3)"><div class="mod-icon" style="background:rgba(220,38,38,.1)">🏆</div><div><div class="mod-name">エリアマネージャー業務</div><div class="mod-sub">エリア全体の管理・確認。修理事故の承認も行います。</div></div><div class="mod-freq" style="background:rgba(220,38,38,.08);color:#dc2626">🔒</div></div>
+<div class="mod-row fu" style="border-color:rgba(139,92,246,.3)"><div class="mod-icon" style="background:rgba(139,92,246,.1)">🔑</div><div><div class="mod-name">管理者業務</div><div class="mod-sub">お知らせ配信・管理者認証。全エリアの統括管理。</div></div><div class="mod-freq" style="background:rgba(139,92,246,.08);color:#7c3aed">🔒</div></div>
+</div>
+
+<!-- 11: Tips -->
+<div class="scr scr-full" data-i="17">
+<div class="badge3 b3-r fu">⚠ 共通の注意事項</div>
+<h2 class="fu">全スタッフが守るべきルール</h2>
+<div class="ft ft-r fu"><b>❌ 店舗PC以外での操作禁止</b><br>個人端末・店舗のiPhone・iPadからはアクセスしないでください。必ず店舗PCを使用してください。</div>
+<div class="ft ft-r fu"><b>❌ 送信後の取り消し・修正不可</b><br>全業務共通で、一度送信したデータは修正できません。確認画面で必ずチェック。</div>
+<div class="ft ft-b fu"><b>💡 困ったときは上長に報告</b><br>間違えた・忘れた・PCが動かない等、問題が発生したらすぐに上長へ連絡してください。</div>
+</div>
+
+<!-- 12: Summary -->
+<div class="scr scr-full" data-i="18">
+<div style="font-size:63px" class="fu">📘</div>
+<h2 class="fu">全体マニュアル まとめ</h2>
+<div class="sitem fu" style="background:rgba(5,150,105,.04);color:#065f46">✅ 毎日：出勤報告→カメラ起動確認（出勤時）／Googleマイビジネス投稿報告（営業時間内）</div>
+<div class="sitem fu" style="background:rgba(99,102,241,.04);color:#4338ca">✅ 毎週金曜：競合調査（口コミ・MEO・SEO）※価格調査だけは随時、</div>
+<div class="sitem fu" style="background:rgba(37,99,235,.04);color:#1e40af">✅ 週末・月末月初：入金管理チェック・月末月初作業</div>
+<div class="sitem fu" style="background:rgba(234,88,12,.04);color:#9a3412">✅ 随時：買取業務・備品注文相談</div>
+<div class="sitem fu" style="background:rgba(220,38,38,.04);color:#991b1b">✅ 事故発生時：修理事故報告</div>
+<div class="sitem fu" style="background:rgba(180,83,9,.04);color:#92400e">⚠ 店舗PCのみ / 送信後の修正不可 / スタッフ名は漢字フルネーム統一</div>
+<div class="sitem fu" style="background:rgba(37,99,235,.04);color:#1e40af">💡 各業務の詳細は個別マニュアル（スライド・動画）で確認</div>
+<div class="sitem fu" style="background:rgba(37,99,235,.04);color:#1e40af">💡 困ったら上長に報告</div>
+</div>
+
+</div></div>
+<div class="right">
+<div class="right-head"><div class="right-step" id="rs"></div><div class="right-title" id="rt"></div></div>
+<div class="right-divider"></div>
+<div class="right-body" id="rb"></div>
+<div class="right-nav">
+<div class="right-nav-dots" id="dots"></div>
+<div class="right-nav-btns">
+<button class="nav-btn nav-btn-prev" id="prevBtn">← 前へ</button>
+<button class="nav-btn nav-btn-next" id="nextBtn">次へ →</button>
+</div>
+<div class="right-nav-extra">
+<button class="nav-extra-btn" id="backManual">📖 マニュアル一覧</button>
+<button class="nav-extra-btn nav-extra-home" id="backHome">🏠 ホームに戻る</button>
+</div>
+</div></div></div></div>
+<script>
+var T=function(s){return '<span class="right-text">'+s+'</span>';};
+var B=function(s){return '<span class="right-tip rt-b">'+s+'</span>';};
+var A=function(s){return '<span class="right-tip rt-a">'+s+'</span>';};
+var R=function(s){return '<span class="right-tip rt-r">'+s+'</span>';};
+var G=function(s){return '<span class="right-tip rt-g">'+s+'</span>';};
+var DATA=[
+{step:'',title:'全体マニュアル',body:T('業務管理アプリのメンバー業務9つ＋管理業務の概要・スケジュール・組織構成・共通フローをまとめた総合ガイドです。')+B('各業務の詳細は個別マニュアル（スライド・動画）で確認してください。')},
+{step:'📋 アプリ概要',title:'業務管理アプリとは？',body:T('各店舗の日常業務（出勤・カメラ・投稿・調査・買取・入金・備品・事故・月末月初）をデジタルで管理するアプリです。')+T('店舗PCのブラウザからアクセスし、Google Apps Script（スプレッドシート）と連携してデータを記録します。')+A('⚠ 個人端末・店舗のiPhone・iPadからはアクセスできません。必ず店舗PCを使用してください。')},
+{step:'🏠 ホーム画面',title:'出勤状況パネル',body:T('ホーム画面の中央に表示される<b>出勤状況</b>パネルです。各店舗の出勤状況が色付きドットで一覧表示されます。')+G('🟢 <b>出勤済</b> ─ 営業開始前に報告完了。緑色で表示。')+A('🟡 <b>遅延</b> ─ 営業開始後に報告。黄色で表示。')+R('🔴 <b>未報告</b> ─ 営業開始を過ぎても未報告。赤色で表示。')+B('🟣 <b>承認済</b> ─ ブロック長・エリアマネージャー・管理者が手動承認。紫色で表示。')+B('🔵 <b>休業</b> ─ ブロック長・エリアマネージャー・管理者が休業設定。水色で表示。')+B('⚪ <b>出勤前</b> ─ 営業開始前でまだ未報告。灰色で表示。')},
+{step:'🏠 ホーム画面',title:'カメラ確認パネル',body:T('ホーム画面の右側に表示される<b>カメラ起動確認</b>パネルです。ブロック単位で確認結果が表示されます。')+G('🟢 <b>OK</b> ─ カメラ映像が映っていることを目視確認済み。')+A('🟡 <b>自店舗（スキップ）</b> ─ 自店舗のカメラは他店舗から確認するためスキップ。')+R('🔴 <b>異常あり</b> ─ カメラが映らない・確認できなかった店舗。上長に連絡が必要。')+B('🟣 <b>承認済</b> ─ ブロック長・エリアマネージャー・管理者が手動承認。紫色で表示。')+B('⚪ <b>未報告</b> ─ まだカメラ確認が報告されていない店舗。')},
+{step:'🏠 ホーム画面',title:'マイビジネスパネル',body:T('ホーム画面右下に<b>「📱 マイビジネス投稿・口コミ返信」</b>パネルが表示されます。')+'<div style="margin:12px auto;max-width:340px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:12px;font-family:system-ui"><div style="font-size:11px;font-weight:700;color:#334155;margin-bottom:8px">📱 マイビジネス投稿・口コミ返信</div><div style="display:flex;gap:12px;margin-bottom:10px;font-size:10px;text-align:center"><div><div style="font-size:16px;font-weight:800;color:#7c3aed">4</div><div style="color:#64748b">報告済</div></div><div><div style="font-size:16px;font-weight:800;color:#dc2626">2</div><div style="color:#64748b">未報告</div></div><div><div style="font-size:16px;font-weight:800;color:#7c3aed">14</div><div style="color:#64748b">📱投稿</div></div><div><div style="font-size:16px;font-weight:800;color:#d97706">8</div><div style="color:#64748b">💬返信</div></div></div><div style="border-top:1px solid #e2e8f0;padding-top:8px"><div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:#f0eaff;border:1px solid #ddd5f9;border-radius:8px;margin-bottom:4px;font-size:10px"><span style="width:6px;height:6px;border-radius:50%;background:#7c3aed"></span><b>ルミネ新宿</b> 田中<span style="margin-left:auto;color:#7c3aed">📱4</span><span style="color:#d97706">💬2</span></div><div style="display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid #e2e8f0;border-radius:8px;font-size:10px"><span style="width:6px;height:6px;border-radius:50%;background:#dc2626"></span><b>下北沢</b><span style="color:#dc2626;margin-left:auto">未報告 🔴</span></div></div></div>'+B('📱 <b>報告済</b> ─ Googleマイビジネス投稿報告を送信した店舗。投稿数と返信数を表示。')+B('🔴 <b>未報告</b> ─ まだ報告していない店舗。')+B('🔄 同じ店舗で同日に再報告すると<b>上書き</b>されます（二重カウントなし）。')+B('💡 30秒ごとに自動更新されます。')},
+{step:'📢 お知らせ・シフト変更',title:'ホーム画面上部のバナー',body:T('ホーム画面の上部に3種類のバナーが表示されます。')+B('🔔 <b>管理者からのお知らせ</b> ─ 全エリア共通。管理者が3段階（お知らせ/注意/緊急）で配信。ホーム上部に黄色バナーで表示。')+B('📣 <b>エリアマネージャーからのお知らせ</b> ─ エリア内のみ。同じく3段階で配信。紫色バナーで表示。')+B('📅 <b>当月のシフト変更</b> ─ ブロック長・エリアマネージャーが配信。変更（🔵）/欠勤（🔴）/出勤（🟢）/休業が色分けで表示。')+A('⚠ 過去月の履歴はシフト変更アーカイブから閲覧できます。')},
+{step:'🔒 管理者操作',title:'承認・休業・管理者機能',body:T('ブロック長・エリアマネージャー・管理者がホーム画面から行える操作です。')+B('✅ <b>出勤の承認</b> ─ 遅延・未報告の店舗で、カメラやジョブカン等で営業開始前の出勤が確認できた場合に「承認済」に変更。ブロック長・エリアマネージャー・管理者が可能。')+B('💤 <b>休業の設定</b> ─ 臨時休業・定休日などの場合に「休業」に設定。出勤報告が不要になります。')+B('🔧 <b>修理事故の承認</b> ─ スタッフの修理事故報告に対しブロック長またはエリアマネージャーが承認。')+A('⚠ いずれもパスワード入力が必要です。ホーム画面の該当パネルから店舗をクリックして操作します。')},
+{step:'🏢 組織構成',title:'エリア→ブロック→店舗',body:T('アプリは<b>エリア → ブロック → 店舗</b>の3階層で管理されています。')+B('🏢 <b>エリア</b>（例：都心エリア）── エリアマネージャーが統括')+B('👑 <b>ブロック</b>（例：新宿ブロック）── ブロック長が管理')+B('🏪 <b>店舗</b>（例：新宿東南口、ルミネ新宿）── スタッフが報告')+A('⚠ 組織設定の変更は管理者のみ可能です。')+B('📅 <b>シフト変更お知らせ</b> ─ ブロック長がシフト変更を配信すると、メンバーのホーム画面上部にバナーで表示されます。')},
+{step:'📅 スケジュール',title:'4つのスケジュール区分',body:T('業務は頻度によって4つに分類されます。')+G('☀️ <b>毎日</b> ─ 出勤報告・カメラ起動確認（出勤時）／Googleマイビジネス投稿報告（営業時間内）')+B('📅 <b>毎週金曜</b> ─ 競合調査（口コミ・MEO・SEO）※価格調査だけは随時、')+B('📋 <b>週末・月末月初</b> ─ 入金管理チェック・月末月初作業')+A('⚡ <b>随時 / 事故発生時</b> ─ 買取業務・備品注文相談・修理事故報告')},
+{step:'☀️ 毎日の業務',title:'3つの日次業務',body:T('出勤したら以下を実施します。')+G('① <b>🏪 出勤報告</b> ─ 営業開始時刻までに報告。遅延・未報告はステータスに反映。')+G('② <b>📹 カメラ起動確認</b> ─ 出勤報告後に実施。同ブロック全店舗のカメラを目視確認。')+G('③ <b>📱 Googleマイビジネス投稿報告</b> ─ 営業時間内に実施。投稿数＋口コミ返信数を報告。0件でも必ず報告。')+A('⚠ ①②は出勤時、③は営業時間内に実施してください。')},
+{step:'📅 毎週の業務',title:'競合調査',body:T('毎週金曜に4種類の調査を実施します。')+B('💰 <b>価格調査</b> ─ 価格変更あり/なしを報告。調査は随時。可能であれば毎日。<b>。</b>')+B('⭐ <b>口コミ調査</b> ─ 自店舗＋他社のGoogle口コミ件数を入力。')+B('📍 <b>MEO調査</b> ─ Googleマップで自店舗が上位3位以内か確認。')+B('📊 <b>SEO調査</b> ─ Google検索で自社サイトの順位を入力。')+R('⚠ MEO・SEO調査は必ず<b>シークレットモード（プライベートモード）</b>で検索してください。')},
+{step:'📋 月次の業務',title:'入金管理チェック・月末月初作業',body:T('<b>💰 入金管理チェック</b>（週末・月末）')+B('5つのチェック項目に順番に回答。全項目「相違なし」で完了。')+B('商業施設は「入金なし」選択可能。「相違あり」はやり直し。')+T('<b>📋 月末・月初作業チェック</b>（月末月初）')+B('在庫棚卸・本社発送物・月間報告書など完了した作業にチェック（複数選択可）。')},
+{step:'⚡ 随時の業務',title:'買取・備品・修理事故',body:T('<b>💎 買取業務</b> ─ 買取成約時に報告')+B('グループLINE【買取用】＋チャットワーク【中古端末買取成立報告】の2箇所に報告。現金→【現金対応】、振り込み→【振り込み対応】。')+T('<b>📦 備品注文相談</b> ─ 備品不足時に報告')+B('品名・個数・希望納期を入力。緊急度（通常/緊急）を選択。')+T('<b>🔧 修理事故報告</b> ─ 事故発生時に報告')+R('⚠ 少なくともブロック長またはエリアマネージャーいずれかの承認が必要。修理事故報告書に記入→写真1枚以上アップが必須。')},
+{step:'🔄 共通操作フロー',title:'全業務共通の操作',body:T('ほぼ全ての業務が同じ流れで完了します。')+B('① ホームでメニューをクリック → ② ガイド画面で「開始する」 → ③ 店舗を選択 → ④ スタッフ名を入力 → ⑤ 業務ごとの入力 → ⑥ 確認画面 → ⑦ 「OK 報告する」 → ⑧ 完了！')+A('⚠ <b>送信後の取り消し・修正はできません。</b>確認画面で必ず内容をチェック。')+R('⚠ スタッフ名は<b>毎回同じ表記（漢字フルネーム）</b>で統一してください。')},
+{step:'🧭 画面操作',title:'画面の基本操作',body:B('🏠 <b>ホームに戻る</b> ─ どの画面でも「🏠 ホーム」でトップに戻れます。')+B('← <b>戻る</b> ─ 1つ前の画面に戻ります。送信前ならいつでも戻れます。')+B('📖 <b>操作マニュアル</b> ─ ホーム画面下部から各業務のスライド・動画マニュアルを確認。')+B('☀️/🌙 <b>テーマ切替</b> ─ 右上のトグルでダーク/ライトモード切替。')+B('🏠 <b>ポータルに戻る</b> ─ 左メニュー上部の「🏠 ポータルサイト」ボタンでポータルサイトに戻れます。')+A('⚠ ブラウザの「戻る」ボタンは使用しないでください。アプリ内の「← 戻る」を使ってください。')},
+{step:'🎨 テーマ・ポータル',title:'ダーク/ライトモードとポータル',body:T('テーマは右上のトグル、ポータルは左メニュー上部のカードで操作します。')+'<div style="display:flex;gap:12px;width:100%;max-width:600px;margin:0 auto"><div style="flex:1;border-radius:12px;border:2px solid #e2e8f0;overflow:hidden;background:#fff"><div style="padding:6px 10px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:6px;font-size:9px"><span style="width:6px;height:6px;border-radius:50%;background:#10b981"></span><b style="color:#1e293b">☀️ ライトモード</b></div><div style="padding:10px"><div style="display:flex;gap:4px;margin-bottom:6px"><div style="flex:1;padding:8px;border-radius:8px;background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.12);font-size:9px;font-weight:700;color:#1e293b">🏪 出勤報告</div><div style="flex:1;padding:8px;border-radius:8px;background:rgba(168,85,247,.04);border:1px solid rgba(168,85,247,.12);font-size:9px;font-weight:700;color:#1e293b">📱 投稿報告</div></div><div style="padding:6px;border-radius:6px;background:#f8fafc;border:1px solid #e2e8f0;font-size:8px;color:#64748b">白背景・目に優しい配色</div></div></div><div style="flex:1;border-radius:12px;border:2px solid #334155;overflow:hidden;background:#0f172a"><div style="padding:6px 10px;background:#1e293b;border-bottom:1px solid #334155;display:flex;align-items:center;gap:6px;font-size:9px"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24"></span><b style="color:#f8fafc">🌙 ダークモード</b></div><div style="padding:10px"><div style="display:flex;gap:4px;margin-bottom:6px"><div style="flex:1;padding:8px;border-radius:8px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);font-size:9px;font-weight:700;color:#f8fafc">🏪 出勤報告</div><div style="flex:1;padding:8px;border-radius:8px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);font-size:9px;font-weight:700;color:#f8fafc">📱 投稿報告</div></div><div style="padding:6px;border-radius:6px;background:#1e293b;border:1px solid #334155;font-size:8px;color:#94a3b8">暗い環境でも見やすい</div></div></div></div>'+T('<b>☀️ ライトモード</b>：白背景。通常使用向け。')+T('<b>🌙 ダークモード</b>：暗い画面。夜間や暗い環境向け。')+'<div style="margin:12px auto;max-width:340px;border-radius:16px;border:2.5px solid #3b82f6;background:linear-gradient(135deg,#f0f6ff,#eef2ff);padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(59,130,246,.12)"><div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 12px rgba(59,130,246,.25)">🏠</div><div><div style="font-size:13px;font-weight:800;color:#1e293b">ポータルサイト</div><div style="font-size:9px;color:#94a3b8;margin-top:2px">トップページに戻る</div></div><span style="margin-left:auto;color:#94a3b8;font-size:12px">←</span></div><div style="margin:6px auto 0;max-width:340px;font-size:9px;color:#64748b;text-align:center">↑ 左メニュー上部に表示されます</div>'+B('🏠 <b>ポータルに戻る</b> ─ 左メニュー上部の「🏠 ポータルサイト」カードをクリックでポータルに戻れます。')},
+{step:'👥 役職別機能',title:'上位権限の機能',body:T('パスワードで解除する上位機能があります。')+B('👑 <b>ブロック長業務</b> ─ ブロック内の出勤承認・入金確認・修理事故確認・月末月初作業の確認を行います。')+B('🏆 <b>エリアマネージャー業務</b> ─ エリア全体の管理・確認。修理事故の承認も行います。')+B('🔑 <b>管理者業務</b> ─ お知らせ配信・管理者認証。全エリアの統括管理。')+B('⚙ <b>組織設定</b> ─ 管理者パスワード（第1）で認証。エリア・ブロック・店舗の管理。')},
+{step:'⚠ 注意事項',title:'全スタッフが守るべきルール',body:R('❌ <b>店舗PC以外での操作禁止</b> ─ 個人端末・iPhone・iPadは使用不可。必ず店舗PCを使用。')+R('❌ <b>送信後の修正不可</b> ─ 確認画面で必ずチェック。間違えたら上長に報告。')+B('💡 <b>困ったとき</b> ─ 問題が発生したらすぐに上長（ブロック長・エリアマネージャー）へ連絡。')},
+{step:'まとめ',title:'全体マニュアルは以上です',body:G('✅ 毎日：出勤報告→カメラ起動確認（出勤時）／Googleマイビジネス投稿報告（営業時間内）')+G('✅ 毎週金曜：競合調査（口コミ・MEO・SEO）※価格調査だけは随時、')+G('✅ 週末・月末月初：入金管理チェック・月末月初作業')+G('✅ 随時：買取業務・備品注文相談')+G('✅ 事故発生時：修理事故報告')+A('⚠ 店舗PCのみ / 送信後修正不可 / スタッフ名は漢字フルネーム統一')+B('💡 各業務の詳細は個別マニュアル（スライド・動画）で確認')+B('💡 困ったら上長に報告')},
+];
+
+var cur=0;
+var sls=document.querySelectorAll('.scr');
+var tot=sls.length;
+var prevBtn=document.getElementById('prevBtn');
+var nextBtn=document.getElementById('nextBtn');
+
+function go(n){
+  if(n<0||n>=tot)return;
+  sls[cur].classList.remove('active');
+  sls[cur].classList.remove('prev');
+  if(n>cur) sls[cur].classList.add('prev');
+  cur=n;
+  for(var i=0;i<tot;i++){sls[i].classList.remove('active');sls[i].classList.remove('prev');}
+  sls[cur].classList.add('active');
+  upd();
+}
+
+function upd(){
+  prevBtn.style.opacity=cur===0?'0.3':'1';
+  prevBtn.style.pointerEvents=cur===0?'none':'auto';
+  nextBtn.style.opacity='1';
+  nextBtn.style.pointerEvents='auto';
+  nextBtn.textContent=cur===tot-1?'✕ 閉じる':'次へ →';
+  document.getElementById('bar').style.width=((cur+1)/tot*100)+'%';
+  document.getElementById('cnt').textContent=(cur+1)+'/'+tot;
+  var d=document.getElementById('dots');
+  d.innerHTML='';
+  for(var i=0;i<tot;i++){
+    var e=document.createElement('div');
+    e.className='dot'+(i===cur?' a':i<cur?' d':'');
+    e.setAttribute('data-i',i);
+    e.addEventListener('click',function(){go(parseInt(this.getAttribute('data-i')));});
+    d.appendChild(e);
+  }
+  var info=DATA[cur]||{};
+  document.getElementById('rs').textContent=info.step||'';
+  document.getElementById('rt').textContent=info.title||'';
+  document.getElementById('rb').innerHTML=info.body||'';
+}
+
+prevBtn.addEventListener('click',function(){go(cur-1);});
+nextBtn.addEventListener('click',function(){
+  if(cur===tot-1){
+    try{window.parent.postMessage({action:'close'},'*');}catch(e){window.close();}
+  } else {go(cur+1);}
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1);}
+  if(e.key==='ArrowLeft'){go(cur-1);}
+});
+
+var tx=0;
+document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;});
+document.addEventListener('touchend',function(e){
+  var dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50){dx<0?go(cur+1):go(cur-1);}
+});
+
+upd();
+
+document.getElementById('backManual').addEventListener('click',function(){
+  try{window.parent.postMessage({action:'manual'},'*');}catch(e){window.close();}
+});
+document.getElementById('backHome').addEventListener('click',function(){
+  try{window.parent.postMessage({action:'home'},'*');}catch(e){window.close();}
+});
+</script>
+</body>
+</html>

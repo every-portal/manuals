@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>買取業務 ─ 動画マニュアル</title>
+<style>
+:root{--c:#84cc16;--cl:#a3e635;--cd:#65a30d}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans JP','Hiragino Sans',sans-serif}
+.page{width:100%;height:100%;display:flex;flex-direction:column;background:#e8ecf1}
+.hdr{height:32px;background:#fff;border-bottom:1px solid #dde2e8;display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0}
+.hdr-rec{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:rec-p 1s infinite}
+@keyframes rec-p{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{opacity:.6;box-shadow:0 0 0 4px rgba(239,68,68,0)}}
+.hdr-badge{font-size:9px;font-weight:800;color:var(--c)}
+.hdr-title{font-size:10px;color:#94a3b8;flex:1}
+.hdr-counter{font-size:10px;color:#94a3b8;font-weight:700}
+.prog{height:3px;background:#e2e8f0;flex-shrink:0;position:relative;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--c),var(--cl));transition:width .5s cubic-bezier(.4,0,.2,1)}
+.prog-glow{position:absolute;top:-2px;height:7px;width:40px;background:radial-gradient(ellipse,rgba(52,211,153,.6),transparent);transition:left .5s;pointer-events:none}
+.split{flex:1;display:flex;overflow:hidden;min-height:0}
+.visual{width:72%;position:relative;overflow:hidden}
+.vbg{position:absolute;inset:0;z-index:0}
+.vbg-grad{position:absolute;inset:0;background:linear-gradient(160deg,#f0fdf4,#eff6ff,#f8fafc)}
+.vbg-orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.15;animation:orb-f 8s ease-in-out infinite alternate;pointer-events:none}
+.orb1{width:300px;height:300px;background:var(--cl);top:-80px;right:-60px}
+.orb2{width:250px;height:250px;background:#60a5fa;bottom:-60px;left:-40px;animation-delay:2s}
+.orb3{width:180px;height:180px;background:#a78bfa;top:50%;left:50%;animation-delay:4s}
+@keyframes orb-f{0%{transform:translate(0,0) scale(1)}100%{transform:translate(30px,-20px) scale(1.15)}}
+#particles{position:absolute;inset:0;z-index:1;pointer-events:none}
+/* Pointer */
+.ptr{position:absolute;z-index:200;pointer-events:none;will-change:left,top;filter:drop-shadow(2px 3px 4px rgba(0,0,0,.25))}
+.ptr-svg{width:22px;height:22px}
+.ptr-ripple{position:absolute;top:-8px;left:-8px;width:36px;height:36px;border-radius:50%;pointer-events:none}
+.ptr-ripple.pop{animation:rip .6s ease-out forwards}
+@keyframes rip{0%{transform:scale(0);opacity:.7;box-shadow:0 0 0 0 rgba(5,150,105,.4)}60%{transform:scale(2);opacity:.3}100%{transform:scale(3);opacity:0}}
+.ptr-trail{position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(52,211,153,.5);pointer-events:none;z-index:199;animation:trl .5s ease-out forwards}
+@keyframes trl{0%{opacity:.6;transform:scale(1)}100%{opacity:0;transform:scale(.2)}}
+.ptr.hidden{opacity:0;transition:opacity .2s}
+.ptr:not(.hidden){opacity:1;transition:left .55s cubic-bezier(.34,1.56,.64,1),top .55s cubic-bezier(.34,1.56,.64,1),opacity .2s}
+/* Scenes */
+.vs{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none;padding:16px}
+.vs.enter-r{opacity:0;transform:translateX(60px) scale(.95)}
+.vs.on{opacity:1;transform:translateX(0) scale(1);pointer-events:auto;transition:all .5s cubic-bezier(.4,0,.2,1)}
+.vs.exit-l{opacity:0;transform:translateX(-60px) scale(.95);transition:all .4s ease-in}
+.vs-inner{display:flex;flex-direction:column;align-items:center;gap:10px;max-width:720px;width:100%}
+.part{opacity:0;transform:translateY(18px) scale(.96);transition:all .5s cubic-bezier(.4,0,.2,1)}
+.part.v{opacity:1;transform:translateY(0) scale(1)}
+.part.bounce{animation:p-bounce .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes p-bounce{0%{transform:scale(.8) translateY(10px)}60%{transform:scale(1.05) translateY(-3px)}100%{transform:scale(1) translateY(0)}}
+/* Browser mock */
+.bm{width:100%;max-width:96%;border-radius:14px;overflow:hidden;border:1.5px solid #c2c9d4;box-shadow:0 8px 32px rgba(0,0,0,.08);background:#f1f5f9;position:relative;z-index:2;transition:transform .3s}
+.bm-bar{height:32px;background:linear-gradient(180deg,#fff,#f8fafc);border-bottom:1px solid #e2e8f0;display:flex;align-items:center;padding:0 12px;gap:5px}
+.bm-d{width:10px;height:10px;border-radius:50%}
+.bm-url{flex:1;margin:0 8px;padding:4px 11px;border-radius:6px;background:#fff;border:1px solid #e2e8f0;font-size:13px;color:#94a3b8;overflow:hidden;white-space:nowrap}
+.bm-body{padding:20px;display:flex;flex-direction:column;align-items:center;gap:10px;min-height:300px;max-height:calc(100vh - 160px);overflow-y:auto;scroll-behavior:smooth;position:relative}
+.bm-body::-webkit-scrollbar{width:4px}
+.bm-body::-webkit-scrollbar-track{background:transparent}
+.bm-body::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
+/* Menu */
+.bm-menu{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;width:100%;transition:all .3s cubic-bezier(.4,0,.2,1);border:1px solid transparent;position:relative;overflow:hidden}
+.bm-mi{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;transition:transform .3s}
+.bm-mn{font-size:15px;font-weight:700;color:#1e293b}.bm-ms{font-size:10px;color:#94a3b8;margin-top:2px}
+.bm-ar{color:#cbd5e1;font-size:16px;margin-left:auto;transition:transform .3s}
+.bm-menu.hover{background:rgba(5,150,105,.04);border-color:rgba(5,150,105,.12)}.bm-menu.hover .bm-ar{transform:translateX(3px);color:var(--c)}.bm-menu.hover .bm-mi{transform:scale(1.1)}
+.bm-menu.hl{border-color:rgba(5,150,105,.3);background:rgba(5,150,105,.06);box-shadow:0 0 0 3px rgba(5,150,105,.08)}
+.bm-menu.clicked{background:rgba(5,150,105,.15);transform:scale(.96);transition:all .15s}
+.bm-menu.clicked::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(5,150,105,.2),transparent 70%);animation:mf .4s ease-out}
+@keyframes mf{0%{opacity:1}100%{opacity:0}}
+/* Cards */
+.bm-card{width:100%;max-width:480px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:22px;transition:all .3s}
+.bm-ct{font-size:22px;font-weight:700;color:#1e293b;text-align:center;margin-bottom:5px}
+.bm-cs{font-size:14px;color:#94a3b8;text-align:center;margin-bottom:16px}
+.bm-btn{width:100%;padding:17px;border-radius:14px;background:linear-gradient(135deg,var(--c),var(--cd));color:#fff;font-size:18px;font-weight:700;text-align:center;transition:all .2s;position:relative;overflow:hidden}
+.bm-btn.clicked{transform:scale(.94);box-shadow:0 0 0 4px rgba(5,150,105,.15)}
+.bm-btn.clicked::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.3),transparent 60%);animation:bf .3s}
+@keyframes bf{0%{opacity:1;transform:scale(0)}100%{opacity:0;transform:scale(2)}}
+.bm-badge{display:inline-flex;padding:6px 17px;border-radius:15px;font-size:14px;font-weight:800;background:rgba(5,150,105,.06);color:var(--c);border:1px solid rgba(5,150,105,.1)}
+/* Store */
+.bm-sg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.bm-sb{padding:16px;border-radius:11px;background:rgba(5,150,105,.04);border:1.5px solid rgba(5,150,105,.15);font-size:16px;font-weight:600;color:#334155;text-align:center;transition:all .3s cubic-bezier(.4,0,.2,1)}
+.bm-sb.hover{border-color:rgba(5,150,105,.35);background:rgba(5,150,105,.08);transform:translateY(-1px)}
+.bm-sb.sel{border-color:var(--c);background:rgba(5,150,105,.14);color:var(--c);font-weight:700;transform:scale(.95);box-shadow:0 0 0 3px rgba(5,150,105,.1)}
+.bm-blb{font-size:13px;color:#64748b;font-weight:600;text-align:left;margin:12px 0 5px;display:flex;align-items:center;gap:5px}
+.bm-blb::before{content:'';display:inline-block;width:4px;height:12px;border-radius:2px;background:var(--c)}
+/* Input */
+.bm-il{font-size:16px;color:#64748b;font-weight:600;margin-bottom:6px}
+.bm-ti{padding:14px 16px;border-radius:11px;background:#f8fafc;border:1.5px solid #d1d5db;font-size:19px;color:#1e293b;font-weight:600;min-height:44px;display:flex;align-items:center;transition:all .3s}
+.bm-ti.focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(5,150,105,.08);background:#fff}
+.tc{display:inline-block;width:2px;height:18px;background:var(--c);margin-left:1px;animation:tcb .5s infinite}
+@keyframes tcb{0%,100%{opacity:1}50%{opacity:0}}
+/* Guide */
+.bm-gc{width:100%;max-width:480px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:18px}
+.bm-gi{text-align:center;font-size:36px;margin-bottom:6px}
+.bm-gt{text-align:center;font-size:18px;font-weight:700;color:var(--c);margin-bottom:4px}
+.bm-gs{text-align:center;font-size:11px;color:#94a3b8;margin-bottom:12px}
+.bm-gstep{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:5px;opacity:0;transform:translateX(15px);transition:all .4s}
+.bm-gstep.show{opacity:1;transform:translateX(0)}
+.bm-gnum{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;background:var(--c);flex-shrink:0}
+.bm-gtext{font-size:12px;color:#334155;line-height:1.4}
+/* Confirm */
+.bm-cr{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f1f5f9}
+.bm-ck{font-size:14px;color:#94a3b8;font-weight:600}.bm-cv{font-size:17px;color:#1e293b;font-weight:700}
+/* Done */
+.bm-done{text-align:center;padding:36px 32px;border:1px solid #e2e8f0;border-radius:20px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.03);width:100%;max-width:600px}
+.bm-done-icon{width:77px;height:77px;margin:0 auto 14px;border-radius:16px;background:linear-gradient(135deg,var(--cl),var(--c));display:flex;align-items:center;justify-content:center;font-size:38px;color:#fff;box-shadow:0 4px 16px rgba(5,150,105,.2);animation:d-bounce .7s cubic-bezier(.34,1.56,.64,1)}
+@keyframes d-bounce{0%{transform:scale(0) rotate(-10deg)}50%{transform:scale(1.15) rotate(3deg)}70%{transform:scale(.95)}100%{transform:scale(1)}}
+.bm-done-title{color:var(--c);font-size:34px;font-weight:900;margin:0 0 4px;animation:d-title .5s .25s both}
+@keyframes d-title{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+.bm-done-sub{font-size:19px;color:#64748b;margin-bottom:24px;font-weight:500;animation:d-sub .4s .4s both}
+@keyframes d-sub{0%{opacity:0}100%{opacity:1}}
+.bm-rb{background:#f8fafc;border-radius:14px;padding:0;border:1px solid #e2e8f0;text-align:left;overflow:hidden}
+.bm-rr{display:flex;justify-content:space-between;align-items:center;padding:16px 24px}.bm-rr+.bm-rr{border-top:1px solid #e2e8f0}
+.bm-rk{font-size:17px;color:#94a3b8;font-weight:600}.bm-rv{font-size:20px;color:#1e293b;font-weight:800}
+.bm-home-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:19px;border-radius:15px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.12);color:#2563eb;font-size:18px;font-weight:700;margin-top:16px;animation:ok-s .5s .7s both}
+@keyframes ok-s{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+/* Nav */
+.bm-nav{display:flex;gap:6px;margin-top:10px;width:100%;max-width:480px}
+.bm-nbk{flex:1;display:flex;align-items:center;justify-content:center;padding:12px;background:#f8fafc;border:1px solid #d1d5db;border-radius:11px;color:#64748b;font-size:14px;font-weight:600}
+.bm-nbh{display:flex;align-items:center;justify-content:center;gap:5px;padding:12px 17px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.12);border-radius:11px;color:#2563eb;font-size:13px;font-weight:700}
+/* Status rows */
+.bm-strow{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;margin-bottom:5px;width:100%;max-width:460px;opacity:0;transform:translateX(20px);transition:all .4s}
+.bm-strow.show{opacity:1;transform:translateX(0)}
+.bm-std{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.bm-stn{font-size:17px;font-weight:700;color:#1e293b;flex:1}
+.bm-sts{font-size:11px;color:#94a3b8}
+.bm-sti{font-size:17px;font-weight:700;flex-shrink:0}
+/* Badges/Text */
+.v-badge{display:inline-flex;padding:7px 19px;border-radius:17px;font-size:14px;font-weight:800;letter-spacing:.3px}
+.vb-g{background:rgba(5,150,105,.06);color:var(--c);border:1px solid rgba(5,150,105,.12)}
+.vb-b{background:rgba(37,99,235,.05);color:#2563eb;border:1px solid rgba(37,99,235,.1)}
+.v-h1{font-size:clamp(34px,4.5vw,52px);font-weight:900;color:#1e293b;text-align:center}
+.v-h2{font-size:clamp(26px,3.5vw,38px);font-weight:800;color:#1e293b;text-align:center}
+.v-p{font-size:15px;color:#64748b;text-align:center;line-height:1.8;max-width:500px}
+/* Flow */
+.vf{display:flex;gap:6px;width:100%;max-width:580px}
+.vf-c{flex:1;min-width:0;padding:10px 8px;border-radius:10px;background:#fff;border:1px solid #e2e8f0;text-align:center;opacity:0;transform:translateY(12px) scale(.9);transition:all .4s cubic-bezier(.34,1.56,.64,1)}
+.vf-c.show{opacity:1;transform:translateY(0) scale(1)}
+.vf-c.active{border-color:var(--c);background:rgba(5,150,105,.06);transform:scale(1.08)}
+.vf-n{font-size:24px;font-weight:900}.vf-l{font-size:13px;color:#64748b}
+/* Summary */
+.vs-item{padding:14px 22px;border-radius:10px;font-size:18px;font-weight:700;max-width:520px;width:100%}
+.vsi-g{background:rgba(5,150,105,.04);color:#065f46}
+.vsi-a{background:rgba(180,83,9,.04);color:#92400e}
+.vsi-b{background:rgba(37,99,235,.04);color:#1e40af}
+.sd{display:inline-block;width:8px;height:8px;border-radius:50%;vertical-align:middle;margin:0 1px}
+/* Number input */
+.num-wrap{text-align:center;padding:12px 0}
+.num-display{font-size:48px;font-weight:900;color:var(--c);margin-bottom:4px;transition:all .3s}
+.num-display.bump{animation:num-bump .3s}
+@keyframes num-bump{0%{transform:scale(1)}40%{transform:scale(1.2)}100%{transform:scale(1)}}
+.num-hint{font-size:10px;color:#94a3b8;margin-bottom:10px}
+.num-btns{display:flex;justify-content:center;gap:8px}
+.num-btn{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;cursor:default;transition:all .2s;border:1.5px solid #e2e8f0}
+.num-btn-minus{background:#fff;color:#64748b}
+.num-btn-zero{background:#f8fafc;color:#94a3b8;font-size:14px;font-weight:700}
+.num-btn-plus{background:rgba(5,150,105,.06);color:var(--c);border-color:rgba(5,150,105,.2)}
+.num-btn.clicked{transform:scale(.9);box-shadow:0 0 0 3px rgba(5,150,105,.1)}
+/* Review row fade-in */
+.rv-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;opacity:0;transform:translateY(8px);transition:all .4s ease}
+.rv-row.show{opacity:1;transform:translateY(0)}
+/* Confetti */
+.confetti{position:absolute;z-index:300;pointer-events:none}
+@keyframes conf-f{0%{transform:translateY(0) translateX(0) rotate(0);opacity:1}50%{opacity:.85}100%{transform:translateY(240px) translateX(var(--dx,0px)) rotate(680deg);opacity:0}}
+/* Right nar */
+.nar-panel{width:28%;min-width:240px;background:#fff;border-left:2.5px solid var(--c);display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(5,150,105,.06)}
+.nar-head{padding:12px 14px 8px;background:linear-gradient(180deg,rgba(5,150,105,.03),transparent)}
+.nar-step{font-size:13px;font-weight:800;letter-spacing:.4px;color:var(--c);margin-bottom:4px}
+.nar-title{font-size:22px;font-weight:900;color:#1e293b;line-height:1.25}
+.nar-div{height:1px;flex-shrink:0;background:linear-gradient(90deg,var(--c) 0%,#e2e8f0 50%);margin:0 20px}
+.nar-body{flex:1;overflow:hidden;padding:10px 14px}
+.nar-block{opacity:0;transform:translateY(8px);transition:all .4s ease;margin-bottom:4px}
+.nar-block.show{opacity:1;transform:translateY(0)}
+.nar-text{font-size:14px;color:#334155;line-height:1.6;margin-bottom:4px}
+.nar-tip{padding:16px 20px;border-radius:12px;font-size:13px;line-height:1.5;font-weight:600}
+.nt-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}
+.nt-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}
+.nt-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}
+.nt-g{background:rgba(5,150,105,.04);border:1px solid rgba(5,150,105,.1);color:#065f46}
+/* Footer */
+.footer{height:140px;background:#fff;border-top:2px solid #e2e8f0;display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
+.f-btn{height:80%;padding:0 22px;border-radius:12px;border:3px solid #94a3b8;background:#fff;color:#1e293b;font-size:28px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px}
+.f-btn:hover{background:#f1f5f9;color:#1e293b}
+.f-play{background:linear-gradient(135deg,var(--c),var(--cd));color:#fff;border:none;padding:0 14px}
+.f-play:hover{box-shadow:0 2px 10px rgba(5,150,105,.25);background:linear-gradient(135deg,var(--c),var(--cd));color:#fff}
+.f-dots{display:flex;gap:4px;flex:1;justify-content:center}
+.f-dot{width:6px;height:6px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all .25s}
+.f-dot.a{background:var(--c);transform:scale(1.6);box-shadow:0 0 6px rgba(5,150,105,.3)}
+.f-dot.p{background:var(--c);opacity:.5}
+.f-speed{font-size:28px;color:#1e293b;font-weight:900;padding:0 36px;height:80%;min-width:120px;border:3px solid #94a3b8;border-radius:12px;cursor:pointer;background:#fff;font-family:inherit;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+
+
+.f-extra{display:flex;gap:10px;margin-left:auto}
+.f-extra-btn{height:80%;padding:0 28px;border-radius:12px;border:3px solid #94a3b8;background:#fff;color:#1e293b;font-size:28px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px;letter-spacing:.5px;white-space:nowrap}
+.f-extra-btn:hover{background:#f1f5f9;color:#1e293b;transform:scale(1.05)}
+.f-extra-home{border-color:rgba(37,99,235,.35);color:#2563eb;background:rgba(37,99,235,.06)}
+.f-extra-home:hover{background:rgba(37,99,235,.15)}
+
+.f-restart{height:80%;padding:0 22px;border-radius:12px;border:3px solid #2563eb;background:rgba(37,99,235,.05);color:#2563eb;font-size:28px;font-weight:900;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .15s;white-space:nowrap}
+.f-restart:hover{transform:scale(1.05)}
+.f-repeat{height:80%;padding:0 22px;border-radius:12px;border:3px solid #94a3b8;background:#fff;color:#64748b;font-size:28px;font-weight:900;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .15s;white-space:nowrap}
+.f-repeat:hover{transform:scale(1.05)}
+.f-repeat.on{border-color:var(--c);background:rgba(5,150,105,.1);color:var(--c);box-shadow:0 0 0 4px rgba(5,150,105,.15)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="hdr">
+  <div class="hdr-rec"></div>
+  <div class="hdr-badge">動画再生中</div>
+  <div class="hdr-title">💎 買取業務 ─ 操作マニュアル動画</div>
+  <div class="hdr-counter" id="counter">1/?</div>
+</div>
+<div class="prog"><div class="prog-fill" id="progFill"></div><div class="prog-glow" id="progGlow"></div></div>
+<div class="split">
+<div class="visual" id="VA">
+  <div class="vbg"><div class="vbg-grad"></div><div class="vbg-orb orb1"></div><div class="vbg-orb orb2"></div><div class="vbg-orb orb3"></div></div>
+  <canvas id="particles"></canvas>
+  <div class="ptr hidden" id="ptr">
+    <svg class="ptr-svg" viewBox="0 0 24 24"><path d="M4 2l16 12H12l-2 8L4 2z" fill="#1e293b" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    <div class="ptr-ripple" id="ptrRip"></div>
+  </div>
+  <div class="vs on" id="vs0"><div class="vs-inner">
+    <div class="part" style="font-size:64px">💎</div>
+    <div class="part v-badge vb-g">操作マニュアル動画</div>
+    <div class="part v-h1">買取業務</div>
+    <div class="part v-p">買取成約時のLINE・Chatwork報告を行う業務です。</div>
+    <div class="part" style="padding:10px 18px;border-radius:9px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af;font-size:13px;font-weight:700;text-align:center"><b>全6ステップ ・ 所要時間 約1〜2分</b></div></div></div>
+  <div class="vs enter-r" id="vs1"><div class="vs-inner">
+    <div class="part v-badge vb-b">📋 基本ルール</div>
+    <div class="part v-h2">いつ・だれが報告する？</div>
+    <div class="part" style="display:flex;gap:10px;width:100%;max-width:500px">
+  <div style="flex:1;padding:14px;border-radius:10px;background:rgba(132,204,22,.04);border:1px solid rgba(132,204,22,.12)"><div style="font-size:14px;font-weight:800;color:#84cc16;margin-bottom:4px">✅ 報告が必要</div><div style="font-size:12px;color:#64748b;line-height:1.7">買取が成約した時<br>LINE＋Chatworkの2箇所に報告</div></div>
+  <div style="flex:1;padding:14px;border-radius:10px;background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.12)"><div style="font-size:14px;font-weight:800;color:#dc2626;margin-bottom:4px">⚠ 注意</div><div style="font-size:12px;color:#64748b;line-height:1.7">現金→【現金対応】<br>振込→【振り込み対応】<br>担当者名不要</div></div>
+</div>
+    <div class="part" style="padding:10px 14px;border-radius:9px;background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e;font-size:12px;font-weight:600;max-width:500px;width:100%">⚠ 買取が成約したら<b>速やかに</b>報告してください。</div></div></div>
+  <div class="vs enter-r" id="vs2"><div class="vs-inner">
+    <div class="part v-badge vb-b">📋 全体の流れ</div>
+    <div class="part v-h2">6ステップで完了</div>
+    <div class="part vf" id="flowCards"><div class="vf-c"><div class="vf-n" style="color:#94a3b8">1</div><div class="vf-l">店舗</div></div><div class="vf-c"><div class="vf-n" style="color:#84cc16">2</div><div class="vf-l">名前入力</div></div><div class="vf-c"><div class="vf-n" style="color:#84cc16">3</div><div class="vf-l">LINE報告</div></div><div class="vf-c"><div class="vf-n" style="color:#84cc16">4</div><div class="vf-l">チャットワーク写真</div></div><div class="vf-c"><div class="vf-n" style="color:#dc2626">5</div><div class="vf-l">確認</div></div><div class="vf-c"><div class="vf-n" style="color:#059669">6</div><div class="vf-l">完了！</div></div></div></div></div>
+  <div class="vs enter-r" id="vs3"><div class="bm">
+    <div class="bm-bar"><div class="bm-d" style="background:#f87171"></div><div class="bm-d" style="background:#fbbf24"></div><div class="bm-d" style="background:#34d399"></div><div class="bm-url">📋 業務管理アプリ</div></div>
+    <div class="bm-body">
+      <div style="font-size:16px;font-weight:700;color:#94a3b8;margin-bottom:7px;align-self:flex-start">📋 業務メニュー</div>
+      <div class="bm-menu" id="menuTarget" style="background:rgba(132,204,22,.08);border:1px solid rgba(5,150,105,.1)"><div class="bm-mi" style="background:rgba(132,204,22,.08)">💎</div><div><div class="bm-mn">買取業務</div><div class="bm-ms">随時</div></div><span class="bm-ar">›</span></div>
+      <div class="bm-menu" style="border:1px solid #f1f5f9"><div class="bm-mi" style="background:rgba(5,150,105,.06)">🏪</div><div><div class="bm-mn">出勤報告</div><div class="bm-ms">毎日</div></div><span class="bm-ar">›</span></div><div class="bm-menu" style="border:1px solid #f1f5f9"><div class="bm-mi" style="background:rgba(8,145,178,.06)">📹</div><div><div class="bm-mn">カメラ起動確認</div><div class="bm-ms">毎日</div></div><span class="bm-ar">›</span></div></div></div></div>
+  <div class="vs enter-r" id="vs4"><div class="bm">
+    <div class="bm-bar"><div class="bm-d" style="background:#f87171"></div><div class="bm-d" style="background:#fbbf24"></div><div class="bm-d" style="background:#34d399"></div><div class="bm-url">💎 買取業務</div></div>
+    <div class="bm-body">
+      <div class="bm-badge">💎 買取業務</div>
+      <div class="bm-gc"><div class="bm-gi">💎</div><div class="bm-gt">買取業務</div><div class="bm-gs">買取成約時のLINE・Chatwork報告を行います</div>
+        <div class="bm-gstep"><div class="bm-gnum">1</div><div class="bm-gtext"><b>店舗を選択</b>して担当者名を入力</div></div><div class="bm-gstep"><div class="bm-gnum">2</div><div class="bm-gtext">グループLINE<b>【買取用】</b>に成約報告</div></div><div class="bm-gstep"><div class="bm-gnum">3</div><div class="bm-gtext">Chatwork<b>【中古端末買取成立報告】</b>に伝票写真アップ</div></div><div class="bm-gstep"><div class="bm-gnum">4</div><div class="bm-gtext">確認→報告で完了</div></div>
+        
+        <div class="bm-btn" id="guideBtn" style="margin-top:12px">開始する →</div>
+      </div>
+      <div class="bm-nav"><div class="bm-nbk">← 戻る</div><div class="bm-nbh">🏠 ホーム</div></div></div></div></div>
+  <div class="vs enter-r" id="vs5"><div class="bm">
+    <div class="bm-bar"><div class="bm-d" style="background:#f87171"></div><div class="bm-d" style="background:#fbbf24"></div><div class="bm-d" style="background:#34d399"></div><div class="bm-url">💎 買取業務 ─ 店舗選択</div></div>
+    <div class="bm-body"><div class="bm-badge">💎 買取業務</div>
+      <div class="bm-card"><div class="bm-ct">店舗を選択</div><div class="bm-cs">出勤する店舗をクリック</div>
+        <div class="bm-blb">新宿ブロック</div>
+        <div class="bm-sg"><div class="bm-sb">ルミネ新宿</div><div class="bm-sb" id="storeT">新宿東南口</div><div class="bm-sb">下北沢</div></div>
+        <div class="bm-blb">池袋ブロック</div>
+        <div class="bm-sg"><div class="bm-sb">池袋東口</div><div class="bm-sb">池袋西口地下街</div></div>
+      </div>
+      <div class="bm-nav"><div class="bm-nbk">← 戻る</div><div class="bm-nbh">🏠 ホーム</div></div></div></div></div>
+  <div class="vs enter-r" id="vs6"><div class="bm">
+    <div class="bm-bar"><div class="bm-d" style="background:#f87171"></div><div class="bm-d" style="background:#fbbf24"></div><div class="bm-d" style="background:#34d399"></div><div class="bm-url">💎 買取業務 ─ スタッフ名</div></div>
+    <div class="bm-body"><div class="bm-badge">💎 買取業務</div>
+      <div class="bm-card"><div class="bm-ct">スタッフ名を入力</div><div style="margin-bottom:10px"><div class="bm-il">担当スタッフ名</div><div class="bm-ti" id="nameIn"><span id="typed"></span><span class="tc" id="tcur" style="display:none"></span></div></div>
+        <div class="bm-btn" id="nameBtn">次へ進む →</div>
+      </div>
+      <div class="bm-nav"><div class="bm-nbk">← 戻る</div><div class="bm-nbh">🏠 ホーム</div></div></div></div></div>
+  <div class="vs enter-r" id="vs7"><div class="bm">
+    <div class="bm-bar"><div class="bm-d" style="background:#f87171"></div><div class="bm-d" style="background:#fbbf24"></div><div class="bm-d" style="background:#34d399"></div><div class="bm-url">💎 買取業務 ─ LINE報告</div></div>
+    <div class="bm-body"><div class="bm-badge">💎 買取業務</div>
+      <div class="bm-card"><div class="bm-ct">STEP 5：グループLINE報告</div><div class="bm-cs">グループLINE【買取用】に買取成約を報告</div>
+        <div style="padding:14px;border-radius:10px;background:rgba(132,204,22,.04);border:1.5px solid rgba(132,204,22,.15);margin:10px 0"><div style="font-size:11px;font-weight:700;color:#84cc16;margin-bottom:4px">📱 報告先</div><div style="font-size:15px;font-weight:800;color:#1e293b">グループLINE【買取用】</div><div style="font-size:10px;color:#94a3b8;margin-top:5px">買取が成約になった旨を投稿してください</div></div>
+        <div id="lineCheck" style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:10px;background:#f8fafc;border:1.5px solid #e2e8f0"><div id="lineBox" style="width:20px;height:20px;border-radius:5px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0"></div><div style="font-size:13px;font-weight:700;color:#94a3b8" id="lineLabel">LINE報告しました</div></div>
+        <div class="bm-btn" id="lineBtn" style="margin-top:10px;opacity:.4">次へ進む →</div>
+      </div>
+      <div class="bm-nav"><div class="bm-nbk">← 戻る</div><div class="bm-nbh">🏠 ホーム</div></div></div></div></div>
+  <div class="vs enter-r" id="vs8"><div class="bm">
+    <div class="bm-bar"><div class="bm-d" style="background:#f87171"></div><div class="bm-d" style="background:#fbbf24"></div><div class="bm-d" style="background:#34d399"></div><div class="bm-url">💎 買取業務 ─ Chatwork報告</div></div>
+    <div class="bm-body"><div class="bm-badge">💎 買取業務</div>
+      <div class="bm-card"><div class="bm-ct">STEP 6：Chatwork 写真アップ</div><div class="bm-cs">Chatwork【中古端末買取成立報告】に伝票写真をアップ</div>
+        <div style="padding:14px;border-radius:10px;background:rgba(132,204,22,.04);border:1.5px solid rgba(132,204,22,.15);margin:10px 0"><div style="font-size:11px;font-weight:700;color:#84cc16;margin-bottom:4px">💬 報告先</div><div style="font-size:15px;font-weight:800;color:#1e293b">Chatwork【中古端末買取成立報告】</div><div style="font-size:10px;color:#94a3b8;margin-top:5px">① 買取伝票の写真をアップ<br>② 対応方法を選択 ▼</div>
+          <div style="display:flex;gap:6px;margin:8px 0"><div id="cwCash" style="flex:1;padding:10px;border-radius:8px;background:rgba(132,204,22,.06);border:2.5px solid #84cc16;text-align:center"><div style="font-size:9px;color:#94a3b8;margin-bottom:2px">現金の場合</div><div style="font-size:13px;font-weight:800;color:#84cc16">【現金対応】</div></div><div style="flex:1;padding:10px;border-radius:8px;background:rgba(59,130,246,.06);border:2.5px solid #3b82f6;text-align:center"><div style="font-size:9px;color:#94a3b8;margin-bottom:2px">振り込みの場合</div><div style="font-size:13px;font-weight:800;color:#3b82f6">【振り込み対応】</div></div></div>
+          <div style="font-size:9px;color:#94a3b8">※ 担当者名等は不要です</div></div>
+        <div id="cwCheck" style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:10px;background:#f8fafc;border:1.5px solid #e2e8f0"><div id="cwBox" style="width:20px;height:20px;border-radius:5px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0"></div><div style="font-size:13px;font-weight:700;color:#94a3b8" id="cwLabel">Chatwork報告しました</div></div>
+        <div class="bm-btn" id="cwBtn" style="margin-top:10px;opacity:.4">確認画面へ →</div>
+      </div>
+      <div class="bm-nav"><div class="bm-nbk">← 戻る</div><div class="bm-nbh">🏠 ホーム</div></div></div></div></div>
+  <div class="vs enter-r" id="vs9"><div class="bm">
+    <div class="bm-bar"><div class="bm-d" style="background:#f87171"></div><div class="bm-d" style="background:#fbbf24"></div><div class="bm-d" style="background:#34d399"></div><div class="bm-url">💎 買取業務 ─ 確認</div></div>
+    <div class="bm-body">
+      <div class="bm-badge">💎 買取業務</div>
+      <div class="bm-card" style="text-align:center;max-width:480px"><div style="font-size:36px">📋</div><div style="color:var(--c);font-size:17px;font-weight:700;margin:6px 0 12px">この内容で報告しますか？</div>
+        <div style="text-align:left"><div class="bm-cr"><span class="bm-ck">日付</span><span class="bm-cv">2026/3/8</span></div><div class="bm-cr"><span class="bm-ck">店舗</span><span class="bm-cv">新宿東南口</span></div><div class="bm-cr"><span class="bm-ck">担当者</span><span class="bm-cv">田中 太郎</span></div><div class="bm-cr"><span class="bm-ck">LINE報告</span><span class="bm-cv" style="color:#059669">✅ 報告済み</span></div><div class="bm-cr"><span class="bm-ck">Chatwork</span><span class="bm-cv" style="color:#059669">✅ 写真アップ済み</span></div><div class="bm-cr"><span class="bm-ck">対応方法</span><span class="bm-cv" style="color:#84cc16">現金対応</span></div></div>
+        <div style="display:flex;gap:6px;margin-top:14px"><div style="flex:1;padding:12px;border-radius:10px;border:1px solid #e2e8f0;color:#94a3b8;font-size:13px;font-weight:700;text-align:center">修正する</div><div class="bm-btn" id="confBtn" style="flex:1;padding:12px;font-size:14px;border-radius:10px">OK 報告する</div></div>
+      </div></div></div></div>
+  <div class="vs enter-r" id="vs10"><div class="vs-inner">
+    <div class="part bm-done" id="doneCard">
+        <div class="bm-done-icon">✓</div>
+        <div class="bm-done-title">報告完了！</div>
+        <div class="bm-done-sub">お疲れ様でした</div>
+        <div class="bm-rb"><div class="bm-rr"><span class="bm-rk">店舗</span><span class="bm-rv">新宿東南口</span></div><div class="bm-rr"><span class="bm-rk">担当者</span><span class="bm-rv">田中 太郎</span></div><div class="bm-rr"><span class="bm-rk">LINE報告</span><span class="bm-rv" style="color:#059669">✅ 報告済み</span></div><div class="bm-rr"><span class="bm-rk">Chatwork</span><span class="bm-rv" style="color:#059669">✅ 写真アップ済み</span></div></div>
+        <div class="bm-home-btn">🏠 ホームに戻る</div>
+      </div></div></div>
+  <div class="vs enter-r" id="vs11"><div class="vs-inner">
+    <div class="part" style="font-size:48px">💎</div>
+    <div class="part v-h2">まとめ</div>
+    <div class="part vs-item vsi-g">✅ LINE＋Chatworkの2箇所に報告</div>
+    <div class="part vs-item vsi-g">✅ Chatworkは【現金対応】or【振り込み対応】＋伝票写真</div>
+    <div class="part vs-item vsi-a">⚠ 報告後の取り消しはできません</div>
+    <div class="part vs-item vsi-b">💡 困ったら上長に報告</div>
+</div></div>
+
+</div>
+<div class="nar-panel"><div class="nar-head"><div class="nar-step" id="nS"></div><div class="nar-title" id="nT"></div></div><div class="nar-div"></div><div class="nar-body" id="nB"></div></div>
+</div>
+<div class="footer">
+  <button class="f-btn" id="prevBtn2">← 前へ</button>
+  <button class="f-btn f-play" id="playBtn">▶ 再生中</button>
+  <button class="f-btn" id="nextBtn2">次へ →</button>
+  <div class="f-dots" id="dots"></div>
+  <button class="f-speed" id="speedBtn">再生速度 ×1.0</button>
+  <button class="f-btn f-restart" id="restartBtn">⏮ 最初へ</button><button class="f-btn f-repeat" id="repeatBtn">🔁 リピート OFF</button>
+  <div class="f-extra"><button class="f-extra-btn" id="backManual">📖 一覧</button><button class="f-extra-btn f-extra-home" id="backHome">🏠 ホーム</button></div>
+</div>
+</div>
+<script>
+
+/* Particles */
+var cvs=document.getElementById('particles'),ctx=cvs.getContext('2d');var _p=[];
+function rC(){cvs.width=cvs.offsetWidth;cvs.height=cvs.offsetHeight;}
+window.addEventListener('resize',rC);rC();
+for(var i=0;i<30;i++)_p.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+1,a:Math.random()*.15+.05});
+function dP(){ctx.clearRect(0,0,cvs.width,cvs.height);_p.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=cvs.width;if(p.x>cvs.width)p.x=0;if(p.y<0)p.y=cvs.height;if(p.y>cvs.height)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(5,150,105,'+p.a+')';ctx.fill();});requestAnimationFrame(dP);}
+dP();
+
+var DATA=[
+{step:'',title:'買取業務マニュアル',dur:5000,anim:null,blocks:[{type:'text',html:'買取業務の操作手順を動画で説明します。',delay:0},{type:'tip',cls:'nt-b',html:'<b>全6ステップ ・ 所要時間 約1〜2分</b><br>店舗PCのブラウザから操作します',delay:800}]},
+{step:'📋 基本ルール',title:'いつ・だれが報告？',dur:6000,anim:null,blocks:[{type:'text',html:'基本ルールを確認しましょう。',delay:0},{type:'tip',cls:'nt-a',html:'⚠ 買取が成約したら<b>速やかに</b>報告してください。',delay:700}]},
+{step:'📋 全体の流れ',title:'6ステップで完了',dur:5500,anim:'flowAnim',blocks:[{type:'text',html:'フロー全体を確認します。',delay:0},{type:'tip',cls:'nt-b',html:'💡 確認画面で問題なければ報告。',delay:800}]},
+{step:'STEP 1',title:'買取業務をクリック',dur:5500,anim:'clickMenu',blocks:[{type:'text',html:'ホームの<b>「💎 買取業務」</b>をクリックします。',delay:0},{type:'tip',cls:'nt-a',html:'⚠ 必ず店舗PCを使用してください。',delay:600}]},
+{step:'STEP 2',title:'ガイド画面で「開始」',dur:6500,anim:'clickGuide',blocks:[{type:'text',html:'操作手順が表示されます。確認したら<b>「開始する →」</b>をクリック。',delay:0},{type:'tip',cls:'nt-b',html:'💡 出勤報告から来た場合は<b>「出勤報告の情報でスキップ →」</b>で店舗・名前入力を省略できます。',delay:600},{type:'tip',cls:'nt-b',html:'💡 「← 戻る」で前画面に戻れます。',delay:1200}]},
+{step:'STEP 3',title:'店舗を選択',dur:5500,anim:'clickStore',blocks:[{type:'text',html:'<b>店舗</b>をクリックしてください。',delay:0},{type:'tip',cls:'nt-b',html:'💡 出勤報告からスキップした場合はこの画面は表示されません。',delay:600}]},
+{step:'STEP 4',title:'スタッフ名を入力',dur:6500,anim:'typeName',blocks:[{type:'text',html:'<b>フルネーム</b>を入力して「次へ進む」をクリック。',delay:0},{type:'tip',cls:'nt-b',html:'💡 出勤報告からスキップした場合はこの画面も省略されます。',delay:600}]},
+{step:'STEP 5',title:'グループLINE報告',dur:6500,anim:'clickLine',blocks:[{type:'text',html:'グループLINE<b>【買取用】</b>に買取成約を報告します。',delay:0},{type:'text',html:'報告したらチェックボックスをクリック。',delay:500},{type:'tip',cls:'nt-b',html:'💡 LINEに投稿してからチェックを入れてください。',delay:900}]},
+{step:'STEP 6',title:'Chatwork写真アップ',dur:7000,anim:'clickCW',blocks:[{type:'text',html:'Chatwork<b>【中古端末買取成立報告】</b>に伝票写真をアップ。',delay:0},{type:'text',html:'現金の場合は<b>【現金対応】</b>、振り込みの場合は<b>【振り込み対応】</b>を選択。',delay:500},{type:'tip',cls:'nt-a',html:'⚠ 担当者名等は不要。対応方法のみ入力。',delay:900}]},
+{step:'確認',title:'確認して報告',dur:6000,anim:'clickConf',blocks:[{type:'text',html:'入力内容を確認し、<b>「OK 報告する」</b>をクリック。',delay:0},{type:'tip',cls:'nt-r',html:'⚠ <b>送信後の取り消し・修正はできません。</b>',delay:600}]},
+{step:'完了！',title:'報告が送信されました',dur:5000,anim:'confetti',blocks:[{type:'text',html:'報告完了です！お疲れ様でした。',delay:0},{type:'tip',cls:'nt-g',html:'✅ ホームに結果が反映されます。',delay:600}]},
+{step:'まとめ',title:'買取業務は以上です',dur:5500,anim:null,blocks:[{type:'tip',cls:'nt-g',html:'✅ LINE＋Chatworkの2箇所に報告',delay:0},{type:'tip',cls:'nt-g',html:'✅ Chatworkは【現金対応】or【振り込み対応】＋伝票写真',delay:250},{type:'tip',cls:'nt-a',html:'⚠ 報告後の取り消しはできません',delay:500},{type:'tip',cls:'nt-b',html:'💡 困ったら上長に報告',delay:750},]},
+];
+
+
+var tot=DATA.length,cur=0,playing=true,autoTimer=null,T_=[];
+var speeds=[0.5,1.0,1.5,2.0,3.0,4.0],sI=1;
+var ptr=document.getElementById('ptr'),pR=document.getElementById('ptrRip');
+var VA=document.getElementById('VA');
+
+function spd(ms){return ms/speeds[sI];}
+function qt(t){T_.push(t);}
+function clr(){T_.forEach(clearTimeout);T_=[];clearTimeout(autoTimer);}
+function showPtr(){ptr.classList.remove('hidden');}
+function hidePtr(){ptr.classList.add('hidden');}
+
+function movePtr(el){
+  if(!el)return;var r=el.getBoundingClientRect(),lr=VA.getBoundingClientRect();
+  var x=r.left-lr.left+r.width*.55,y=r.top-lr.top+r.height*.5;
+  var ox=parseFloat(ptr.style.left)||x,oy=parseFloat(ptr.style.top)||y;
+  for(var i=1;i<=4;i++){(function(i){qt(setTimeout(function(){
+    var d=document.createElement('div');d.className='ptr-trail';
+    d.style.left=(ox+(x-ox)*i/5)+'px';d.style.top=(oy+(y-oy)*i/5)+'px';
+    VA.appendChild(d);setTimeout(function(){d.remove();},500);
+  },spd(i*50)));})(i);}
+  ptr.style.left=x+'px';ptr.style.top=y+'px';
+}
+function clickFx(el){
+  pR.classList.remove('pop');void pR.offsetWidth;pR.classList.add('pop');
+  if(el){el.style.transform='scale(.94)';el.style.boxShadow='0 0 0 4px rgba(5,150,105,.15)';
+    qt(setTimeout(function(){el.style.transform='';el.style.boxShadow='';},spd(300)));}
+}
+function hoverFx(el){if(el){el.style.boxShadow='0 0 0 4px rgba(5,150,105,.12)';qt(setTimeout(function(){el.style.boxShadow='';},spd(800)));}}
+
+function typeText(el,text,cb){
+  var i=0,cur=document.getElementById('tcur');
+  if(cur)cur.style.display='inline-block';
+  var inp=document.getElementById('nameIn');if(inp)inp.classList.add('focus');
+  !function nx(){if(i<text.length){el.textContent+=text[i];i++;qt(setTimeout(nx,spd(90)));}
+  else{if(cur)cur.style.display='none';qt(setTimeout(function(){if(cb)cb();},spd(300)));}}();
+}
+
+function smoothScrollTo(container,target,dur){
+  var start=container.scrollTop;var diff=target-start;var startTime=null;
+  function step(ts){if(!startTime)startTime=ts;var p=Math.min((ts-startTime)/dur,1);
+    var ease=p<0.5?2*p*p:(1-Math.pow(-2*p+2,2)/2);
+    container.scrollTop=start+diff*ease;if(p<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+}
+
+function spawnConfetti(){
+  var cols=['#059669','#34d399','#2563eb','#60a5fa','#f59e0b','#f87171','#a78bfa','#fbbf24','#fb923c'];
+  for(var i=0;i<40;i++){(function(i){qt(setTimeout(function(){
+    var c=document.createElement('div');c.className='confetti';
+    c.style.left=(12+Math.random()*76)+'%';c.style.top=(10+Math.random()*25)+'%';
+    c.style.background=cols[Math.floor(Math.random()*cols.length)];
+    var sz=4+Math.random()*5;c.style.width=sz+'px';c.style.height=sz+'px';
+    c.style.borderRadius=Math.random()>.5?'50%':'1px';
+    c.style.setProperty('--dx',(Math.random()*50-25)+'px');
+    c.style.animation='conf-f '+(0.9+Math.random()*1)+'s ease-out '+(Math.random()*.25)+'s forwards';
+    VA.appendChild(c);setTimeout(function(){c.remove();},2500);
+  },i*22));})(i);}
+}
+
+
+var ANIMS={
+  flowAnim:function(){showFlowCards();},
+  clickMenu:function(){
+    var el=document.getElementById('menuTarget');if(!el)return;
+    showPtr();
+    qt(setTimeout(function(){movePtr(el);},spd(600)));
+    qt(setTimeout(function(){el.classList.add('hover');},spd(1200)));
+    qt(setTimeout(function(){el.classList.add('hl');clickFx(el);},spd(1800)));
+    qt(setTimeout(function(){el.classList.remove('hover');},spd(2200)));
+  },
+  clickGuide:function(){
+    showGuideSteps();
+    var btn=document.getElementById('guideBtn');if(!btn)return;
+    showPtr();
+    qt(setTimeout(function(){movePtr(btn);},spd(1500)));
+    qt(setTimeout(function(){clickFx(btn);},spd(2200)));
+  },
+  clickStore:function(){
+    var el=document.getElementById('storeT');if(!el)return;
+    showPtr();
+    qt(setTimeout(function(){movePtr(el);},spd(600)));
+    qt(setTimeout(function(){el.classList.add('hover');},spd(1200)));
+    qt(setTimeout(function(){el.classList.add('sel');el.classList.remove('hover');clickFx(el);},spd(1800)));
+  },
+  typeName:function(){
+    var inp=document.getElementById('nameIn'),typed=document.getElementById('typed'),btn=document.getElementById('nameBtn');
+    if(!inp||!typed)return;typed.textContent='';showPtr();
+    qt(setTimeout(function(){movePtr(inp);},spd(400)));
+    qt(setTimeout(function(){clickFx(inp);typeText(typed,'田中 太郎',function(){
+      if(btn){qt(setTimeout(function(){movePtr(btn);},spd(300)));qt(setTimeout(function(){clickFx(btn);},spd(900)));}
+    });},spd(1100)));
+  },
+  clickConf:function(){
+    var el=document.getElementById('confBtn');if(!el)return;
+    showPtr();
+    qt(setTimeout(function(){movePtr(el);},spd(1200)));
+    qt(setTimeout(function(){clickFx(el);},spd(2000)));
+  },
+  clickLine:function(){
+    var chk=document.getElementById('lineCheck'),box=document.getElementById('lineBox'),lbl=document.getElementById('lineLabel'),btn=document.getElementById('lineBtn');
+    if(!chk)return;showPtr();
+    qt(setTimeout(function(){movePtr(chk);},spd(800)));
+    qt(setTimeout(function(){clickFx(chk);box.style.background='#10b981';box.style.borderColor='#10b981';box.style.color='#fff';box.textContent='✓';lbl.style.color='#059669';chk.style.borderColor='rgba(5,150,105,.3)';chk.style.background='rgba(5,150,105,.06)';},spd(1500)));
+    qt(setTimeout(function(){btn.style.opacity='1';movePtr(btn);},spd(2500)));
+    qt(setTimeout(function(){clickFx(btn);},spd(3200)));
+  },
+  clickCW:function(){
+    var chk=document.getElementById('cwCheck'),box=document.getElementById('cwBox'),lbl=document.getElementById('cwLabel'),btn=document.getElementById('cwBtn'),cash=document.getElementById('cwCash');
+    if(!chk)return;showPtr();
+    qt(setTimeout(function(){if(cash){movePtr(cash);}},spd(600)));
+    qt(setTimeout(function(){if(cash){clickFx(cash);cash.style.borderColor='#65a30d';cash.style.borderWidth='4px';cash.style.background='rgba(132,204,22,.2)';cash.style.boxShadow='0 0 0 6px rgba(132,204,22,.25)';cash.style.transform='scale(1.05)';var ck=cash.querySelector('div:last-child');if(ck)ck.innerHTML='✅ 【現金対応】';}},spd(1200)));
+    qt(setTimeout(function(){movePtr(chk);},spd(2000)));
+    qt(setTimeout(function(){clickFx(chk);box.style.background='#10b981';box.style.borderColor='#10b981';box.style.color='#fff';box.textContent='✓';lbl.style.color='#059669';chk.style.borderColor='rgba(5,150,105,.3)';chk.style.background='rgba(5,150,105,.06)';},spd(2700)));
+    qt(setTimeout(function(){btn.style.opacity='1';movePtr(btn);},spd(3700)));
+    qt(setTimeout(function(){clickFx(btn);},spd(4400)));
+  },
+  confetti:function(){qt(setTimeout(spawnConfetti,spd(300)));},
+  dashAnim:function(){showDashRows();},
+
+};
+
+
+function showParts(i){
+  var sc=document.getElementById('vs'+i);if(!sc)return;
+  sc.querySelectorAll('.part').forEach(function(p,j){
+    p.classList.remove('v','bounce');
+    qt(setTimeout(function(){p.classList.add('v','bounce');},spd(j*200)));
+  });
+}
+function showGuideSteps(){
+  document.querySelectorAll('.bm-gstep').forEach(function(s,i){
+    s.classList.remove('show');
+    qt(setTimeout(function(){s.classList.add('show');},spd(300+i*250)));
+  });
+}
+function showFlowCards(){
+  document.querySelectorAll('.vf-c').forEach(function(c,i){
+    c.classList.remove('show','active');
+    qt(setTimeout(function(){c.classList.add('show','active');
+      qt(setTimeout(function(){c.classList.remove('active');},spd(250)));
+    },spd(i*250)));
+  });
+}
+function showDashRows(){
+  ['st1','st2','st3'].forEach(function(id,i){
+    var el=document.getElementById(id);if(el){el.classList.remove('show');
+      qt(setTimeout(function(){el.classList.add('show');},spd(i*350)));}
+  });
+}
+
+function renderNar(i){
+  var d=DATA[i];
+  document.getElementById('nS').textContent=d.step;
+  document.getElementById('nT').textContent=d.title;
+  var b=document.getElementById('nB');b.innerHTML='';
+  d.blocks.forEach(function(bl){
+    var el=document.createElement('div');el.className='nar-block';
+    el.innerHTML=bl.type==='text'?'<div class="nar-text">'+bl.html+'</div>':'<div class="nar-tip '+bl.cls+'">'+bl.html+'</div>';
+    b.appendChild(el);
+    qt(setTimeout(function(){el.classList.add('show');},spd(bl.delay)));
+  });
+}
+
+function resetAll(){
+  document.querySelectorAll('.bm-menu').forEach(function(m){m.classList.remove('hl','hover','clicked');m.style.transform='';m.style.boxShadow='';});
+  document.querySelectorAll('.bm-sb').forEach(function(s){s.classList.remove('sel','hover');s.style.transform='';s.style.boxShadow='';});
+  var ni=document.getElementById('nameIn');if(ni){ni.classList.remove('focus');}
+  var tc=document.getElementById('tcur');if(tc)tc.style.display='none';
+  var ty=document.getElementById('typed');if(ty)ty.textContent='';
+  document.querySelectorAll('.bm-gstep').forEach(function(s){s.classList.remove('show');});
+  document.querySelectorAll('.vf-c').forEach(function(c){c.classList.remove('show','active');});
+  ['st1','st2','st3'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('show');});
+  document.querySelectorAll('.confetti,.ptr-trail').forEach(function(e){e.remove();});
+  var lb=document.getElementById('lineBox');if(lb){lb.style.background='';lb.style.borderColor='#d1d5db';lb.style.color='';lb.textContent='';var ll=document.getElementById('lineLabel');if(ll)ll.style.color='#94a3b8';var lc=document.getElementById('lineCheck');if(lc){lc.style.borderColor='#e2e8f0';lc.style.background='#f8fafc';}var lbn=document.getElementById('lineBtn');if(lbn)lbn.style.opacity='.4';}
+  var cb=document.getElementById('cwBox');if(cb){cb.style.background='';cb.style.borderColor='#d1d5db';cb.style.color='';cb.textContent='';var cl=document.getElementById('cwLabel');if(cl)cl.style.color='#94a3b8';var cc=document.getElementById('cwCheck');if(cc){cc.style.borderColor='#e2e8f0';cc.style.background='#f8fafc';}var cbn=document.getElementById('cwBtn');if(cbn)cbn.style.opacity='.4';var csh=document.getElementById('cwCash');if(csh){csh.style.borderWidth='';csh.style.borderColor='#84cc16';csh.style.background='';csh.style.boxShadow='';csh.style.transform='';var ckk=csh.querySelector('div:last-child');if(ckk)ckk.innerHTML='【現金対応】';}}
+  var nd1=document.getElementById('numDisp1');if(nd1)nd1.textContent='0';
+  var nd2=document.getElementById('numDisp2');if(nd2)nd2.textContent='0';
+  var sng=document.getElementById('switchNg');if(sng){sng.style.opacity='';sng.style.transform='';sng.style.display='';}
+  var sok=document.getElementById('switchOk');if(sok){sok.style.boxShadow='';}
+  var srb=document.getElementById('skipReviewBtn');if(srb){srb.style.border='';srb.style.background='';}
+  document.querySelectorAll('.bm-body').forEach(function(b){b.scrollTop=0;});
+  document.querySelectorAll('.rv-row').forEach(function(r){r.classList.remove('show');});
+}
+
+function buildDots(){
+  var d=document.getElementById('dots');d.innerHTML='';
+  for(var i=0;i<tot;i++){var e=document.createElement('div');e.className='f-dot'+(i===cur?' a':i<cur?' p':'');e.setAttribute('data-i',i);e.onclick=function(){go(parseInt(this.getAttribute('data-i')));};d.appendChild(e);}
+}
+
+function go(n){
+  if(n<0||n>=tot)return;
+  clr();hidePtr();resetAll();
+  var old=document.getElementById('vs'+cur);
+  if(old){old.classList.remove('on');old.classList.add('exit-l');qt(setTimeout(function(){old.classList.remove('exit-l');old.classList.add('enter-r');},500));}
+  cur=n;
+  var nw=document.getElementById('vs'+cur);
+  if(nw){nw.classList.remove('exit-l');nw.classList.add('enter-r');qt(setTimeout(function(){nw.classList.remove('enter-r');nw.classList.add('on');},50));}
+  document.getElementById('counter').textContent=(cur+1)+'/'+tot;
+  var pct=(cur+1)/tot*100;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progGlow').style.left='calc('+pct+'% - 20px)';
+  renderNar(cur);showParts(cur);
+  var an=DATA[cur].anim;
+  if(an&&ANIMS[an])qt(setTimeout(function(){ANIMS[an]();},spd(300)));
+  buildDots();
+  if(playing)schedNext();
+}
+function schedNext(){clearTimeout(autoTimer);autoTimer=setTimeout(function(){hidePtr();if(cur<tot-1)go(cur+1);else if(looping){go(0);}else{playing=false;upPB();}},spd(DATA[cur].dur));}
+function togglePlay(){playing=!playing;upPB();if(playing){if(cur>=tot-1)go(0);else schedNext();}else clearTimeout(autoTimer);}
+function upPB(){document.getElementById('playBtn').innerHTML=playing?'▶ 再生中':'⏸ 停止中';}
+function cycleSpeed(){sI=(sI+1)%speeds.length;document.getElementById('speedBtn').textContent='再生速度 ×'+speeds[sI].toFixed(1);if(playing){clearTimeout(autoTimer);schedNext();}}
+function closeManual(){try{window.parent.postMessage({action:'close'},'*');}catch(e){window.close();}}
+document.getElementById('prevBtn2').addEventListener('click',function(){go(cur-1);});
+document.getElementById('nextBtn2').addEventListener('click',function(){go(cur+1);});
+document.getElementById('playBtn').addEventListener('click',function(){togglePlay();});
+document.getElementById('speedBtn').addEventListener('click',function(){cycleSpeed();});
+
+go(0);
+
+
+document.getElementById('backManual').addEventListener('click',function(){try{window.parent.postMessage({action:'manual'},'*');}catch(e){window.close();}});
+document.getElementById('backHome').addEventListener('click',function(){try{window.parent.postMessage({action:'home'},'*');}catch(e){window.close();}});
+
+var looping=false;
+document.getElementById('restartBtn').addEventListener('click',function(){go(0);playing=true;upPB();schedNext();});
+document.getElementById('repeatBtn').addEventListener('click',function(){looping=!looping;this.className=looping?'f-btn f-repeat on':'f-btn f-repeat';this.textContent=looping?'🔁 リピート ON':'🔁 リピート OFF';});
+</script>
+</body>
+</html>
