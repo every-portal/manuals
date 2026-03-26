@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>クリンリネスチェック ─ スライドマニュアル</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans JP','Hiragino Sans',sans-serif;background:#e8ecf1}
+.page{width:100%;height:100%;display:flex;flex-direction:column}
+.top{height:30px;background:#fff;border-bottom:1px solid #dde2e8;display:flex;align-items:center;padding:0 16px;gap:8px;flex-shrink:0}
+.top-b{font-size:10px;font-weight:800;color:#14b8a6}.top-t{font-size:10px;color:#64748b;flex:1}.top-c{font-size:10px;color:#94a3b8;font-weight:700}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#14b8a6,#2563eb);z-index:101;transition:width .4s}
+.main{flex:1;display:flex;overflow:hidden;min-height:0}
+.left{width:72%;display:flex;align-items:center;justify-content:center;padding:14px 10px 14px 18px;position:relative;background:#e8ecf1}
+.right{width:28%;min-width:240px;background:#fff;border-left:2.5px solid #14b8a6;display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(20,184,166,.06)}
+.right-head{padding:12px 14px 8px;background:linear-gradient(180deg,rgba(20,184,166,.035),transparent)}
+.right-step{font-size:13px;font-weight:800;letter-spacing:.4px;margin-bottom:4px;color:#14b8a6}
+.right-title{font-size:22px;font-weight:900;color:#1e293b;line-height:1.25}
+.right-divider{height:1px;background:linear-gradient(90deg,#14b8a6 0%,#e2e8f0 60%);margin:0 24px}
+.right-body{flex:1;overflow:hidden;padding:10px 14px 8px}
+.right-text{font-size:14px;color:#334155;line-height:1.6;margin-bottom:6px}
+.right-tip{display:block;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.5;margin-top:4px;font-weight:600}
+.rt-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}
+.rt-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}
+.rt-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}
+.rt-g{background:rgba(20,184,166,.04);border:1px solid rgba(20,184,166,.1);color:#065f46}
+/* Screens */
+.screens{position:relative;width:100%;height:100%}
+.scr{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.scr.active{opacity:1;pointer-events:auto}
+.scr-full{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto;background:linear-gradient(160deg,#f8fafc,#eff6ff,#f0fdf4)}
+.scr-split{display:flex;align-items:center;justify-content:center;padding:14px 10px 14px 18px;overflow:hidden}
+/* Browser mock */
+.win{width:100%;max-width:920px;height:100%;border-radius:10px;overflow:hidden;border:1.5px solid #c2c9d4;box-shadow:0 4px 24px rgba(0,0,0,.07);background:#f1f5f9;display:flex;flex-direction:column;position:relative}
+.win-bar{height:28px;flex-shrink:0;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;padding:0 10px;gap:5px}
+.wd{width:9px;height:9px;border-radius:50%}
+.wu{flex:1;margin:0 8px;padding:2px 10px;border-radius:5px;background:#fff;border:1px solid #e2e8f0;font-size:9px;color:#94a3b8;overflow:hidden}
+.wc{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:20px 24px}
+/* App CSS */
+:root{--c-text:#1e293b;--c-sub:#64748b;--c-green:#14b8a6}
+.hb{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:24px;font-size:11px;font-weight:800;margin-bottom:12px;background:rgba(20,184,166,.06);color:#14b8a6;border:1px solid rgba(20,184,166,.12)}
+.card{width:100%;max-width:520px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.card-title{color:#1e293b;font-size:19px;font-weight:700;text-align:center;margin-bottom:3px}
+.card-sub{color:#94a3b8;font-size:12px;text-align:center;margin-bottom:14px}
+.gc{width:100%;max-width:520px;background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.gi{text-align:center;font-size:36px;margin-bottom:8px}
+.gt{text-align:center;font-size:17px;font-weight:700;color:#14b8a6;margin-bottom:3px}
+.gs{text-align:center;font-size:10px;color:#94a3b8;margin-bottom:14px}
+.gsteps{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.gstep{display:flex;align-items:center;gap:9px;padding:9px 11px;background:#f8fafc;border-radius:9px;border:1px solid #e2e8f0}
+.gnum{min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;background:#14b8a6}
+.gtext{color:#334155;font-size:11px;line-height:1.4}.gtext b{color:#1e293b}
+.gnote{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:9px 11px;margin-bottom:14px;font-size:9px;color:#64748b;line-height:1.5}
+.pbtn{width:100%;padding:13px;border:none;border-radius:12px;color:white;font-size:13px;font-weight:700;background:linear-gradient(135deg,#14b8a6,#0d9488);text-align:center}
+.sw{position:relative;margin-bottom:10px}.sic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94a3b8}
+.sin{width:100%;padding:10px 12px 10px 32px;background:#f8fafc;border:1px solid #d1d5db;border-radius:10px;color:#1e293b;font-size:12px;font-family:inherit;outline:none}.sin::placeholder{color:#9ca3af}
+.blb{color:#64748b;font-size:9px;font-weight:600;margin:7px 0 3px;display:flex;align-items:center;gap:5px}
+.blb::before{content:'';display:inline-block;width:3px;height:10px;border-radius:2px;background:#14b8a6}
+.bsg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:3px}
+.sb{border-radius:10px;padding:11px 6px;color:#334155;font-size:11px;font-weight:600;text-align:center;background:rgba(20,184,166,.04);border:1.5px solid rgba(20,184,166,.18);transition:all .3s}
+.sb.sel{border-color:#14b8a6;background:rgba(20,184,166,.1);color:#14b8a6;font-weight:700}
+.il{color:#64748b;font-size:11px;font-weight:600;margin-bottom:5px;display:block}
+.ti{width:100%;padding:11px 12px;background:#f8fafc;border:1px solid #d1d5db;border-radius:10px;color:#1e293b;font-size:14px;min-height:40px;display:flex;align-items:center}
+.cc{padding:24px 18px;text-align:center;background:#fff;border:1px solid #e2e8f0;border-radius:18px;max-width:520px;width:100%;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.cr{display:flex;justify-content:space-between;align-items:center;padding:8px 0}.cr+.cr{border-top:1px solid #f1f5f9}
+.crl{color:#94a3b8;font-size:11px;font-weight:600}.crv{color:#1e293b;font-size:13px;font-weight:700}.crv.hl{color:#14b8a6;font-size:17px}
+.cbs{display:flex;gap:6px;margin-top:8px}
+.cb-no{flex:1;padding:11px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#94a3b8;font-size:12px;font-weight:700;text-align:center}
+.cb-ok{flex:1;padding:11px;border-radius:10px;border:none;color:white;font-size:12px;font-weight:700;text-align:center;background:linear-gradient(135deg,#14b8a6,#0d9488)}
+.dc{border:1px solid rgba(20,184,166,.2);padding:24px 18px;text-align:center;max-width:520px;width:100%;background:#fff;border-radius:18px}
+.dti{color:#14b8a6;font-size:19px;font-weight:700;margin:8px 0 3px}.dsu{color:#94a3b8;font-size:10px;margin-bottom:14px}
+.rb{background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:14px;text-align:left;border:1px solid #e2e8f0}
+.rr{display:flex;justify-content:space-between;padding:7px 0}.rr+.rr{border-top:1px solid #e2e8f0}
+.rrk{color:#94a3b8;font-size:11px;font-weight:600}.rrv{color:#1e293b;font-size:13px;font-weight:700}
+.nb{display:flex;gap:6px;margin-top:10px;max-width:520px;width:100%}
+.nbk{flex:1;display:flex;align-items:center;justify-content:center;padding:11px;background:#f8fafc;border:1px solid #d1d5db;border-radius:12px;color:#64748b;font-size:11px;font-weight:600}
+.nbh{display:flex;align-items:center;justify-content:center;gap:4px;padding:11px 14px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.12);border-radius:12px;color:#2563eb;font-size:10px;font-weight:700}
+.dmi{display:flex;align-items:center;gap:10px;padding:13px;border-radius:12px;cursor:default;transition:all .15s}
+.dmi-i{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.dmi-n{font-size:13px;font-weight:700;color:#1e293b}.dmi-s{font-size:9px;color:#94a3b8;margin-top:1px}.dmi-a{color:#cbd5e1;font-size:13px;margin-left:auto}
+.si{text-align:center;padding:8px;border-radius:9px;font-size:11px;font-weight:600;color:#64748b;background:#f8fafc;border:1px solid #e2e8f0}
+.si.ok{color:#14b8a6;background:rgba(20,184,166,.04);border-color:rgba(20,184,166,.12)}
+.wc2{background:#fff;border:2px solid rgba(220,38,38,.15);border-radius:18px;padding:28px 18px;text-align:center;max-width:520px;width:100%}
+.wc3{background:#fff;border:2px solid rgba(180,83,9,.15);border-radius:18px;padding:28px 18px;text-align:center;max-width:520px;width:100%}
+.sc2{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px 18px;max-width:520px;width:100%}
+.sci{padding:10px 14px;border-radius:9px;font-size:12px;font-weight:700;margin-bottom:4px}
+.ring{position:relative;display:inline-block;width:100%}
+.ring::after{content:'';position:absolute;inset:-3px;border:2px solid #f59e0b;border-radius:12px;animation:rp 1.5s infinite}
+@keyframes rp{0%,100%{opacity:1}50%{opacity:.3}}
+/* Full-page elements */
+h1{font-size:clamp(26px,4.8vw,38px);font-weight:900;color:#1e293b;text-align:center;margin-bottom:6px}
+h2{font-size:clamp(22px,3.6vw,29px);font-weight:800;color:#1e293b;text-align:center;margin-bottom:4px}
+.sub2{font-size:17px;color:#64748b;text-align:center;max-width:520px;line-height:1.7;margin-bottom:12px}
+.badge3{display:inline-flex;align-items:center;gap:6px;padding:6px 17px;border-radius:22px;font-size:13px;font-weight:700;margin-bottom:12px}
+.b3-g{background:rgba(20,184,166,.06);border:1px solid rgba(20,184,166,.15);color:#14b8a6}
+.b3-b{background:rgba(37,99,235,.05);border:1px solid rgba(37,99,235,.12);color:#2563eb}
+.b3-r{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.12);color:#dc2626}
+.b3-x{background:rgba(100,116,139,.05);border:1px solid rgba(100,116,139,.12);color:#64748b}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;max-width:560px;width:100%;margin-bottom:10px}
+.fl{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 4px;text-align:center}
+.fl-n{font-size:17px;font-weight:900;margin-bottom:2px}.fl-l{font-size:12px;color:#64748b}
+.cmp{display:flex;gap:10px;max-width:560px;width:100%;margin-bottom:8px}
+.cmp-c{flex:1;border-radius:10px;padding:14px}
+.cmp-ok{background:rgba(20,184,166,.03);border:1.5px solid rgba(20,184,166,.12)}.cmp-ng{background:rgba(220,38,38,.03);border:1.5px solid rgba(220,38,38,.12)}
+.cmp-t{font-size:14px;font-weight:800;margin-bottom:6px;text-align:center}.cmp-i{font-size:12px;color:#475569;margin-bottom:4px;line-height:1.5;text-align:center}
+.strow{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;margin-bottom:4px;max-width:500px;width:100%}
+.strow-d{width:8px;height:8px;border-radius:50%;flex-shrink:0}.strow-n{font-size:12px;font-weight:700;color:#1e293b;flex:1}.strow-s{font-size:10px;color:#94a3b8}.strow-i{font-size:11px;font-weight:700;flex-shrink:0}
+.ft{padding:12px 17px;border-radius:10px;font-size:16px;line-height:1.7;margin-top:5px;max-width:560px;width:100%}
+.ft b{font-weight:800}
+.ft-b{background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);color:#1e40af}
+.ft-a{background:rgba(180,83,9,.04);border:1px solid rgba(180,83,9,.1);color:#92400e}
+.ft-r{background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.1);color:#991b1b}
+.ft-g{background:rgba(20,184,166,.04);border:1px solid rgba(20,184,166,.1);color:#065f46}
+.sitem{padding:13px 19px;border-radius:10px;font-size:17px;font-weight:700;margin-bottom:5px;max-width:500px;width:100%}
+.fu{opacity:0;transform:translateY(10px);transition:all .4s ease}
+.scr.active .fu{opacity:1;transform:translateY(0)}
+.scr.active .fu:nth-child(2){transition-delay:.06s}
+.scr.active .fu:nth-child(3){transition-delay:.12s}
+.scr.active .fu:nth-child(4){transition-delay:.18s}
+.scr.active .fu:nth-child(5){transition-delay:.24s}
+.scr.active .fu:nth-child(6){transition-delay:.3s}
+.scr.active .fu:nth-child(7){transition-delay:.36s}
+.scr.active .fu:nth-child(8){transition-delay:.42s}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.tc{display:inline-block;width:1px;height:14px;background:#1e293b;margin-left:1px;animation:blink .7s infinite;vertical-align:text-bottom}
+
+.right-nav{flex-shrink:0;padding:20px 24px 22px;border-top:1px solid #eef1f5;background:#fafbfc}
+.right-nav-dots{display:flex;gap:5px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.dot{width:7px;height:7px;border-radius:50%;background:#d1d5db;cursor:pointer;transition:all .25s}
+.dot.a{background:#14b8a6;transform:scale(1.5)}.dot.d{background:#2563eb}
+.right-nav-btns{display:flex;gap:12px}
+.nav-btn{flex:1;padding:20px 0;border:none;border-radius:14px;font-size:28px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;letter-spacing:.3px}
+.nav-btn-prev{background:#f1f5f9;color:#64748b;border:3px solid #94a3b8;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.nav-btn-prev:hover{background:#e2e8f0;color:#1e293b}
+.nav-btn-next{background:linear-gradient(135deg,#14b8a6,#0d9488);color:#fff;border:none;box-shadow:0 2px 10px rgba(20,184,166,.25)}
+.nav-btn-next:hover{box-shadow:0 4px 16px rgba(20,184,166,.35)}
+
+.scr.prev{opacity:0;transform:translateX(-40px)}
+
+.right-nav-extra{display:flex;gap:10px;margin-top:14px}
+.nav-extra-btn{flex:1;padding:16px 0;border:3px solid #94a3b8;border-radius:12px;font-size:24px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-weight:700;cursor:pointer;font-family:inherit;background:#fff;color:#64748b;text-align:center;transition:all .15s}
+.nav-extra-btn:hover{background:#f1f5f9;color:#1e293b}
+.nav-extra-home{border-color:rgba(37,99,235,.15);color:#2563eb;background:rgba(37,99,235,.03)}
+.nav-extra-home:hover{background:rgba(37,99,235,.08)}
+
+.st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:580px;width:100%;margin-bottom:6px}
+.st-card{padding:10px;border-radius:9px;text-align:center}
+.st-card-icon{font-size:18px;margin-bottom:2px}
+.st-card-label{font-size:12px;font-weight:800;margin-bottom:2px}
+.st-card-desc{font-size:9px;line-height:1.5}
+.st-ok{background:rgba(16,185,129,.06);border:1.5px solid rgba(16,185,129,.2);color:#14b8a6}
+.st-delay{background:rgba(234,179,8,.06);border:1.5px solid rgba(234,179,8,.2);color:#b45309}
+.st-late{background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);color:#dc2626}
+.st-appr{background:rgba(167,139,250,.06);border:1.5px solid rgba(167,139,250,.2);color:#7c3aed}
+.st-hol{background:rgba(56,189,248,.06);border:1.5px solid rgba(56,189,248,.2);color:#0284c7}
+.st-wait{background:#f8fafc;border:1.5px solid #e2e8f0;color:#64748b}
+
+
+.st-circle{width:24px;height:24px;border-radius:50%;margin:0 auto 4px;display:block;position:relative}
+.st-circle::after{content:'';position:absolute;top:3px;left:5px;width:10px;height:8px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,255,255,.7) 0%,rgba(255,255,255,0) 100%)}
+
+.sd{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle;margin-right:2px;position:relative}
+.sd::after{content:'';position:absolute;top:1px;left:2px;width:5px;height:4px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 100%)}
+
+.finger{font-size:20px;vertical-align:middle;margin-left:4px;display:inline-block;position:relative;animation:tap4 1.8s infinite;transform-origin:center bottom;z-index:10}
+.finger::after{content:'';position:absolute;bottom:-4px;left:50%;width:20px;height:20px;border-radius:50%;border:2.5px solid rgba(20,184,166,.5);transform:translate(-50%,0) scale(0);animation:ripple4 1.8s infinite;pointer-events:none}
+@keyframes tap4{0%,100%{transform:scale(1) translateY(0)}35%{transform:scale(.8) translateY(4px)}45%{transform:scale(.8) translateY(4px)}55%{transform:scale(1) translateY(0)}}
+@keyframes ripple4{0%,34%{transform:translate(-50%,0) scale(0);opacity:0}45%{transform:translate(-50%,0) scale(.5);opacity:.9}70%{transform:translate(-50%,0) scale(3);opacity:0}100%{transform:translate(-50%,0) scale(0);opacity:0}}
+.ring,.pbtn,.sb,.cb-ok,.dmi{overflow:visible !important}
+
+.ta-mock{width:100%;min-height:80px;padding:10px 14px;border-radius:10px;background:#f8fafc;border:1.5px solid #d1d5db;font-size:11px;color:#334155;line-height:1.8;white-space:pre-line}
+.urg-btns{display:flex;gap:8px;margin:8px 0}
+.urg-btn{flex:1;padding:12px;border-radius:10px;text-align:center;font-size:13px;font-weight:700;cursor:default}
+.urg-normal{background:rgba(59,130,246,.06);border:1.5px solid rgba(59,130,246,.2);color:#2563eb}
+.urg-urgent{background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);color:#dc2626}
+.urg-sel{border-width:2.5px;box-shadow:0 0 0 2px rgba(59,130,246,.1)}
+.urg-urgent.urg-sel{box-shadow:0 0 0 2px rgba(239,68,68,.1)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="bar" id="bar"></div>
+<div class="top"><div class="top-b">🧹 クリンリネスチェック</div><div class="top-t">─ スライドマニュアル</div><div class="top-c" id="cnt"></div></div>
+<div class="main">
+<div class="left"><div class="screens">
+<div class="scr scr-full active" data-i="0"><div class="badge3 b3-g fu">🧹 業務マニュアル</div><h1 class="fu">クリンリネスチェック</h1><div class="sub2 fu">店舗の清掃状況を写真で報告する業務です。</div><div class="ft ft-b fu" style="text-align:center;max-width:420px"><b>全5ステップ ・ 所要時間 約1分</b><br>店舗PCから操作します</div></div>
+
+<div class="scr scr-full" data-i="1"><div class="badge3 b3-x fu">📋 基本ルール</div><h2 class="fu">いつ・だれが実施する？</h2><div class="cmp fu"><div class="cmp-c cmp-ok"><div class="cmp-t" style="color:#14b8a6">✅ 実施タイミング</div><div class="cmp-i"><b>毎週木曜日</b>に実施</div><div class="cmp-i">清掃後の状態を写真で撮影</div><div class="cmp-i">1枚以上アップロードして報告</div></div><div class="cmp-c cmp-ng"><div class="cmp-t" style="color:#dc2626">⚠ 注意</div><div class="cmp-i"><b>写真は最低1枚必要</b></div><div class="cmp-i">Googleドライブに自動保存されます</div></div></div></div>
+
+<div class="scr scr-full" data-i="2"><div class="badge3 b3-b fu">📋 全体の流れ</div><h2 class="fu">クリンリネスチェックフロー</h2><div class="sub2 fu">5つのステップで完了します</div><div class="flow fu" style="grid-template-columns:repeat(5,1fr)"><div class="fl"><div class="fl-n" style="color:#64748b">1</div><div class="fl-l">店舗選択</div></div><div class="fl"><div class="fl-n" style="color:#14b8a6">2</div><div class="fl-l">スタッフ名</div></div><div class="fl"><div class="fl-n" style="color:#14b8a6">3</div><div class="fl-l">写真アップ</div></div><div class="fl"><div class="fl-n" style="color:#14b8a6">4</div><div class="fl-l">確認</div></div><div class="fl"><div class="fl-n" style="color:#059669">5</div><div class="fl-l">完了</div></div></div><div class="ft ft-b fu">💡 写真はGoogleドライブのブロック・店舗フォルダに自動保存されます。</div></div>
+
+<div class="scr scr-split" data-i="3"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">📋 業務管理アプリ - 都心エリア</div></div><div class="wc" style="align-items:flex-start"><div style="font-size:11px;font-weight:700;color:#94a3b8;margin-bottom:8px">📋 業務メニュー</div><div style="display:flex;flex-direction:column;gap:3px;width:100%;max-width:520px"><div class="dmi" style="border:1px solid #f1f5f9"><div class="dmi-i" style="background:rgba(5,150,105,.08)">🏪</div><div><div class="dmi-n">出勤報告</div><div class="dmi-s">毎日</div></div><span class="dmi-a">›</span></div><div class="dmi" style="border:1px solid #f1f5f9"><div class="dmi-i" style="background:rgba(99,102,241,.08)">🔍</div><div><div class="dmi-n">競合調査</div><div class="dmi-s">毎週金曜</div></div><span class="dmi-a">›</span></div><div class="ring"><div class="dmi" style="background:rgba(20,184,166,.03);border:1px solid rgba(20,184,166,.15)"><div class="dmi-i" style="background:rgba(20,184,166,.12)">🧹</div><div><div class="dmi-n">クリンリネスチェック</div><div class="dmi-s">毎週木曜</div></div><span class="finger">👆</span><span class="dmi-a">›</span></div></div><div class="dmi" style="border:1px solid #f1f5f9"><div class="dmi-i" style="background:rgba(132,204,22,.08)">💎</div><div><div class="dmi-n">買取業務</div><div class="dmi-s">随時</div></div><span class="dmi-a">›</span></div></div></div></div></div>
+
+<div class="scr scr-split" data-i="4"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🧹 クリンリネスチェック</div></div><div class="wc"><div class="hb" style="background:rgba(20,184,166,.06);color:#14b8a6;border-color:rgba(20,184,166,.12)">🧹 クリンリネスチェック</div><div class="gc"><div class="gi">🧹</div><div class="gt" style="color:#14b8a6">クリンリネスチェック</div><div class="gs">店舗の清掃状況を写真で報告します（毎週木曜）</div><div class="gsteps"><div class="gstep"><div class="gnum" style="background:#14b8a6">1</div><div class="gtext"><b>店舗を選択</b>して名前を入力</div></div><div class="gstep"><div class="gnum" style="background:#14b8a6">2</div><div class="gtext">クリンリネスチェックの<b>写真を1枚以上</b>アップロード</div></div><div class="gstep"><div class="gnum" style="background:#14b8a6">3</div><div class="gtext">確認画面で内容を確認し「OK 報告する」をタップ</div></div></div><div class="gnote">💡 毎週木曜日に実施。写真はGoogleドライブに自動保存されます。</div><div class="ring"><div class="pbtn" style="background:linear-gradient(135deg,#14b8a6,#0d9488)">開始する → <span class="finger">👆</span></div></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="5"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🧹 クリンリネスチェック ─ 店舗選択</div></div><div class="wc"><div class="hb" style="background:rgba(20,184,166,.06);color:#14b8a6;border-color:rgba(20,184,166,.12)">🧹 クリンリネスチェック</div><div class="card"><div class="card-title">店舗を選択</div><div class="card-sub">自分の店舗をクリック</div><div class="blb">新宿ブロック</div><div class="bsg"><div class="sb">ルミネ新宿</div><div class="sb sel ring">新宿東南口 <span class="finger">👆</span></div><div class="sb">下北沢</div></div><div class="blb">池袋ブロック</div><div class="bsg"><div class="sb">池袋東口</div><div class="sb">池袋西口地下街</div><div class="sb">BIGBOX高田馬場</div></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="6"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🧹 クリンリネスチェック ─ スタッフ名</div></div><div class="wc"><div class="hb" style="background:rgba(20,184,166,.06);color:#14b8a6;border-color:rgba(20,184,166,.12)">🧹 クリンリネスチェック</div><div class="card"><div class="card-title">スタッフ名を入力</div><div style="margin-bottom:14px"><label class="il">担当スタッフ名</label><div class="ti">田中 太郎</div></div><div class="pbtn" style="background:linear-gradient(135deg,#14b8a6,#0d9488)">次へ進む <span class="finger">👆</span></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="7"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🧹 クリンリネスチェック ─ 写真アップロード</div></div><div class="wc"><div class="hb" style="background:rgba(20,184,166,.06);color:#14b8a6;border-color:rgba(20,184,166,.12)">🧹 クリンリネスチェック</div><div class="card"><div class="card-title">📸 クリンリネス写真</div><div class="card-sub">清掃状況の写真を1枚以上アップロードしてください</div><div style="border:2px dashed rgba(20,184,166,.3);border-radius:12px;padding:20px;text-align:center;margin-bottom:12px"><div style="font-size:28px;margin-bottom:4px">📷</div><div style="font-size:10px;color:#94a3b8">タップして画像を追加</div></div><div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px"><div style="width:40px;height:40px;border-radius:6px;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.2);display:flex;align-items:center;justify-content:center;font-size:14px">🖼</div><div style="width:40px;height:40px;border-radius:6px;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.2);display:flex;align-items:center;justify-content:center;font-size:14px">🖼</div><div style="width:40px;height:40px;border-radius:6px;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.2);display:flex;align-items:center;justify-content:center;font-size:14px">🖼</div></div><div style="font-size:10px;color:#0d9488;font-weight:700;text-align:center;margin-bottom:10px">📷 3枚選択済み</div><div class="ring"><div class="pbtn" style="background:linear-gradient(135deg,#14b8a6,#0d9488)">確認画面へ <span class="finger">👆</span></div></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="8"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🧹 クリンリネスチェック ─ 確認</div></div><div class="wc"><div class="hb" style="background:rgba(20,184,166,.06);color:#14b8a6;border-color:rgba(20,184,166,.12)">🧹 クリンリネスチェック</div><div class="cc" style="border-color:rgba(20,184,166,.2)"><div style="font-size:32px">📋</div><div style="color:#14b8a6;font-size:15px;font-weight:700;margin:6px 0 14px">この内容で報告しますか？</div><div style="text-align:left"><div class="cr"><span class="crl">日付</span><span class="crv">2026年3月27日</span></div><div class="cr"><span class="crl">店舗</span><span class="crv">新宿東南口</span></div><div class="cr"><span class="crl">担当者</span><span class="crv">田中 太郎</span></div><div class="cr"><span class="crl">写真枚数</span><span class="crv" style="color:#14b8a6">3枚</span></div></div><div class="cbs"><div class="cb-no">修正する</div><div class="ring" style="flex:1"><div class="cb-ok" style="width:100%;background:linear-gradient(135deg,#14b8a6,#0d9488)">OK 報告する <span class="finger">👆</span></div></div></div></div><div class="nb"><div class="nbk">← 戻る</div><div class="nbh">🏠 ホーム</div></div></div></div></div>
+
+<div class="scr scr-split" data-i="9"><div class="win"><div class="win-bar"><div class="wd" style="background:#f87171"></div><div class="wd" style="background:#fbbf24"></div><div class="wd" style="background:#34d399"></div><div class="wu">🧹 クリンリネスチェック ─ 完了</div></div><div class="wc"><div class="hb" style="background:rgba(20,184,166,.06);color:#14b8a6;border-color:rgba(20,184,166,.12)">🧹 クリンリネスチェック</div><div class="dc" style="border-color:rgba(20,184,166,.2)"><div style="font-size:42px">✅</div><div style="color:#14b8a6;font-size:19px;font-weight:700;margin:8px 0 3px">報告完了！</div><div style="color:#94a3b8;font-size:10px;margin-bottom:14px">お疲れ様でした</div><div class="rb"><div class="rr"><span class="rrk">店舗</span><span class="rrv">新宿東南口</span></div><div class="rr"><span class="rrk">担当者</span><span class="rrv">田中 太郎</span></div><div class="rr"><span class="rrk">写真枚数</span><span class="rrv" style="color:#14b8a6">3枚</span></div></div><div style="text-align:center;padding:8px;border-radius:9px;font-size:12px;font-weight:700;color:#14b8a6;background:rgba(20,184,166,.04);border:1px solid rgba(20,184,166,.12)">✓ 記録しました（画像3枚）</div></div><div style="margin-top:10px;max-width:520px;width:100%"><div class="nbh" style="width:100%;justify-content:center">🏠 ホームに戻る</div></div></div></div></div>
+
+<div class="scr scr-full" data-i="10"><div class="badge3 b3-r fu">⚠ 注意点</div><h2 class="fu">こうならないように注意</h2><div class="ft ft-r fu"><b>❌ 写真なしで報告しない</b><br>→ 写真は最低1枚必要です。清掃後の状態がわかる写真を撮影してください。</div><div class="ft ft-r fu"><b>❌ 木曜日に実施を忘れない</b><br>→ 毎週木曜日に必ず実施してください。</div><div class="ft ft-b fu"><b>💡 複数枚アップロード可能</b><br>→ 最大20枚まで。不要な写真は ✕ ボタンで削除できます。</div></div>
+
+<div class="scr scr-full" data-i="11"><div class="badge3 b3-b fu">🆘 困ったとき</div><h2 class="fu">こんなときはどうする？</h2><div class="ft ft-b fu"><b>⏱ 画像送信に時間がかかる</b><br>→ 1枚ずつ3秒間隔で送信されます。完了メッセージが出るまでお待ちください。</div><div class="ft ft-b fu"><b>❓ 不明点がある</b><br>→ 上長にご確認ください。</div></div>
+
+<div class="scr scr-full" data-i="12"><div style="font-size:42px" class="fu">🧹</div><h2 class="fu">クリンリネスチェックまとめ</h2><div class="sitem fu" style="background:rgba(20,184,166,.04);color:#0f766e">✅ 毎週木曜日に実施</div><div class="sitem fu" style="background:rgba(20,184,166,.04);color:#0f766e">✅ 清掃後の写真を1枚以上アップロード</div><div class="sitem fu" style="background:rgba(20,184,166,.04);color:#0f766e">✅ 写真はGoogleドライブに自動保存</div><div class="sitem fu" style="background:rgba(20,184,166,.04);color:#0f766e">✅ 画像は1枚ずつ3秒間隔で安定送信</div><div class="sitem fu" style="background:rgba(37,99,235,.04);color:#1e40af">💡 困ったら上長に報告</div></div>
+
+</div></div>
+<div class="right">
+<div class="right-head"><div class="right-step" id="rs"></div><div class="right-title" id="rt"></div></div>
+<div class="right-divider"></div>
+<div class="right-body" id="rb"></div>
+<div class="right-nav">
+<div class="right-nav-dots" id="dots"></div>
+<div class="right-nav-btns">
+<button class="nav-btn nav-btn-prev" id="prevBtn">← 前へ</button>
+<button class="nav-btn nav-btn-next" id="nextBtn">次へ →</button>
+</div>
+<div class="right-nav-extra">
+<button class="nav-extra-btn" id="backManual">📖 マニュアル一覧</button>
+<button class="nav-extra-btn nav-extra-home" id="backHome">🏠 ホームに戻る</button>
+</div>
+</div></div></div></div>
+<script>
+
+var T=function(s){return '<span class="right-text">'+s+'</span>';};
+var B=function(s){return '<span class="right-tip rt-b">'+s+'</span>';};
+var A=function(s){return '<span class="right-tip rt-a">'+s+'</span>';};
+var R=function(s){return '<span class="right-tip rt-r">'+s+'</span>';};
+var G=function(s){return '<span class="right-tip rt-g">'+s+'</span>';};
+
+var DATA=[
+{step:'',title:'クリンリネスチェックマニュアル',body:T('店舗の清掃状況を写真で報告します。')},
+{step:'📋 基本ルール',title:'いつ・だれが実施？',body:T('<b>毎週木曜日</b>に全店舗で実施します。')+T('清掃後の状態を写真に撮ってアプリから報告。')+A('⚠ 写真は最低1枚必要です。Googleドライブに自動保存されます。')},
+{step:'📋 全体の流れ',title:'5ステップで完了',body:T('店舗選択 → スタッフ名 → 写真アップ → 確認 → 完了')+B('💡 写真はGoogleドライブのブロック・店舗フォルダに自動保存されます。')},
+{step:'STEP 1',title:'クリンリネスチェックをクリック',body:T('ホームの<b>「🧹 クリンリネスチェック」</b>をクリック。')+A('⚠ 個人端末や店舗のiPhone・iPadは使用出来ません。必ず店舗PCを使用してください。')},
+{step:'STEP 2',title:'ガイド画面を確認',body:T('操作手順が3ステップで表示されます。確認したら<b>「開始する →」</b>をクリック。')},
+{step:'STEP 3',title:'店舗を選択',body:T('自分の<b>店舗</b>をクリックしてください。')},
+{step:'STEP 4',title:'スタッフ名を入力',body:T('<b>フルネーム</b>を入力して「次へ進む」をクリック。')+R('⚠ <b>毎回同じ表記で入力してください。</b>フルネームで統一してください。')},
+{step:'STEP 5',title:'写真をアップロード',body:T('清掃状況の写真を<b>1枚以上</b>アップロードしてください。')+T('「📷 タップして画像を追加」をクリックして写真を選択。')+B('💡 複数枚アップロード可能（最大20枚）。不要な写真は ✕ で削除。')},
+{step:'STEP 6',title:'確認して報告',body:T('日付・店舗・担当者・写真枚数を確認してください。')+T('すべて正しければ<b>「OK 報告する」</b>をクリック。')+A('⚠ 写真を変更したい場合は「修正する」で戻れます。')},
+{step:'STEP 7 ─ 完了！',title:'報告完了',body:T('「✓ 記録しました」が表示されたらOK！')+G('✅ 写真はGoogleドライブに自動保存されます。画像は1枚ずつ3秒間隔で送信。')},
+{step:'⚠ 注意点',title:'こうならないように注意',body:R('❌ 写真なしで報告しない → 最低1枚必要。')+R('❌ 木曜日に忘れない → 毎週木曜に実施。')+B('💡 複数枚アップロード可能（最大20枚）。')},
+{step:'🆘 困ったとき',title:'こんなときはどうする？',body:B('⏱ 送信に時間がかかる → 1枚ずつ3秒間隔。完了メッセージまで待つ。')+B('❓ 不明点 → 上長に確認。')},
+{step:'まとめ',title:'クリンリネスチェックは以上です',body:G('✅ 毎週木曜日に実施')+G('✅ 清掃後の写真を1枚以上アップロード')+G('✅ Googleドライブに自動保存')+G('✅ 画像は1枚ずつ3秒間隔で安定送信')+B('💡 困ったら上長に報告')},
+];
+var cur=0;
+var sls=document.querySelectorAll('.scr');
+var tot=sls.length;
+var prevBtn=document.getElementById('prevBtn');
+var nextBtn=document.getElementById('nextBtn');
+
+function go(n){
+  if(n<0||n>=tot)return;
+  sls[cur].classList.remove('active');
+  sls[cur].classList.remove('prev');
+  if(n>cur) sls[cur].classList.add('prev');
+  cur=n;
+  for(var i=0;i<tot;i++){sls[i].classList.remove('active');sls[i].classList.remove('prev');}
+  sls[cur].classList.add('active');
+  upd();
+}
+
+function upd(){
+  prevBtn.style.opacity=cur===0?'0.3':'1';
+  prevBtn.style.pointerEvents=cur===0?'none':'auto';
+  nextBtn.style.opacity='1';
+  nextBtn.style.pointerEvents='auto';
+  nextBtn.textContent=cur===tot-1?'✕ 閉じる':'次へ →';
+  document.getElementById('bar').style.width=((cur+1)/tot*100)+'%';
+  document.getElementById('cnt').textContent=(cur+1)+'/'+tot;
+  var d=document.getElementById('dots');
+  d.innerHTML='';
+  for(var i=0;i<tot;i++){
+    var e=document.createElement('div');
+    e.className='dot'+(i===cur?' a':i<cur?' d':'');
+    e.setAttribute('data-i',i);
+    e.addEventListener('click',function(){go(parseInt(this.getAttribute('data-i')));});
+    d.appendChild(e);
+  }
+  var info=DATA[cur]||{};
+  document.getElementById('rs').textContent=info.step||'';
+  document.getElementById('rt').textContent=info.title||'';
+  document.getElementById('rb').innerHTML=info.body||'';
+}
+
+prevBtn.addEventListener('click',function(){go(cur-1);});
+nextBtn.addEventListener('click',function(){
+  if(cur===tot-1){
+    try{window.parent.postMessage({action:'close'},'*');}catch(e){window.close();}
+  } else {go(cur+1);}
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1);}
+  if(e.key==='ArrowLeft'){go(cur-1);}
+});
+
+var tx=0;
+document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;});
+document.addEventListener('touchend',function(e){
+  var dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50){dx<0?go(cur+1):go(cur-1);}
+});
+
+upd();
+
+document.getElementById('backManual').addEventListener('click',function(){
+  try{window.parent.postMessage({action:'manual'},'*');}catch(e){window.close();}
+});
+document.getElementById('backHome').addEventListener('click',function(){
+  try{window.parent.postMessage({action:'home'},'*');}catch(e){window.close();}
+});
+
+</script>
+</body>
+</html>
